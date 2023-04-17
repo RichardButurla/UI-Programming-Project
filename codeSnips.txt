@@ -1,0 +1,91 @@
+HealthBar:
+function drawHealthbar() {  
+    // Draw the background
+    context.fillStyle = "#000000";
+    context.fillRect(0, 0, healthBarWidth, healthBarHeight);
+  
+    // Draw the fill
+    context.fillStyle = "#FF0000";
+    var fillVal = Math.min(Math.max(currentHealth / maxHealth, 0), 1);
+    context.fillRect(0, 0, fillVal * healthBarWidth, healthBarHeight);
+  }
+
+
+/////////////////
+Overlap
+function checkCollision(object1, object2)
+{
+    let xOverlap = false;
+    let yOverlap = false;
+
+
+     xOverlap = valueInRange(object1.x,object2.x, object2.x + object2.width) || valueInRange(object2.x,object1.x, object1.x + object1.width);
+     yOverlap = valueInRange(object1.y,object2.y, object2.y + object2.height) || valueInRange(object2.y,object1.y, object1.y + object1.height);
+    
+    
+     return xOverlap && yOverlap;
+}
+
+
+function valueInRange(value, min, max)
+{
+    return (value>=min) && (value <= max);
+}
+////////
+
+Player Frame
+
+function drawPlayerFrame(image, frameX, frameY, canvasX, canvasY)
+{
+    
+    let playerWidth = 28.8;
+    let playerHeight = 44.5;
+    let playerScaledWidth = playerScale * playerWidth;
+    let playerScaledHeight = playerScale * playerHeight;
+    player.width = playerScaledWidth;
+    player.height = playerScaledHeight;
+
+    context.drawImage(image,
+       frameX * playerWidth, frameY * playerHeight, playerWidth, playerHeight,
+        canvasX, canvasY, playerScaledWidth, playerScaledHeight);
+}
+
+
+//Draw text
+    
+    context.font = "30px serif";
+    context.fillText(mushroomText + numberOfShroomsCollected,context.canvas.width - 500, 0 + 30);
+
+
+////////////////
+Animate
+function animate()
+{
+    frameTimer+= 1;
+    if(frameTimer > frameTimeLimit)
+    {
+        frameTimer = 0;
+        playerXFrame += 1;
+        if(playerXFrame > 4)
+        {
+            playerXFrame = 0;
+        }
+    }
+
+    if(playerMovingRight)
+    {
+        playerYFrame = 0;
+    }
+    if(playerMovingLeft)
+    {
+        playerYFrame = 1;
+    }
+    if(playerIdle)
+    {
+        playerYFrame = 2;
+        playerXFrame = 0;
+    }
+    
+}
+
+

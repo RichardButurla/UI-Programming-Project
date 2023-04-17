@@ -1,0 +1,32 @@
+{
+  "name": "Yoshi Game",
+  "short_name": "UI-Prog_Project",
+  "lang": "en-GB",
+  "display": "standalone",
+  "orientation": "landscape-primary",
+  "background_color": "white",
+  "theme_color": "white",
+  "start_url": "/final-project-richard-buturla/index.html",
+  "scope": "/final-project-richard-buturla/",
+  "icons": [{
+      "src": "https://gitlab.com/ui-programming-21-22/sample-pwa/-/raw/main/public/imgs/icon-192-192.png?inline=false",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }, {
+      "src": "https://gitlab.com/ui-programming-21-22/sample-pwa/-/raw/main/public/imgs/icon-256-256.png?inline=false",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },{
+      "src": "https://gitlab.com/ui-programming-21-22/sample-pwa/-/raw/main/public/imgs/icon-384-384.png?inline=false",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }, {
+      "src": "https://gitlab.com/ui-programming-21-22/sample-pwa/-/raw/main/public/imgs/icon-512-512.png?inline=false",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }]
+}

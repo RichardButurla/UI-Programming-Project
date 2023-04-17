@@ -1,4 +1,4 @@
-# Final-Project-Richard-Buturla
+# 12-PWA-Richard-Buturla
 
 
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://gitlab.com/ui-programming-22-23/final-project-richard-buturla.git
+git remote add origin https://gitlab.com/ui-programming-22-23/12-pwa-richard-buturla.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.com/ui-programming-22-23/final-project-richard-buturla/-/settings/integrations)
+- [ ] [Set up project integrations](https://gitlab.com/ui-programming-22-23/12-pwa-richard-buturla/-/settings/integrations)
 
 ## Collaborate with your team
 

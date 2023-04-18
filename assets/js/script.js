@@ -1,15 +1,11 @@
 const canvas = document.getElementById("the_canvas");
 const context = canvas.getContext("2d");
 
-let frameTimeLimit = 14;
-
 const screenStates = Object.freeze({ 
     MenuState: 0,
     GamePlayState: 1,
     InventoryState: 2,
   });
-
-let currentScreenState = screenStates.GamePlayState;
 
 class MenuScreen
 {
@@ -24,10 +20,6 @@ class MenuScreen
     };
 }
 
-let playerImg = new Image();
-playerImg.src = "assets/img/detective.png";
-
-let playerObject = new GameObject(playerImg, 300, 100, 100, 150);
 class Player{
     constructor(playerImg, playerObject)
     {
@@ -81,26 +73,20 @@ class Player{
     }
 }
 
-let player = new Player(playerImg,playerObject);
-
 class GamePlayScreen
 {
     update()
     {
-        if (gamerInput.action === "Up") {
-            console.log("Move Up");
+        if (gamerInput[INPUT_TYPES.UP].action === "Up") {
             playerObject.y -= 5; // Move Player Up      
         } 
-        if (gamerInput.action === "Down") {
-            console.log("Move Down");
+        if (gamerInput[INPUT_TYPES.DOWN].action === "Down") {
             playerObject.y += 5; // Move Player Down
         } 
-         if (gamerInput.action === "Left") {
-            console.log("Move Left");
+         if (gamerInput[INPUT_TYPES.LEFT].action === "Left") {
             playerObject.x -= 5; // Move Player Left
         } 
-         if (gamerInput.action === "Right") {
-            console.log("Move Right");
+         if (gamerInput[INPUT_TYPES.RIGHT].action === "Right") {
             playerObject.x += 5; // Move Player Right
         }
 
@@ -125,12 +111,6 @@ class InventoryScreen
     };
 }
 
-const menuScreen = new MenuScreen();
-const gameplayScreen = new GamePlayScreen();
-const inventoryScreen = new InventoryScreen();
-
-
-
 var options = {
     mode: 'static',
     color: 'grey',
@@ -138,11 +118,6 @@ var options = {
     zone: document.getElementById('joystick-area'),
     position: {left: '89%', top: '95%'},
 };
-
-let backgroundImg = new Image();
-backgroundImg.src = "assets/img/groundFloor.png";
-
-
 
 function GameObject(spritesheet, x, y, width, height) {
     this.spritesheet = spritesheet;
@@ -165,35 +140,48 @@ class Vector
     }   
 }
 
-let playerMoveVector = new Vector(0,0);
+//Instances
 
+const menuScreen = new MenuScreen();
+const gameplayScreen = new GamePlayScreen();
+const inventoryScreen = new InventoryScreen();
+let currentScreenState = screenStates.GamePlayState;
+
+let frameTimeLimit = 14;
+
+let backgroundImg = new Image();
+backgroundImg.src = "assets/img/groundFloor.png";
 let background = new GameObject(backgroundImg,0,0,context.canvas.width,context.canvas.height);
 
-let gamerInput = new GamerInput("None"); //No Input
+let numberOfInputs = 4;
+const INPUT_TYPES = Object.freeze({ 
+    UP: 0,
+    LEFT: 1,
+    DOWN: 2,
+    RIGHT: 3,
+  }); //WASD
 
-function clickableDpadReleased() {
-    console.log(event);
-}
-function clickDpadYellow(){
-    console.log(event);
+  let gamerInput = [
+    new GamerInput("None"),
+    new GamerInput("None"),
+    new GamerInput("None"),
+    new GamerInput("None")
+];
 
-}
-function clickDpadBlue(){
-    console.log(event);
-}
-function clickDpadRed(){
-    console.log(event);
-}
-function clickDpadGreen(){
-    console.log(event);
-}
+//Player
+let playerImg = new Image();
+playerImg.src = "assets/img/detective.png";
+let playerObject = new GameObject(playerImg, 300, 100, 100, 150);
+let player = new Player(playerImg,playerObject);
+let playerMoveVector = new Vector(0,0);
+
+//HTML/CSS Buttons
 let yellowButton = document.getElementsByClassName("yellow")[0];
 let blueButton = document.getElementsByClassName("blue")[0];
 let redButton = document.getElementsByClassName("red")[0];
 let greenButton = document.getElementsByClassName("green")[0];
 
-
-
+//Joystick
 var dynamic = nipplejs.create(options);
 
 dynamic.on('start', function (evt, nipple) {
@@ -213,36 +201,85 @@ dynamic.on('start', function (evt, nipple) {
      });
 });
 
+//Related functions
+
+function clickableDpadReleased() {
+    console.log(event);
+}
+function clickDpadYellow(){
+    console.log(event);
+
+}
+function clickDpadBlue(){
+    console.log(event);
+}
+function clickDpadRed(){
+    console.log(event);
+}
+function clickDpadGreen(){
+    console.log(event);
+}
+
 function input(event) {
         if (event.type === "keydown") {
-        switch (event.keyCode) {
-            case 65: // A Key// blue
-                //blueButton.classList.add("pressed");
-                gamerInput = new GamerInput("Left");  
-                break; 
-            case 87: // W Key // yellow
-                //yellowButton.classList.add("pressed"); 
-                gamerInput = new GamerInput("Up");           
-                break; 
-            case 68: // D Key // red
-                //redButton.classList.add("pressed");
-                gamerInput = new GamerInput("Right");     
-                break; 
-            case 83: // S Key // green
-                //qgreenButton.classList.add("pressed");
-                gamerInput = new GamerInput("Down");  
-                break; 
-
-            default:
-                gamerInput = new GamerInput("None"); //No Input
+            checkKeyDown(event);
         }
-    } else {
-        //gamerInput = new GamerInput("None");
-        redButton.classList.remove("pressed");
-        blueButton.classList.remove("pressed");
-        yellowButton.classList.remove("pressed");
-        greenButton.classList.remove("pressed");
-        gamerInput = new GamerInput("None"); //No Input
+        if (event.type === "keyup") {
+            checkKeyUp(event);
+        }
+}
+
+function checkKeyDown(event)
+{
+    if(event.keyCode == 87)
+    {
+        //yellowButton.classList.add("pressed"); 
+        gamerInput[INPUT_TYPES.UP] = new GamerInput("Up"); 
+    }
+    if(event.keyCode == 65)
+    {
+        //blueButton.classList.add("pressed");
+        gamerInput[INPUT_TYPES.LEFT] = new GamerInput("Left"); 
+    }
+    if(event.keyCode == 83)
+    {
+        //qgreenButton.classList.add("pressed");
+        gamerInput[INPUT_TYPES.DOWN] = new GamerInput("Down"); 
+    }
+    if(event.keyCode == 68)
+    {
+        //redButton.classList.add("pressed");
+        gamerInput[INPUT_TYPES.RIGHT] = new GamerInput("Right");
+    }
+}
+
+function checkKeyUp(event)
+{
+    //gamerInput = new GamerInput("None");
+    redButton.classList.remove("pressed");
+    blueButton.classList.remove("pressed");
+    yellowButton.classList.remove("pressed");
+    greenButton.classList.remove("pressed");
+
+    if(event.keyCode == 87)
+    {
+        //yellowButton.classList.add("pressed"); 
+        gamerInput[INPUT_TYPES.UP] = new GamerInput("None"); 
+    }
+    if(event.keyCode == 65)
+    {
+        //blueButton.classList.add("pressed");
+        gamerInput[INPUT_TYPES.LEFT] = new GamerInput("None"); 
+    }
+    if(event.keyCode == 83)
+    {
+        //qgreenButton.classList.add("pressed");
+        gamerInput[INPUT_TYPES.DOWN] = new GamerInput("None"); 
+    }
+    if(event.keyCode == 68)
+    {
+        //redButton.classList.add("pressed");
+        gamerInput[INPUT_TYPES.RIGHT] = new GamerInput("None");
     }
 }
 

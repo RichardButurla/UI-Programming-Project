@@ -83,6 +83,6 @@ class Player{
 //Player
 let playerImg = new Image();
 playerImg.src = "assets/img/detective.png";
-let playerObject = new GameObject(playerImg, 100, 500, 100, 150);
+let playerObject = new GameObject(playerImg, 120, 500, 100, 150);
 let player = new Player(playerImg,playerObject);
 let playerMoveVector = new Vector(0,0);

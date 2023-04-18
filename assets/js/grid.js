@@ -24,14 +24,9 @@ class Grid
       }
 }
 
-function GamePlayArea(area)
-{
-    this.area = area; //held as string
-}
-
 var collisionTile;
 
-class CollisionManager
+class AreaManager
 {
     checkRoomCollision(areaType)
     {
@@ -97,16 +92,20 @@ function valueInRange(value, min, max)
         return (value>=min) && (value <= max);
 }
 
-
-
+function GamePlayArea(area,zone)
+{
+    this.area = area; //held as string
+    this.zone = zone;
+}
 
 const AREA_TYPES = Object.freeze({ 
     SINK_ROOM: "sinkRoom",
     NOTE_ROOM: "noteRoom",
     TILED_ROOM: "tiledRoom",
+    HALL_ROOM: "verticalHall"
   }); //different game areas
   
-let currentGameArea = new GamePlayArea(AREA_TYPES.NOTE_ROOM);
+let currentGameArea = new GamePlayArea(AREA_TYPES.HALL_ROOM);
 
 let tileGridArea = new Grid();
 tileGridArea.setUpGrid(context.canvas.width,context.canvas.height,9,6,tileRoomGrid);
@@ -117,5 +116,11 @@ sinkGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,sinkRoomGr
 let noteGridArea = new Grid();
 noteGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,noteRoomGrid);
 
+let hallGridArea = new Grid();
+hallGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,verticalHallGrid);
 
-let collisionManger = new CollisionManager();
+
+let collisionManger = new AreaManager();
+let backgroundImg = new Image();
+backgroundImg.src = "assets/img/" + currentGameArea.area + ".png";
+console.log("assets/img/" + currentGameArea.area + ".png");

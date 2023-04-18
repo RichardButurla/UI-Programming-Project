@@ -151,6 +151,4 @@ let currentScreenState = screenStates.GamePlayState;
 
 let frameTimeLimit = 14;
 
-let backgroundImg = new Image();
-backgroundImg.src = "assets/img/noteRoom.png";
 let background = new GameObject(backgroundImg,0,0,context.canvas.width,context.canvas.height);

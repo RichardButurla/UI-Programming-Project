@@ -1,6 +1,8 @@
 const canvas = document.getElementById("the_canvas");
 const context = canvas.getContext("2d");
 
+let frameTimeLimit = 14;
+
 const screenStates = Object.freeze({ 
     MenuState: 0,
     GamePlayState: 1,
@@ -22,34 +24,93 @@ class MenuScreen
     };
 }
 
+let playerImg = new Image();
+playerImg.src = "assets/img/detective.png";
+
+let playerObject = new GameObject(playerImg, 300, 100, 100, 150);
+class Player{
+    constructor(playerImg, playerObject)
+    {
+        this.playerImg = playerImg;
+        this.playerObject = playerObject;
+        this.playerFrameTimer = 0;
+        this.playerXFrame = 0;
+        this.playerYFrame = 0;
+        this.playerScale = 1;
+    }
+    drawPlayer()
+    {
+        //context.drawImage(this.playerObject.spritesheet,this.playerObject.x,this.playerObject.y);
+        let playerWidth = 48;
+        let playerHeight = 64;
+        let playerScaledWidth = this.playerScale * playerWidth;
+        let playerScaledHeight = this.playerScale * playerHeight;
+        player.width = playerScaledWidth;
+        player.height = playerScaledHeight;
+
+    context.drawImage(playerObject.spritesheet,
+        this.playerXFrame * playerWidth, this.playerYFrame * playerHeight, playerWidth, playerHeight,
+        playerObject.x, playerObject.y, playerScaledWidth, playerScaledHeight);
+    }
+    animatePlayer()
+    {
+        playerFrameTimer+= 1;
+        if(playerFrameTimer > frameTimeLimit)
+        {
+            playerFrameTimer = 0;
+            playerXFrame += 1;
+            if(playerXFrame > 4)
+            {
+                playerXFrame = 0;
+            }
+        }
+
+        if(playerMovingRight)
+        {
+            playerYFrame = 0;
+        }
+        if(playerMovingLeft)
+        {
+            playerYFrame = 1;
+        }
+        if(playerIdle)
+        {
+            playerYFrame = 0;
+            playerXFrame = 1;
+        }
+    }
+}
+
+let player = new Player(playerImg,playerObject);
+
 class GamePlayScreen
 {
     update()
     {
         if (gamerInput.action === "Up") {
             console.log("Move Up");
-            player.y -= 5; // Move Player Up      
+            playerObject.y -= 5; // Move Player Up      
         } 
         if (gamerInput.action === "Down") {
             console.log("Move Down");
-            player.y += 5; // Move Player Down
+            playerObject.y += 5; // Move Player Down
         } 
          if (gamerInput.action === "Left") {
             console.log("Move Left");
-            player.x -= 5; // Move Player Left
+            playerObject.x -= 5; // Move Player Left
         } 
          if (gamerInput.action === "Right") {
             console.log("Move Right");
-            player.x += 5; // Move Player Right
+            playerObject.x += 5; // Move Player Right
         }
 
-        player.x += playerMoveVector.x;
-        player.y -= playerMoveVector.y;
+        playerObject.x += playerMoveVector.x;
+        playerObject.y -= playerMoveVector.y;
     };
     draw()
     {
         context.drawImage(backgroundImg,0,0,context.canvas.width,context.canvas.height);
-        context.drawImage(player.spritesheet,player.x,player.y);
+        player.drawPlayer();
     };
 }
 class InventoryScreen
@@ -79,12 +140,9 @@ var options = {
 };
 
 let backgroundImg = new Image();
-backgroundImg.src = "assets/img/canvas-background.png";
+backgroundImg.src = "assets/img/groundFloor.png";
 
-let playerImg = new Image();
-playerImg.src = "assets/img/detective.png";
 
-let player = new GameObject(playerImg, 300, 100, 100, 150);
 
 function GameObject(spritesheet, x, y, width, height) {
     this.spritesheet = spritesheet;

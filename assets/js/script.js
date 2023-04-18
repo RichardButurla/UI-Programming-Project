@@ -1,6 +1,37 @@
 const canvas = document.getElementById("the_canvas");
 const context = canvas.getContext("2d");
 
+class Grid
+{
+    constructor()
+    {
+        this.grid;
+        this.tileWidth = 0;
+        this.tileWidth = 0;
+        this.rows = 0;
+        this.collums = 0;
+        this.numOfTiles = 0;
+    }
+    setUpGrid(canvasWidth,canvasHeight,collums,rows)
+    {
+        this.rows = rows;
+        this.collums = collums;
+
+        this.numOfTiles = rows * collums;
+
+        this.tileWidth = canvasWidth / collums;
+        this.tileHeight = canvasHeight / rows;
+
+        this.grid = [0,0,0,1,1,1,0,0,0,
+                    0,0,0,1,1,1,0,0,0,
+                    0,0,0,1,1,1,0,0,0,
+                    0,0,0,1,1,1,0,0,0,
+                    1,0,0,0,0,0,0,0,1,
+                    1,0,0,0,0,0,0,0,1
+                    ]; //grid set up from image
+    }
+}
+
 const screenStates = Object.freeze({ 
     MenuState: 0,
     GamePlayState: 1,
@@ -18,6 +49,87 @@ class MenuScreen
         context.font = "80px serif";
         context.fillText("MenuScreen",context.canvas.width - (context.canvas.width / 2), context.canvas.height - (context.canvas.height / 2));
     };
+}
+
+function GamePlayArea(area)
+{
+    this.area = area; //held as string
+}
+
+class CollisionManager
+{
+    checkCollision(areaType)
+    {
+        switch(areaType)
+        {
+            case AREA_TYPES.NOTE_ROOM:
+
+                break;
+
+            case AREA_TYPES.SINK_ROOM:
+
+                break;
+
+            case AREA_TYPES.TILED_ROOM:
+                
+                break;
+
+            default:
+                break;
+        }
+    }
+    checkAreaCollision(gridArea)
+    {
+        for(let i = 0; i < gridArea.numOfTiles; i++)
+        {
+            if(gridArea.grid[i] == 1)
+            {
+                let tileRow = i / gridArea.collums;
+                let tileCol = i % gridArea.collums;
+
+                let tileXPos = tileCol * gridArea.tileWidth;
+                let tileYPos = tileRow * gridArea.tileHeight;
+
+                // console.log("Row: " + tileRow);
+                // console.log("Col: " + tileCol);
+
+                // console.log("X: " + tileXPos);
+                // console.log("Y: " + tileYPos);
+
+                let collisionTile = new GameObject(playerImg,tileXPos,tileYPos,gridArea.tileWidth,gridArea.tileHeight);
+                
+
+                if(this.checkCollision(player.playerObject,collisionTile))
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    getTileRect(index)
+    {
+        
+    }
+    
+    checkCollision(object1, object2)
+    {
+    let xOverlap = false;
+    let yOverlap = false;
+
+
+     xOverlap = valueInRange(object1.x,object2.x, object2.x + object2.width) || valueInRange(object2.x,object1.x, object1.x + object1.width);
+     yOverlap = valueInRange(object1.y,object2.y, object2.y + object2.height) || valueInRange(object2.y,object1.y, object1.y + object1.height);
+    
+    
+     return xOverlap && yOverlap;
+    }
+
+    
+}
+
+function valueInRange(value, min, max)
+{
+        return (value>=min) && (value <= max);
 }
 
 class Player{
@@ -89,6 +201,10 @@ class GamePlayScreen
          if (gamerInput[INPUT_TYPES.RIGHT].action === "Right") {
             playerObject.x += 5; // Move Player Right
         }
+        if(collisionManger.checkAreaCollision(tileGridArea))
+        {
+            console.log("Collision");
+        }
 
         playerObject.x += playerMoveVector.x;
         playerObject.y -= playerMoveVector.y;
@@ -116,7 +232,7 @@ var options = {
     color: 'grey',
     maxNumberOfNipples: 0,
     zone: document.getElementById('joystick-area'),
-    position: {left: '89%', top: '95%'},
+    position: {left: '87.5%', top: '47.5%'},
 };
 
 function GameObject(spritesheet, x, y, width, height) {
@@ -141,6 +257,10 @@ class Vector
 }
 
 //Instances
+let tileGridArea = new Grid();
+tileGridArea.setUpGrid(context.canvas.width,context.canvas.height,9,6);
+
+let collisionManger = new CollisionManager();
 
 const menuScreen = new MenuScreen();
 const gameplayScreen = new GamePlayScreen();
@@ -152,6 +272,15 @@ let frameTimeLimit = 14;
 let backgroundImg = new Image();
 backgroundImg.src = "assets/img/groundFloor.png";
 let background = new GameObject(backgroundImg,0,0,context.canvas.width,context.canvas.height);
+
+const AREA_TYPES = Object.freeze({ 
+    SINK_ROOM: "sinkRoom",
+    NOTE_ROOM: "noteRoom",
+    TILED_ROOM: "tiledRoom",
+  }); //different game areas
+  
+let currentGameArea = new GamePlayArea(AREA_TYPES.SINK_ROOM);
+
 
 let numberOfInputs = 4;
 const INPUT_TYPES = Object.freeze({ 

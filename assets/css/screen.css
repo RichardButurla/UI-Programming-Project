@@ -1,6 +1,6 @@
 body
 {
-background-color: #3ecf3e;
+background-color: #303452;
 }
 
 section.wrapper{
@@ -27,7 +27,7 @@ font-size: 18px;
 table{
     position: absolute;
     margin-left:  0%;
-    margin-top: 0%;
+    margin-top: -22%;
 }
 
 .button:hover {
@@ -87,5 +87,6 @@ div#joystick-area
     width: 300px;
     height: 250px;
     margin-left: 80%;
+    margin-top: -22%;
     border: 2px solid rgb(15, 107, 245)
 }

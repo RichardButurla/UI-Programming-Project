@@ -5,7 +5,7 @@ class Grid
 {
     constructor()
     {
-        this.grid;
+        this.grid = [];
         this.tileWidth = 0;
         this.tileWidth = 0;
         this.rows = 0;
@@ -56,7 +56,7 @@ class AreaManager
         for(let i = 0; i < currentGridArea.numOfTiles; i++)
         {
            
-            if(currentGridArea.grid[i] != 0 && currentGridArea.grid[i] != 9 && currentGridArea.grid[i] != 8  ) //If we found the next room cell
+            if(currentGridArea.grid[i] != 0 && currentGridArea.grid[i] != 9 && currentGridArea.grid[i] != 8 && currentGridArea.grid[i] != 7) //If we found the next room cell
             {
                 let tileRow = Math.trunc(i / currentGridArea.collums);
                 let tileCol = Math.trunc(i % currentGridArea.collums);
@@ -158,7 +158,8 @@ const AREA_TYPES = Object.freeze({
     HALL_ROOM: "verticalHall"
   }); //different game areas
   
-let currentGameArea = new GamePlayArea(AREA_TYPES.TILED_ROOM,3);
+let currentGameArea = new GamePlayArea(AREA_TYPES.HALL_ROOM,3);
+
 
 let tileGridArea = new Grid();
 tileGridArea.setUpGrid(context.canvas.width,context.canvas.height,9,6,tileRoomGrid);
@@ -172,7 +173,7 @@ noteGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,noteRoomGr
 let hallGridArea = new Grid();
 hallGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,verticalHallGrid);
 
-let currentGridArea = tileGridArea;
+let currentGridArea = hallGridArea;
 
 let areaEnterancePos = new Vector(120,500);
 let atAreaExit = false;

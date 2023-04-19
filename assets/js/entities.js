@@ -70,6 +70,18 @@ class Player{
     }
 }
 
+class ClueInteractable
+{
+    constructor(clueImg, clueObject)
+    {
+        this.clueImg = clueImg;
+        this.clueObject = clueObject;
+    }
+    drawClue()
+    {
+        context.drawImage(this.clueObject.spritesheet,this.clueObject.x,this.clueObject.y,this.clueObject.width,this.clueObject.height);  
+    }
+}
 
 //Player
 let playerImg = new Image();
@@ -77,3 +89,9 @@ playerImg.src = "assets/img/detective.png";
 let playerObject = new GameObject(playerImg, 120, 500, 100, 150);
 let player = new Player(playerImg,playerObject);
 let playerMoveVector = new Vector(0,0);
+
+let clueImg = new Image();
+clueImg.src = "assets/img/shine.png"
+
+
+

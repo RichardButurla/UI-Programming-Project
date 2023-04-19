@@ -95,6 +95,7 @@ class GamePlayScreen
         context.drawImage(backgroundImg,0,0,context.canvas.width,context.canvas.height);
         player.drawPlayer();
         
+        
 
          for(let i = 0; i < currentGridArea.numOfTiles; i++)
          {
@@ -108,6 +109,22 @@ class GamePlayScreen
 
                  context.drawImage(collisionTile.spritesheet,tileXPos,tileYPos,50,50);
          }
+
+         switch(currentGameArea.area)
+        {
+            case AREA_TYPES.NOTE_ROOM:
+                noteRoomScreen.draw();
+                break;
+            case AREA_TYPES.SINK_ROOM:
+                sinkRoomScreen.draw();
+                break;
+            case AREA_TYPES.TILED_ROOM:
+                tileRoomScreen.draw();
+                break;
+            case AREA_TYPES.HALL_ROOM:
+                hallWayScreen.draw();
+                break;
+        }
     };
 }
 class InventoryScreen
@@ -173,6 +190,14 @@ window.addEventListener('keyup', input);
 const menuScreen = new MenuScreen();
 const gameplayScreen = new GamePlayScreen();
 const inventoryScreen = new InventoryScreen();
+console.log(hallGridArea.grid[0]);
+console.log(hallGridArea.numOfTiles);
+const hallWayScreen = new HallWayScreen(hallGridArea);
+const noteRoomScreen = new NoteRoomScreen(setUpClueLocations(noteGridArea));
+const sinkRoomScreen = new SinkRoomScreen(setUpClueLocations(sinkGridArea));
+const tileRoomScreen = new TileRoomScreen(setUpClueLocations(tileGridArea));
+
+
 let currentScreenState = screenStates.GamePlayState;
 
 let frameTimeLimit = 14;

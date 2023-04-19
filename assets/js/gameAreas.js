@@ -1,5 +1,19 @@
 
+function withinRange(object1,object2)
+{
+    let range = 200;
+    let xOrigin1 = object1.x + object1.width;
+    let xOrigin2 = object2.x + object2.height;
+    let yOrigin1 = object1.y + object1.width;
+    let yOrigin2 = object2.y + object2.height;
 
+    let xDistance = (xOrigin1 - xOrigin2 ) *  (xOrigin1 - xOrigin2 );
+    let yDistance = (yOrigin1 - yOrigin2) * (yOrigin1 - yOrigin2);
+     if(Math.sqrt( xDistance  + yDistance) < range)
+     {
+         return true;
+     }
+}
 class NoteRoomScreen{
     constructor(cluesArray)
     {
@@ -7,7 +21,14 @@ class NoteRoomScreen{
     }
     update()
     {
-        //console.log("Update from Menu");
+        for(let i = 0; i < this.cluesArray.length; i++)
+        {
+            if(withinRange(player.playerObject,this.cluesArray[i].clueObject))
+            {
+                console.log("collision with star");
+            }
+        }
+        
     };
     draw()
     {
@@ -63,7 +84,6 @@ class HallWayScreen {
     }
   
     draw() {
-        console.log(this.cluesArray.length)
       for (let i = 0; i < this.cluesArray.length; i++) {
         this.cluesArray[i].drawClue();
       }

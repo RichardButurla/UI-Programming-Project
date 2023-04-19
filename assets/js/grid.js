@@ -158,7 +158,7 @@ const AREA_TYPES = Object.freeze({
     HALL_ROOM: "verticalHall"
   }); //different game areas
   
-let currentGameArea = new GamePlayArea(AREA_TYPES.HALL_ROOM,3);
+let currentGameArea = new GamePlayArea(AREA_TYPES.NOTE_ROOM,3);
 
 
 let tileGridArea = new Grid();
@@ -171,9 +171,9 @@ let noteGridArea = new Grid();
 noteGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,noteRoomGrid);
 
 let hallGridArea = new Grid();
-hallGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,verticalHallGrid);
+hallGridArea.setUpGrid(context.canvas.width,context.canvas.height,8,6,verticalHallGrid);
 
-let currentGridArea = hallGridArea;
+let currentGridArea = noteGridArea;
 
 let areaEnterancePos = new Vector(120,500);
 let atAreaExit = false;

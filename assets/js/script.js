@@ -86,7 +86,21 @@ class GamePlayScreen
         else{
             atAreaExit = false;
         }
-       
+        switch(currentGameArea.area)
+        {
+            case AREA_TYPES.NOTE_ROOM:
+                noteRoomScreen.update();
+                break;
+            case AREA_TYPES.SINK_ROOM:
+                sinkRoomScreen.update();
+                break;
+            case AREA_TYPES.TILED_ROOM:
+                tileRoomScreen.update();
+                break;
+            case AREA_TYPES.HALL_ROOM:
+                hallWayScreen.update();
+                break;
+        }
         
         
     };
@@ -97,18 +111,18 @@ class GamePlayScreen
         
         
 
-         for(let i = 0; i < currentGridArea.numOfTiles; i++)
-         {
-                 let tileRow = Math.trunc(i / currentGridArea.collums);
-                 let tileCol = Math.trunc(i % currentGridArea.collums);
+        //  for(let i = 0; i < currentGridArea.numOfTiles; i++)
+        //  {
+        //          let tileRow = Math.trunc(i / currentGridArea.collums);
+        //          let tileCol = Math.trunc(i % currentGridArea.collums);
 
-                 let tileXPos = tileCol * currentGridArea.tileWidth;
-                 let tileYPos = tileRow * currentGridArea.tileHeight;
+        //          let tileXPos = tileCol * currentGridArea.tileWidth;
+        //          let tileYPos = tileRow * currentGridArea.tileHeight;
 
-                 collisionTile = new GameObject(backgroundImg,tileXPos,tileYPos,currentGridArea.tileWidth,currentGridArea.tileHeight);
+        //          collisionTile = new GameObject(backgroundImg,tileXPos,tileYPos,currentGridArea.tileWidth,currentGridArea.tileHeight);
 
-                 context.drawImage(collisionTile.spritesheet,tileXPos,tileYPos,50,50);
-         }
+        //          context.drawImage(collisionTile.spritesheet,tileXPos,tileYPos,50,50);
+        //  }
 
          switch(currentGameArea.area)
         {

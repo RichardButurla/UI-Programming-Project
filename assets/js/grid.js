@@ -28,50 +28,104 @@ var collisionTile;
 
 class AreaManager
 {
-    checkRoomCollision(areaType)
+ checkAreaCollision()
     {
-        switch(areaType)
+        for(let i = 0; i < currentGridArea.numOfTiles; i++)
         {
-            case AREA_TYPES.NOTE_ROOM:
-                if(this.checkAreaCollision(noteGridArea))
-                return true;
-                break;
-
-            case AREA_TYPES.SINK_ROOM:
-                if(this.checkAreaCollision(sinkGridArea))
-                return true;
-                break;
-
-            case AREA_TYPES.TILED_ROOM:
-                if(this.checkAreaCollision(tileGridArea))
-                return true;
-                break;
-
-            default:
-                break;
-        }
-    }
-    checkAreaCollision(gridArea)
-    {
-        for(let i = 0; i < gridArea.numOfTiles; i++)
-        {
-            if(gridArea.grid[i] == 1)
+            if(currentGridArea.grid[i] == 9) //If we collide into a wall
             {
-                let tileRow = Math.trunc(i / gridArea.collums);
-                let tileCol = Math.trunc(i % gridArea.collums);
+                let tileRow = Math.trunc(i / currentGridArea.collums);
+                let tileCol = Math.trunc(i % currentGridArea.collums);
 
-                let tileXPos = tileCol * gridArea.tileWidth;
-                let tileYPos = tileRow * gridArea.tileHeight;
+                let tileXPos = tileCol * currentGridArea.tileWidth;
+                let tileYPos = tileRow * currentGridArea.tileHeight;
 
-                collisionTile = new GameObject(playerImg,tileXPos,tileYPos,gridArea.tileWidth,gridArea.tileHeight);
+                collisionTile = new GameObject(playerImg,tileXPos,tileYPos,currentGridArea.tileWidth,currentGridArea.tileHeight);
 
                 if(this.checkCollision(player.playerObject,collisionTile))
                 {
                     return true;
                 }
             }
+ 
         }
     }
+    atAreaExit()
+    {
+        
+        for(let i = 0; i < currentGridArea.numOfTiles; i++)
+        {
+           
+            if(currentGridArea.grid[i] != 0 && currentGridArea.grid[i] != 9 && currentGridArea.grid[i] != 8  ) //If we found the next room cell
+            {
+                let tileRow = Math.trunc(i / currentGridArea.collums);
+                let tileCol = Math.trunc(i % currentGridArea.collums);
+
+                let tileXPos = tileCol * currentGridArea.tileWidth;
+                let tileYPos = tileRow * currentGridArea.tileHeight;
+
+                collisionTile = new GameObject(playerImg,tileXPos,tileYPos,currentGridArea.tileWidth,currentGridArea.tileHeight);
+
+                if(this.checkCollision(player.playerObject,collisionTile))
+                {
+                    console.log("colliding with cell: " + currentGridArea.grid[i]);
+                    areaExitCell = currentGridArea.grid[i];
+                    return true;
+                }
+            }
+        }
+        areaExitCell = -1;
+        return false;
+    }
+    changeGrid(gridId)
+    {
+        switch(gridId)
+        {
+            case 1:
+                currentGridArea = noteGridArea;
+                currentGameArea.area = AREA_TYPES.NOTE_ROOM;
+                break;
+
+            case 2:
+                currentGridArea = sinkGridArea;
+                currentGameArea.area = AREA_TYPES.SINK_ROOM;
+                break;
+                
+            case 3:
+                currentGridArea = tileGridArea;
+                currentGameArea.area = AREA_TYPES.TILED_ROOM;
+                break;
+
+            case 4:
+                currentGridArea = hallGridArea;
+                currentGameArea.area = AREA_TYPES.HALL_ROOM;
+                break;
+        }
+        backgroundImg.src = "assets/img/" + currentGameArea.area + ".png";
+        this.getNewAreaSpawnPos();
+    }
+    getNewAreaSpawnPos()
+    {
+        for(let i = 0; i < currentGridArea.numOfTiles; i++)
+        {
+            console.log("looping gird for spawn");
+            if(currentGridArea.grid[i] == 8) //If we found the cell which is the spawn entrance
+            {
+                let tileRow = Math.trunc(i / currentGridArea.collums);
+                let tileCol = Math.trunc(i % currentGridArea.collums);
+
+                let tileXPos = tileCol * currentGridArea.tileWidth;
+                let tileYPos = tileRow * currentGridArea.tileHeight;
+
+                areaEnterancePos.x = tileXPos;
+                areaEnterancePos.y = tileYPos;
+                
+                break;
+            }
+        }
+    }
+
+
     checkCollision(object1, object2)
     {
     let xOverlap = false;
@@ -92,10 +146,9 @@ function valueInRange(value, min, max)
         return (value>=min) && (value <= max);
 }
 
-function GamePlayArea(area,zone)
+function GamePlayArea(area)
 {
     this.area = area; //held as string
-    this.zone = zone;
 }
 
 const AREA_TYPES = Object.freeze({ 
@@ -105,7 +158,7 @@ const AREA_TYPES = Object.freeze({
     HALL_ROOM: "verticalHall"
   }); //different game areas
   
-let currentGameArea = new GamePlayArea(AREA_TYPES.HALL_ROOM);
+let currentGameArea = new GamePlayArea(AREA_TYPES.TILED_ROOM,3);
 
 let tileGridArea = new Grid();
 tileGridArea.setUpGrid(context.canvas.width,context.canvas.height,9,6,tileRoomGrid);
@@ -119,6 +172,11 @@ noteGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,noteRoomGr
 let hallGridArea = new Grid();
 hallGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,verticalHallGrid);
 
+let currentGridArea = tileGridArea;
+
+let areaEnterancePos = new Vector(120,500);
+let atAreaExit = false;
+let areaExitCell = -1;
 
 let collisionManger = new AreaManager();
 let backgroundImg = new Image();

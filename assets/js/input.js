@@ -1,5 +1,12 @@
 
-//Related functions
+class Vector
+{
+    constructor(x, y)
+    {
+    this.x = x;
+    this.y = y;
+    }   
+}
 
 function clickableDpadReleased() {
     currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
@@ -50,6 +57,10 @@ function checkKeyDown(event)
         //redButton.classList.add("pressed");
         gamerInput[INPUT_TYPES.RIGHT] = new GamerInput("Right");
     }
+    if(event.keyCode == 32)
+    {
+        gamerInput[INPUT_TYPES.SPACE] = new GamerInput("SpaceDown");
+    }
 }
 
 function checkKeyUp(event)
@@ -80,6 +91,11 @@ function checkKeyUp(event)
         //redButton.classList.add("pressed");
         gamerInput[INPUT_TYPES.RIGHT] = new GamerInput("None");
     }
+    if(event.keyCode == 32)
+    {
+        gamerInput[INPUT_TYPES.SPACE] = new GamerInput("SpaceUp");
+        console.log("up");
+    }
 }
 
 function GamerInput(input) {
@@ -96,9 +112,11 @@ UP: 0,
 LEFT: 1,
 DOWN: 2,
 RIGHT: 3,
-}); //WASD
+SPACE: 4,
+}); //WASD,Spacebar
 
 let gamerInput = [
+    new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
@@ -106,7 +124,7 @@ let gamerInput = [
 ];
 
 let currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
-let numberOfInputs = 4;
+let numberOfInputs = 5;
 
 //Joystick
 var dynamic = nipplejs.create(options);

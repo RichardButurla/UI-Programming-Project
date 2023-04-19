@@ -6,15 +6,6 @@ function GameObject(spritesheet, x, y, width, height) {
     this.height = height;
 }
 
-class Vector
-{
-    constructor(x, y)
-    {
-    this.x = x;
-    this.y = y;
-    }   
-}
-
 class Player{
     constructor(playerImg, playerObject)
     {

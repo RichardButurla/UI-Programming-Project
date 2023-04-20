@@ -170,25 +170,33 @@ class ClueInspectScreen
     }
     draw()
     {
+        //Background
         context.drawImage(clueInspectBackgroundImg,0,0,context.canvas.width,context.canvas.height);
+
+        //Text
         let clueInfoText = "";
+        let clueImageSrc = "";
         let textLines = [];
         switch(currentGameArea.area)
         {
             case AREA_TYPES.NOTE_ROOM:
                 clueInfoText = noteRoomScreen.cluesArray[interactableClueIndex].clueDetail;
+                clueImageSrc = noteRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
                 textLines = correctTextLength(clueInfoText);     
                 break;
             case AREA_TYPES.SINK_ROOM:
                 clueInfoText = sinkRoomScreen.cluesArray[interactableClueIndex].clueDetail;
+                clueImageSrc = sinkRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
                 textLines = correctTextLength(clueInfoText);
                 break;
             case AREA_TYPES.TILED_ROOM:
                 clueInfoText = tileRoomScreen.cluesArray[interactableClueIndex].clueDetail;
+                clueImageSrc = tileRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
                 textLines = correctTextLength(clueInfoText);
                 break;
             case AREA_TYPES.HALL_ROOM:
                 clueInfoText = hallWayScreen.cluesArray[interactableClueIndex].clueDetail;
+                clueImageSrc = hallWayScreen.cluesArray[interactableClueIndex].clueSrcImage;
                 textLines = correctTextLength(clueInfoText);
                 break;
         }
@@ -197,6 +205,10 @@ class ClueInspectScreen
         {
             context.fillText(textLines[i],270, context.canvas.height - 100 - (30 * (textLines.length - 1)) + (50 * i));
         }
+
+        //Clue image
+        clueDetailImg.src = clueImageSrc;
+        context.drawImage(clueDetailImg,context.canvas.width - context.canvas.width / 1.66 ,context.canvas.height / 6.1, 210 ,192);
         
     }
 }
@@ -278,9 +290,9 @@ const sinkRoomScreen = new SinkRoomScreen(setUpClueLocations(sinkGridArea));
 const tileRoomScreen = new TileRoomScreen(setUpClueLocations(tileGridArea));
 const hallWayScreen = new HallWayScreen(hallGridArea);
 
-setUpClueDialogue(noteRoomScreen.cluesArray);
-setUpClueDialogue(sinkRoomScreen.cluesArray);
-setUpClueDialogue(tileRoomScreen.cluesArray);
+setUpClueDetails(noteRoomScreen.cluesArray);
+setUpClueDetails(sinkRoomScreen.cluesArray);
+setUpClueDetails(tileRoomScreen.cluesArray);
 
 let currentScreenState = screenStates.GamePlayState;
 
@@ -288,6 +300,9 @@ let frameTimeLimit = 14;
 
 let clueInspectBackgroundImg = new Image();
 clueInspectBackgroundImg.src = "assets/img/clueInspect.png"
+
+let clueDetailImg = new Image();
+
 
 let background = new GameObject(backgroundImg,0,0,context.canvas.width,context.canvas.height);
 

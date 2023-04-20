@@ -72,11 +72,12 @@ class Player{
 
 class ClueInteractable
 {
-    constructor(clueImg, clueObject,clueDetail)
+    constructor(clueImg, clueObject,clueDetail,clueSrcImage)
     {
         this.clueImg = clueImg;
         this.clueObject = clueObject;
         this.clueDetail = clueDetail;
+        this.clueSrcImage = clueSrcImage;
     }
     drawClue()
     {

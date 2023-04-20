@@ -179,11 +179,12 @@ function checkInteractAvailable(cluesArray) //returns index of clue that is in r
     console.log("Clue Num: " + numOfClues);
     return cluesArray;
   }
-  function setUpClueDialogue(cluesArray)
+  function setUpClueDetails(cluesArray)
   {
     for(let i = 0; i < cluesArray.length; i++)
     {
         cluesArray[i].clueDetail = clueDetails[clueDialogueIndex];
+        cluesArray[i].clueSrcImage = clueImageFiles[clueDialogueIndex];
         clueDialogueIndex++;
         console.log(cluesArray[i].clueDetail);
     }

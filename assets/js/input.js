@@ -61,6 +61,10 @@ function checkKeyDown(event)
     {
         gamerInput[INPUT_TYPES.SPACE] = new GamerInput("SpaceDown");
     }
+    if(event.keyCode == 69)
+    {
+        gamerInput[INPUT_TYPES.E] = new GamerInput("E-Down");
+    }
 }
 
 function checkKeyUp(event)
@@ -96,6 +100,10 @@ function checkKeyUp(event)
         gamerInput[INPUT_TYPES.SPACE] = new GamerInput("SpaceUp");
         console.log("up");
     }
+    if(event.keyCode == 69)
+    {
+        gamerInput[INPUT_TYPES.E] = new GamerInput("E-Up");
+    }
 }
 
 function GamerInput(input) {
@@ -113,9 +121,11 @@ LEFT: 1,
 DOWN: 2,
 RIGHT: 3,
 SPACE: 4,
+E: 5
 }); //WASD,Spacebar
 
 let gamerInput = [
+    new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),

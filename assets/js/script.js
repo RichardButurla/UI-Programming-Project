@@ -5,6 +5,7 @@ const screenStates = Object.freeze({
     MenuState: 0,
     GamePlayState: 1,
     InventoryState: 2,
+    ClueInspectState: 3
   });
 
 class MenuScreen
@@ -59,6 +60,14 @@ class GamePlayScreen
              if (gamerInput[INPUT_TYPES.RIGHT].action === "Right") {
                 player.playerPreviousPosition.x = playerObject.x;
                 playerObject.x += 5; // Move Player Right
+            }
+            if (gamerInput[INPUT_TYPES.E].action === "E-Up") {
+                if(interactAvailable)
+                {
+                    console.log("swapped to CLUE");
+                    currentScreenState = screenStates.ClueInspectState;
+                }
+                gamerInput[INPUT_TYPES.E] = new GamerInput("None");
             }
             
         }
@@ -147,6 +156,26 @@ class GamePlayScreen
         }
     };
 }
+
+class ClueInspectScreen
+{
+    update()
+    {
+        if (gamerInput[INPUT_TYPES.E].action === "E-Up") 
+        {
+            console.log("swapped to game");
+            currentScreenState = screenStates.GamePlayState;
+        }
+        gamerInput[INPUT_TYPES.E] = new GamerInput("None");
+    }
+    draw()
+    {
+        context.drawImage(clueInspectBackgroundImg,0,0,context.canvas.width,context.canvas.height);
+        context.font = "80px serif";
+        context.fillText("ClueScreen",context.canvas.width - (context.canvas.width / 2), context.canvas.height - (context.canvas.height / 2));
+    }
+}
+
 class InventoryScreen
 {
     update()
@@ -164,9 +193,12 @@ function update() {
     {
         case screenStates.MenuState:
             menuScreen.update();
-            break;
+            break;    
         case screenStates.GamePlayState:
             gameplayScreen.update();
+            break;
+        case screenStates.ClueInspectState:
+            clueDetailScreen.update();
             break;
         case screenStates.InventoryState:
             inventoryScreen.update();
@@ -181,6 +213,9 @@ function draw() {
     {
         case screenStates.MenuState:
             menuScreen.draw();
+            break; 
+        case screenStates.ClueInspectState:
+            clueDetailScreen.draw();
             break;
         case screenStates.GamePlayState:
             gameplayScreen.draw();
@@ -210,17 +245,28 @@ window.addEventListener('keyup', input);
 const menuScreen = new MenuScreen();
 const gameplayScreen = new GamePlayScreen();
 const inventoryScreen = new InventoryScreen();
+const clueDetailScreen = new ClueInspectScreen();
 console.log(hallGridArea.grid[0]);
 console.log(hallGridArea.numOfTiles);
-const hallWayScreen = new HallWayScreen(hallGridArea);
 const noteRoomScreen = new NoteRoomScreen(setUpClueLocations(noteGridArea));
 const sinkRoomScreen = new SinkRoomScreen(setUpClueLocations(sinkGridArea));
 const tileRoomScreen = new TileRoomScreen(setUpClueLocations(tileGridArea));
+const hallWayScreen = new HallWayScreen(hallGridArea);
+
+setUpClueDialogue(noteRoomScreen.cluesArray);
+setUpClueDialogue(sinkRoomScreen.cluesArray);
+setUpClueDialogue(tileRoomScreen.cluesArray);
+
+
+
 
 
 let currentScreenState = screenStates.GamePlayState;
 
 let frameTimeLimit = 14;
+
+let clueInspectBackgroundImg = new Image();
+clueInspectBackgroundImg.src = "assets/img/clueInspect.png"
 
 let background = new GameObject(backgroundImg,0,0,context.canvas.width,context.canvas.height);
 

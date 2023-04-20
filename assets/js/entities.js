@@ -72,11 +72,11 @@ class Player{
 
 class ClueInteractable
 {
-    constructor(clueImg, clueObject)
+    constructor(clueImg, clueObject,clueDetail)
     {
         this.clueImg = clueImg;
         this.clueObject = clueObject;
-        this.clueDetail = "";
+        this.clueDetail = clueDetail;
     }
     drawClue()
     {
@@ -93,6 +93,9 @@ let playerMoveVector = new Vector(0,0);
 
 let clueImg = new Image();
 clueImg.src = "assets/img/shine.png"
+
+let maxClueDialogue = 6;
+let clueDialogueIndex = 0;
 
 
 

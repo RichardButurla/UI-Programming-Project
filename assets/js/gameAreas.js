@@ -30,12 +30,15 @@ class NoteRoomScreen{
         let interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
-            console.log("drawing interactable");
+            interactAvailable = true; 
+
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
             
-
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+        else{
+            interactAvailable = false;
         }
         
         for(let i = 0; i < this.cluesArray.length; i++)
@@ -60,12 +63,15 @@ class SinkRoomScreen{
         let interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
-            console.log("drawing interactable");
+            interactAvailable = true; 
+
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
             
-
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+        else{
+            interactAvailable = false;
         }
 
         for(let i = 0; i < this.cluesArray.length; i++)
@@ -88,12 +94,15 @@ class TileRoomScreen{
         let interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
-            console.log("drawing interactable");
+            interactAvailable = true; 
+
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
             
-
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+        else{
+            interactAvailable = false;
         }
 
         for(let i = 0; i < this.cluesArray.length; i++)
@@ -117,12 +126,15 @@ class HallWayScreen {
         let interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
-            console.log("drawing interactable");
+            interactAvailable = true; 
+
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
             
-
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+        else{
+            interactAvailable = false;
         }
 
       for (let i = 0; i < this.cluesArray.length; i++)
@@ -138,9 +150,7 @@ function checkInteractAvailable(cluesArray) //returns index of clue that is in r
     for(let i = 0; i < cluesArray.length; i++)
     {
         if(withinRange(player.playerObject,cluesArray[i].clueObject))
-        {
-            console.log("within star range");
-            
+        {          
             return i;
         }
         
@@ -168,4 +178,13 @@ function checkInteractAvailable(cluesArray) //returns index of clue that is in r
     }
     console.log("Clue Num: " + numOfClues);
     return cluesArray;
+  }
+  function setUpClueDialogue(cluesArray)
+  {
+    for(let i = 0; i < cluesArray.length; i++)
+    {
+        cluesArray[i].clueDetail = clueDetails[clueDialogueIndex];
+        clueDialogueIndex++;
+        console.log(cluesArray[i].clueDetail);
+    }
   }

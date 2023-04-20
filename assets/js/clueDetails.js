@@ -10,3 +10,34 @@ const clueDetails =
     "Damage to tiles on the ground, someone was struggling to run away while being attacked.",
 
 ]
+
+function correctTextLength(clueInfoText)
+{
+    let maxCharsPerLine = 40;
+    let lineOneText = "";
+    let detailsTextLines = [];
+
+    console.log("Length of text" + clueInfoText.length);
+    if(clueInfoText.length > maxCharsPerLine)
+    {
+        
+        for(let i = 0; i < maxCharsPerLine; i++)
+        {
+            lineOneText += clueInfoText[i];
+            console.log(clueInfoText[i]);
+        }
+        detailsTextLines[0] = lineOneText;
+        lineOneText = "";
+        for(let i = maxCharsPerLine; i < clueInfoText.length; i++)
+        {
+            lineOneText += clueInfoText[i];
+        }    
+        detailsTextLines[1] = lineOneText;  
+    }
+    else
+    {
+        detailsTextLines[0] = clueInfoText;
+    }
+    return detailsTextLines;
+        
+}

@@ -171,8 +171,33 @@ class ClueInspectScreen
     draw()
     {
         context.drawImage(clueInspectBackgroundImg,0,0,context.canvas.width,context.canvas.height);
-        context.font = "80px serif";
-        context.fillText("ClueScreen",context.canvas.width - (context.canvas.width / 2), context.canvas.height - (context.canvas.height / 2));
+        let clueInfoText = "";
+        let textLines = [];
+        switch(currentGameArea.area)
+        {
+            case AREA_TYPES.NOTE_ROOM:
+                clueInfoText = noteRoomScreen.cluesArray[interactableClueIndex].clueDetail;
+                textLines = correctTextLength(clueInfoText);     
+                break;
+            case AREA_TYPES.SINK_ROOM:
+                clueInfoText = sinkRoomScreen.cluesArray[interactableClueIndex].clueDetail;
+                textLines = correctTextLength(clueInfoText);
+                break;
+            case AREA_TYPES.TILED_ROOM:
+                clueInfoText = tileRoomScreen.cluesArray[interactableClueIndex].clueDetail;
+                textLines = correctTextLength(clueInfoText);
+                break;
+            case AREA_TYPES.HALL_ROOM:
+                clueInfoText = hallWayScreen.cluesArray[interactableClueIndex].clueDetail;
+                textLines = correctTextLength(clueInfoText);
+                break;
+        }
+        context.font = "30px serif";
+        for(let i = 0; i < textLines.length; i++)
+        {
+            context.fillText(textLines[i],270, context.canvas.height - 100 - (30 * (textLines.length - 1)) + (50 * i));
+        }
+        
     }
 }
 
@@ -256,10 +281,6 @@ const hallWayScreen = new HallWayScreen(hallGridArea);
 setUpClueDialogue(noteRoomScreen.cluesArray);
 setUpClueDialogue(sinkRoomScreen.cluesArray);
 setUpClueDialogue(tileRoomScreen.cluesArray);
-
-
-
-
 
 let currentScreenState = screenStates.GamePlayState;
 

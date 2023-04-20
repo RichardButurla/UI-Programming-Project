@@ -1,5 +1,5 @@
 let interactAvailable = false;
-
+let interactableClueIndex =  - 1;
 
 function withinRange(object1,object2)
 {
@@ -27,7 +27,7 @@ class NoteRoomScreen{
     };
     draw()
     {
-        let interactableClueIndex = checkInteractAvailable(this.cluesArray);
+        interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
             interactAvailable = true; 
@@ -60,7 +60,7 @@ class SinkRoomScreen{
     };
     draw()
     {
-        let interactableClueIndex = checkInteractAvailable(this.cluesArray);
+        interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
             interactAvailable = true; 
@@ -91,7 +91,7 @@ class TileRoomScreen{
     };
     draw()
     {
-        let interactableClueIndex = checkInteractAvailable(this.cluesArray);
+        interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
             interactAvailable = true; 
@@ -123,7 +123,7 @@ class HallWayScreen {
     }
   
     draw() {
-        let interactableClueIndex = checkInteractAvailable(this.cluesArray);
+         checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
             interactAvailable = true; 

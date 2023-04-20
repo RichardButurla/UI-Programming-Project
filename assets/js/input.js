@@ -160,4 +160,10 @@ let blueButton = document.getElementsByClassName("blue")[0];
 let redButton = document.getElementsByClassName("red")[0];
 let greenButton = document.getElementsByClassName("green")[0];
 
+let interactButtonImage = new Image();
+interactButtonImage.src = "assets/img/Keyboard & Mouse/Dark/E_Key_Dark.png";
+var interactButtonWidth = 100;
+var interactButtonHeight = 100;
+
+
  

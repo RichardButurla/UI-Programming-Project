@@ -1,7 +1,9 @@
+let interactAvailable = false;
+
 
 function withinRange(object1,object2)
 {
-    let range = 200;
+    let range = 100;
     let xOrigin1 = object1.x + object1.width;
     let xOrigin2 = object2.x + object2.height;
     let yOrigin1 = object1.y + object1.width;
@@ -21,22 +23,28 @@ class NoteRoomScreen{
     }
     update()
     {
-        for(let i = 0; i < this.cluesArray.length; i++)
-        {
-            if(withinRange(player.playerObject,this.cluesArray[i].clueObject))
-            {
-                console.log("collision with star");
-            }
-        }
         
     };
     draw()
     {
+        let interactableClueIndex = checkInteractAvailable(this.cluesArray);
+        if(interactableClueIndex != -1)
+        {
+            console.log("drawing interactable");
+            let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
+            let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
+            
+
+            context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+        
         for(let i = 0; i < this.cluesArray.length; i++)
         {
             this.cluesArray[i].drawClue();
         }
     };
+    
+
 }
 class SinkRoomScreen{
     constructor(cluesArray)
@@ -45,10 +53,21 @@ class SinkRoomScreen{
     }
     update()
     {
-        //console.log("Update from Menu");
+
     };
     draw()
     {
+        let interactableClueIndex = checkInteractAvailable(this.cluesArray);
+        if(interactableClueIndex != -1)
+        {
+            console.log("drawing interactable");
+            let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
+            let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
+            
+
+            context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+
         for(let i = 0; i < this.cluesArray.length; i++)
         {
             this.cluesArray[i].drawClue();
@@ -61,35 +80,73 @@ class TileRoomScreen{
         this.cluesArray = cluesArray;
     }
     update()
-    {
-        //console.log("Update from Menu");
+    {      
+        
     };
     draw()
     {
+        let interactableClueIndex = checkInteractAvailable(this.cluesArray);
+        if(interactableClueIndex != -1)
+        {
+            console.log("drawing interactable");
+            let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
+            let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
+            
+
+            context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+
         for(let i = 0; i < this.cluesArray.length; i++)
         {
             this.cluesArray[i].drawClue();
         }
     };
+    
 }
 class HallWayScreen {
     constructor(gridArea) {
-        console.log(gridArea.grid[0]);
         this.cluesArray = setUpClueLocations(gridArea);
         
     }
   
     update() {
-      //console.log("Update from Menu");
+
     }
   
     draw() {
-      for (let i = 0; i < this.cluesArray.length; i++) {
+        let interactableClueIndex = checkInteractAvailable(this.cluesArray);
+        if(interactableClueIndex != -1)
+        {
+            console.log("drawing interactable");
+            let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
+            let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
+            
+
+            context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+
+      for (let i = 0; i < this.cluesArray.length; i++)
+       {
         this.cluesArray[i].drawClue();
-      }
+        }
     }
   }
 
+
+function checkInteractAvailable(cluesArray) //returns index of clue that is in range
+{
+    for(let i = 0; i < cluesArray.length; i++)
+    {
+        if(withinRange(player.playerObject,cluesArray[i].clueObject))
+        {
+            console.log("within star range");
+            
+            return i;
+        }
+        
+    }
+    return -1;
+};
 
   function setUpClueLocations(gridArea) {
     let numOfClues = 0;

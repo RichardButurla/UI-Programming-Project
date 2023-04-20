@@ -26,6 +26,7 @@ class GamePlayScreen
     {
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
         {
+
             if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
                 console.log("sapce");
                 if(atAreaExit)
@@ -103,13 +104,12 @@ class GamePlayScreen
         }
         
         
+        
     };
     draw()
     {
         context.drawImage(backgroundImg,0,0,context.canvas.width,context.canvas.height);
         player.drawPlayer();
-        
-        
 
         //  for(let i = 0; i < currentGridArea.numOfTiles; i++)
         //  {
@@ -217,3 +217,4 @@ let currentScreenState = screenStates.GamePlayState;
 let frameTimeLimit = 14;
 
 let background = new GameObject(backgroundImg,0,0,context.canvas.width,context.canvas.height);
+

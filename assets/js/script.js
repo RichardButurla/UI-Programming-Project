@@ -110,7 +110,13 @@ class GamePlayScreen
     {
         context.drawImage(backgroundImg,0,0,context.canvas.width,context.canvas.height);
         player.drawPlayer();
-
+        if(atAreaExit)
+        {
+            let imagePos = new Vector();
+            imagePos = collisionManger.getCellPos(areaExitId);
+            context.drawImage(enterAreaButtonImage,imagePos.x,imagePos.y,enterAreaButtonImageWidth,enterAreaButtonImageHeight);
+        }
+        
         //  for(let i = 0; i < currentGridArea.numOfTiles; i++)
         //  {
         //          let tileRow = Math.trunc(i / currentGridArea.collums);

@@ -165,5 +165,10 @@ interactButtonImage.src = "assets/img/Keyboard & Mouse/Dark/E_Key_Dark.png";
 var interactButtonWidth = 100;
 var interactButtonHeight = 100;
 
+let enterAreaButtonImage = new Image();
+enterAreaButtonImage.src = "assets/img/Keyboard & Mouse/Dark/Space_Key_Dark.png";
+var enterAreaButtonImageWidth = 100;
+var enterAreaButtonImageHeight = 100;
+
 
  

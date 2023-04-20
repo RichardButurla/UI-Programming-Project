@@ -68,8 +68,10 @@ class AreaManager
 
                 if(this.checkCollision(player.playerObject,collisionTile))
                 {
+                    //Draw ui
                     console.log("colliding with cell: " + currentGridArea.grid[i]);
                     areaExitCell = currentGridArea.grid[i];
+                    areaExitId = i;
                     return true;
                 }
             }
@@ -125,7 +127,6 @@ class AreaManager
         }
     }
 
-
     checkCollision(object1, object2)
     {
     let xOverlap = false;
@@ -137,7 +138,16 @@ class AreaManager
     
      return xOverlap && yOverlap;
     }
+    getCellPos(cellID)
+    {
+        let tileRow = Math.trunc(cellID / currentGridArea.collums);
+        let tileCol = Math.trunc(cellID % currentGridArea.collums);
 
+        let tileXPos = tileCol * currentGridArea.tileWidth;
+        let tileYPos = tileRow * currentGridArea.tileHeight;
+
+        return new Vector(tileXPos,tileYPos);
+    }
     
 }
 
@@ -178,6 +188,7 @@ let currentGridArea = noteGridArea;
 let areaEnterancePos = new Vector(120,500);
 let atAreaExit = false;
 let areaExitCell = -1;
+let areaExitId = -1;
 
 let collisionManger = new AreaManager();
 let backgroundImg = new Image();

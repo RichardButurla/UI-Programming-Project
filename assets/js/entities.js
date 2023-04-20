@@ -85,6 +85,21 @@ class ClueInteractable
     }
 }
 
+class NPC
+{
+    constructor(npcImg, ncpObject,npcDialogue,npcSrcImage)
+    {
+        this.npcImg = npcImg;
+        this.npcObject = ncpObject;
+        this.npcDialogue = npcDialogue;
+        this.npcSrcImage = npcSrcImage;
+    }
+    drawNPC()
+    {
+        context.drawImage(this.npcObject.spritesheet,this.npcObject.x,this.npcObject.y,this.npcObject.width,this.npcObject.height);  
+    }
+}
+
 //Player
 let playerImg = new Image();
 playerImg.src = "assets/img/detective.png";
@@ -95,8 +110,11 @@ let playerMoveVector = new Vector(0,0);
 let clueImg = new Image();
 clueImg.src = "assets/img/shine.png"
 
+let npcImg = new Image();
+npcImg.src = "assets/img/shine.png";
+
 let maxClueDialogue = 6;
 let clueDialogueIndex = 0;
-
+let npcDialogueIndex = 0;
 
 

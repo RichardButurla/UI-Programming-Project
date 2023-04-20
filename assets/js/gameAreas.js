@@ -1,5 +1,7 @@
-let interactAvailable = false;
+let interactableClueAvailable = false;
 let interactableClueIndex =  - 1;
+
+let interactableNPCAvailable = false;
 
 function withinRange(object1,object2)
 {
@@ -17,9 +19,11 @@ function withinRange(object1,object2)
      }
 }
 class NoteRoomScreen{
-    constructor(cluesArray)
+    constructor(cluesArray,npc)
     {
         this.cluesArray = cluesArray;
+        this.npc = npc;
+        this.npc.npcObject.spritesheet.src = npcImageFiles[0];
     }
     update()
     {
@@ -30,7 +34,7 @@ class NoteRoomScreen{
         interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
-            interactAvailable = true; 
+            interactableClueAvailable = true; 
 
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
@@ -38,13 +42,26 @@ class NoteRoomScreen{
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
         }
         else{
-            interactAvailable = false;
+            interactableClueAvailable = false;
+        }
+
+        if(checkNPCInteractAvailable(this.npc))
+        {
+            interactableNPCAvailable = true;
+
+            let shiftedClueXPos = this.npc.npcObject.x - interactButtonWidth / 1.5;
+            let shiftedClueYPos = this.npc.npcObject.y - interactButtonHeight / 1.5;
+            context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+        else{
+            interactableNPCAvailable = false;
         }
         
         for(let i = 0; i < this.cluesArray.length; i++)
         {
             this.cluesArray[i].drawClue();
         }
+        this.npc.drawNPC();
     };
     
 
@@ -63,7 +80,7 @@ class SinkRoomScreen{
         interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
-            interactAvailable = true; 
+            interactableClueAvailable = true; 
 
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
@@ -71,7 +88,7 @@ class SinkRoomScreen{
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
         }
         else{
-            interactAvailable = false;
+            interactableClueAvailable = false;
         }
 
         for(let i = 0; i < this.cluesArray.length; i++)
@@ -94,7 +111,7 @@ class TileRoomScreen{
         interactableClueIndex = checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
-            interactAvailable = true; 
+            interactableClueAvailable = true; 
 
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
@@ -102,7 +119,7 @@ class TileRoomScreen{
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
         }
         else{
-            interactAvailable = false;
+            interactableClueAvailable = false;
         }
 
         for(let i = 0; i < this.cluesArray.length; i++)
@@ -113,9 +130,9 @@ class TileRoomScreen{
     
 }
 class HallWayScreen {
-    constructor(gridArea) {
+    constructor(gridArea,npc) {
         this.cluesArray = setUpClueLocations(gridArea);
-        
+        this.npc = npc;
     }
   
     update() {
@@ -126,7 +143,7 @@ class HallWayScreen {
          checkInteractAvailable(this.cluesArray);
         if(interactableClueIndex != -1)
         {
-            interactAvailable = true; 
+            interactableClueAvailable = true; 
 
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
@@ -134,13 +151,26 @@ class HallWayScreen {
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
         }
         else{
-            interactAvailable = false;
+            interactableClueAvailable = false;
+        }
+
+        if(checkNPCInteractAvailable(this.npc))
+        {
+            interactableNPCAvailable = true;
+
+            let shiftedClueXPos = this.npc.npcObject.x - interactButtonWidth / 1.5;
+            let shiftedClueYPos = this.npc.npcObject.y - interactButtonHeight / 1.5;
+            context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+        else{
+            interactableNPCAvailable = false;
         }
 
       for (let i = 0; i < this.cluesArray.length; i++)
        {
         this.cluesArray[i].drawClue();
         }
+        this.npc.drawNPC();
     }
   }
 
@@ -157,6 +187,17 @@ function checkInteractAvailable(cluesArray) //returns index of clue that is in r
     }
     return -1;
 };
+
+function checkNPCInteractAvailable(npc)
+{
+        if(withinRange(player.playerObject,npc.npcObject))
+        {          
+            return true;
+        }
+        else{
+            return false;
+        }
+}
 
   function setUpClueLocations(gridArea) {
     let numOfClues = 0;
@@ -188,4 +229,33 @@ function checkInteractAvailable(cluesArray) //returns index of clue that is in r
         clueDialogueIndex++;
         console.log(cluesArray[i].clueDetail);
     }
+  }
+
+
+  function setUpNPCLocations(gridArea,npcImage) {
+    let npc;
+    console.log("cell amount" + gridArea.numOfTiles)
+    for (let j = 0; j < gridArea.numOfTiles; j++) {
+      if (gridArea.grid[j] == 6) {
+        
+        let tileRow = Math.trunc(j / gridArea.collums);
+        let tileCol = Math.trunc(j % gridArea.collums);
+  
+        let tileXPos = tileCol * gridArea.tileWidth;
+        let tileYPos = tileRow * gridArea.tileHeight;
+  
+        let npcObject = new GameObject(npcImage, tileXPos, tileYPos, 200, 200);
+        npc = new NPC(npcImage, npcObject);
+      }
+    }
+    return npc;
+  }
+
+  function setUpNpcDetails(npc)
+  {
+    npc.npcDialogue = clueDetails[npcDialogueIndex];
+    npc.npcSrcImage = npcImageFiles[npcDialogueIndex];
+    //npc.npcObject.spritesheet.src = npc.npcSrcImage;
+    npcDialogueIndex++;
+    console.log(npcDialogueIndex);
   }

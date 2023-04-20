@@ -5,7 +5,8 @@ const screenStates = Object.freeze({
     MenuState: 0,
     GamePlayState: 1,
     InventoryState: 2,
-    ClueInspectState: 3
+    ClueInspectState: 3,
+    DialogueState: 4
   });
 
 class MenuScreen
@@ -62,10 +63,14 @@ class GamePlayScreen
                 playerObject.x += 5; // Move Player Right
             }
             if (gamerInput[INPUT_TYPES.E].action === "E-Up") {
-                if(interactAvailable)
+                if(interactableClueAvailable)
                 {
                     console.log("swapped to CLUE");
                     currentScreenState = screenStates.ClueInspectState;
+                }
+                if(interactableNPCAvailable)
+                {
+                    currentScreenState = screenStates.DialogueState;
                 }
                 gamerInput[INPUT_TYPES.E] = new GamerInput("None");
             }
@@ -213,6 +218,49 @@ class ClueInspectScreen
     }
 }
 
+class DialogueScreen
+{
+    update()
+    {
+        if (gamerInput[INPUT_TYPES.E].action === "E-Up") 
+        {
+            console.log("swapped to game");
+            currentScreenState = screenStates.GamePlayState;
+        }
+        gamerInput[INPUT_TYPES.E] = new GamerInput("None");
+    }
+    draw()
+    {
+        let npcInfoText = "";
+        let npcImageSrc = "";
+
+        context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
+        
+        switch(currentGameArea.area)
+        {
+            case AREA_TYPES.NOTE_ROOM:
+                npcInfoText = noteRoomScreen.npc.npcDialogue;
+                npcImageSrc = noteRoomScreen.npc.npcObject.spritesheet;
+                break;
+            case AREA_TYPES.SINK_ROOM:
+
+                break;
+            case AREA_TYPES.TILED_ROOM:
+
+                break;
+            case AREA_TYPES.HALL_ROOM:
+                npcInfoText = hallWayScreen.npc.npcDialogue;
+                npcImageSrc = hallWayScreen.npc.npcObject.spritesheet;
+                break;
+        }
+        context.font = "30px serif";
+        context.drawImage(npcImageSrc,75 ,100, context.canvas.width - 150,600);
+        context.drawImage(dialogueBoxImage,75 ,context.canvas.height / 1.5, context.canvas.width - 150,192);
+        context.fillText(npcInfoText,270, context.canvas.height - 150);
+
+    }
+}
+
 class InventoryScreen
 {
     update()
@@ -237,6 +285,9 @@ function update() {
         case screenStates.ClueInspectState:
             clueDetailScreen.update();
             break;
+        case screenStates.DialogueState:
+            dialgueScreen.update();
+            break;
         case screenStates.InventoryState:
             inventoryScreen.update();
             break;
@@ -253,6 +304,9 @@ function draw() {
             break; 
         case screenStates.ClueInspectState:
             clueDetailScreen.draw();
+            break;
+        case screenStates.DialogueState:
+            dialgueScreen.draw();
             break;
         case screenStates.GamePlayState:
             gameplayScreen.draw();
@@ -283,16 +337,23 @@ const menuScreen = new MenuScreen();
 const gameplayScreen = new GamePlayScreen();
 const inventoryScreen = new InventoryScreen();
 const clueDetailScreen = new ClueInspectScreen();
+const dialgueScreen = new DialogueScreen();
 console.log(hallGridArea.grid[0]);
 console.log(hallGridArea.numOfTiles);
-const noteRoomScreen = new NoteRoomScreen(setUpClueLocations(noteGridArea));
+npcImg.src = npcImageFiles[0];
+const noteRoomScreen = new NoteRoomScreen(setUpClueLocations(noteGridArea),setUpNPCLocations(noteGridArea,npcImg));
 const sinkRoomScreen = new SinkRoomScreen(setUpClueLocations(sinkGridArea));
 const tileRoomScreen = new TileRoomScreen(setUpClueLocations(tileGridArea));
-const hallWayScreen = new HallWayScreen(hallGridArea);
+let npcImg2 = new Image();
+npcImg2.src = npcImageFiles[1];
+const hallWayScreen = new HallWayScreen(hallGridArea,setUpNPCLocations(noteGridArea,npcImg2));
 
 setUpClueDetails(noteRoomScreen.cluesArray);
 setUpClueDetails(sinkRoomScreen.cluesArray);
 setUpClueDetails(tileRoomScreen.cluesArray);
+
+setUpNpcDetails(noteRoomScreen.npc);
+setUpNpcDetails(hallWayScreen.npc);
 
 let currentScreenState = screenStates.GamePlayState;
 
@@ -300,6 +361,12 @@ let frameTimeLimit = 14;
 
 let clueInspectBackgroundImg = new Image();
 clueInspectBackgroundImg.src = "assets/img/clueInspect.png"
+
+let blackBackground = new Image();
+blackBackground.src = "assets/img/blackScreen.png";
+
+let dialogueBoxImage = new Image();
+dialogueBoxImage.src = "assets/img/textBar.png"
 
 let clueDetailImg = new Image();
 

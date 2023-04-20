@@ -19,6 +19,12 @@ const clueImageFiles =
     "assets/img/Clue-Images/damagedTile.png",
 ]
 
+const npcImageFiles = 
+[
+    "assets/img/scarfGuy.png",
+    "assets/img/weirdGuy.png"
+]
+
 function correctTextLength(clueInfoText)
 {
     let maxCharsPerLine = 40;

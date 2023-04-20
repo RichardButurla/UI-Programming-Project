@@ -56,7 +56,7 @@ class AreaManager
         for(let i = 0; i < currentGridArea.numOfTiles; i++)
         {
            
-            if(currentGridArea.grid[i] != 0 && currentGridArea.grid[i] != 9 && currentGridArea.grid[i] != 8 && currentGridArea.grid[i] != 7) //If we found the next room cell
+            if(currentGridArea.grid[i] != 0 && currentGridArea.grid[i] != 9 && currentGridArea.grid[i] != 8 && currentGridArea.grid[i] != 7 && currentGridArea.grid[i] != 6) //If we found the next room cell
             {
                 let tileRow = Math.trunc(i / currentGridArea.collums);
                 let tileCol = Math.trunc(i % currentGridArea.collums);

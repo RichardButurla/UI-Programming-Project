@@ -253,7 +253,7 @@ function checkNPCInteractAvailable(npc)
 
   function setUpNpcDetails(npc)
   {
-    npc.npcDialogue = clueDetails[npcDialogueIndex];
+    npc.npcDialogue = npcDialogue[npcDialogueIndex];
     npc.npcSrcImage = npcImageFiles[npcDialogueIndex];
     //npc.npcObject.spritesheet.src = npc.npcSrcImage;
     npcDialogueIndex++;

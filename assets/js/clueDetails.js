@@ -25,6 +25,12 @@ const npcImageFiles =
     "assets/img/weirdGuy.png"
 ]
 
+const npcDialogue = 
+[
+    "Never knew the guy.",
+    "He used to be a rich man"
+]
+
 function correctTextLength(clueInfoText)
 {
     let maxCharsPerLine = 40;

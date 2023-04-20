@@ -76,6 +76,7 @@ class ClueInteractable
     {
         this.clueImg = clueImg;
         this.clueObject = clueObject;
+        this.clueDetail = "";
     }
     drawClue()
     {

@@ -226,6 +226,9 @@ class ClueInspectScreen
                     markedClueValues[0][interactableClueIndex] = interactableClueIndex;
                     for(let i = 0; i < textLines.length; i++)
                     {
+                        if(i == 0 )
+                            addClueToNotes("• " + textLines[i]);
+                        else
                         addClueToNotes(textLines[i]);
                     }               
                 }
@@ -240,8 +243,11 @@ class ClueInspectScreen
                     markedClueValues[1][interactableClueIndex] = interactableClueIndex;
                     for(let i = 0; i < textLines.length; i++)
                     {
+                        if(i == 0 )
+                            addClueToNotes("• " + textLines[i]);
+                        else
                         addClueToNotes(textLines[i]);
-                    } 
+                    }
                 }
                 break;
             case AREA_TYPES.TILED_ROOM:
@@ -254,8 +260,11 @@ class ClueInspectScreen
                     markedClueValues[2][interactableClueIndex] = interactableClueIndex;
                     for(let i = 0; i < textLines.length; i++)
                     {
+                        if(i == 0 )
+                            addClueToNotes("• " + textLines[i]);
+                        else
                         addClueToNotes(textLines[i]);
-                    } 
+                    }
                 }
                 break;
             case AREA_TYPES.HALL_ROOM:
@@ -268,8 +277,11 @@ class ClueInspectScreen
                     markedClueValues[3][interactableClueIndex] = interactableClueIndex;
                     for(let i = 0; i < textLines.length; i++)
                     {
+                        if(i == 0 )
+                            addClueToNotes("• " + textLines[i]);
+                        else
                         addClueToNotes(textLines[i]);
-                    } 
+                    }
                 }
                 break;
         }

@@ -6,8 +6,36 @@ const screenStates = Object.freeze({
     GamePlayState: 1,
     InventoryState: 2,
     ClueInspectState: 3,
-    DialogueState: 4
+    DialogueState: 4,
+    NotesInspection: 5
   });
+
+let notesTextArray = [];
+
+class NotesScreen
+{
+    
+    update()
+    {
+        if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") {
+            currentScreenState = screenStates.GamePlayState;
+            gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
+        }
+
+        console.log("updating noteScreen");
+    }
+    draw()
+    {
+        context.font = "30px serif";
+        context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
+        context.drawImage(notePageImage,0,0,context.canvas.width,context.canvas.height);
+        console.log(notesTextArray.length);
+        for(let i = 0; i < notesTextArray.length; i++)
+        {
+            context.fillText(notesTextArray[i],230, 110  + (46 * i));
+        }
+    }
+}
 
 class MenuScreen
 {
@@ -74,7 +102,11 @@ class GamePlayScreen
                 }
                 gamerInput[INPUT_TYPES.E] = new GamerInput("None");
             }
-            
+            if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") {
+                currentScreenState = screenStates.NotesInspection;
+                console.log("NoteScreen")
+                gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
+            }
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
@@ -187,22 +219,58 @@ class ClueInspectScreen
             case AREA_TYPES.NOTE_ROOM:
                 clueInfoText = noteRoomScreen.cluesArray[interactableClueIndex].clueDetail;
                 clueImageSrc = noteRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
-                textLines = correctTextLength(clueInfoText);     
+                textLines = correctTextLength(clueInfoText); 
+                
+                if(interactableClueIndex != markedClueValues[0][interactableClueIndex])
+                {
+                    markedClueValues[0][interactableClueIndex] = interactableClueIndex;
+                    for(let i = 0; i < textLines.length; i++)
+                    {
+                        addClueToNotes(textLines[i]);
+                    }               
+                }
                 break;
             case AREA_TYPES.SINK_ROOM:
                 clueInfoText = sinkRoomScreen.cluesArray[interactableClueIndex].clueDetail;
                 clueImageSrc = sinkRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
                 textLines = correctTextLength(clueInfoText);
+
+                if(interactableClueIndex != markedClueValues[1][interactableClueIndex])
+                {
+                    markedClueValues[1][interactableClueIndex] = interactableClueIndex;
+                    for(let i = 0; i < textLines.length; i++)
+                    {
+                        addClueToNotes(textLines[i]);
+                    } 
+                }
                 break;
             case AREA_TYPES.TILED_ROOM:
                 clueInfoText = tileRoomScreen.cluesArray[interactableClueIndex].clueDetail;
                 clueImageSrc = tileRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
                 textLines = correctTextLength(clueInfoText);
+
+                if(interactableClueIndex != markedClueValues[2][interactableClueIndex])
+                {
+                    markedClueValues[2][interactableClueIndex] = interactableClueIndex;
+                    for(let i = 0; i < textLines.length; i++)
+                    {
+                        addClueToNotes(textLines[i]);
+                    } 
+                }
                 break;
             case AREA_TYPES.HALL_ROOM:
                 clueInfoText = hallWayScreen.cluesArray[interactableClueIndex].clueDetail;
                 clueImageSrc = hallWayScreen.cluesArray[interactableClueIndex].clueSrcImage;
                 textLines = correctTextLength(clueInfoText);
+
+                if(interactableClueIndex != markedClueValues[3][interactableClueIndex])
+                {
+                    markedClueValues[3][interactableClueIndex] = interactableClueIndex;
+                    for(let i = 0; i < textLines.length; i++)
+                    {
+                        addClueToNotes(textLines[i]);
+                    } 
+                }
                 break;
         }
         context.font = "30px serif";
@@ -285,6 +353,9 @@ function update() {
         case screenStates.ClueInspectState:
             clueDetailScreen.update();
             break;
+        case screenStates.NotesInspection:
+            notesScreen.update();
+            break;
         case screenStates.DialogueState:
             dialgueScreen.update();
             break;
@@ -308,6 +379,9 @@ function draw() {
         case screenStates.DialogueState:
             dialgueScreen.draw();
             break;
+        case screenStates.NotesInspection:
+            notesScreen.draw();
+            break;
         case screenStates.GamePlayState:
             gameplayScreen.draw();
             break;
@@ -324,6 +398,11 @@ function gameloop() {
     window.requestAnimationFrame(gameloop);
 }
 
+function addClueToNotes(string)
+{
+    notesTextArray.push(string);   
+}
+
 window.requestAnimationFrame(gameloop);
 
 window.addEventListener('keydown', input);
@@ -338,6 +417,7 @@ const gameplayScreen = new GamePlayScreen();
 const inventoryScreen = new InventoryScreen();
 const clueDetailScreen = new ClueInspectScreen();
 const dialgueScreen = new DialogueScreen();
+const notesScreen = new NotesScreen();
 console.log(hallGridArea.grid[0]);
 console.log(hallGridArea.numOfTiles);
 npcImg.src = npcImageFiles[0];
@@ -370,6 +450,15 @@ dialogueBoxImage.src = "assets/img/textBar.png"
 
 let clueDetailImg = new Image();
 
+let notePageImage = new Image();
+notePageImage.src = "assets/img/notePage.png"
+
+let markedClueValues = [
+    [-1,-1,-1],
+    [-1],
+    [-1],
+    [-1]
+]
 
 let background = new GameObject(backgroundImg,0,0,context.canvas.width,context.canvas.height);
 

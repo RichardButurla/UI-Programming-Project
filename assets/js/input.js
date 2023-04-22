@@ -65,6 +65,10 @@ function checkKeyDown(event)
     {
         gamerInput[INPUT_TYPES.E] = new GamerInput("E-Down");
     }
+    if(event.keyCode == 81)
+    {
+        gamerInput[INPUT_TYPES.Q] = new GamerInput("Q-Down");
+    }
 }
 
 function checkKeyUp(event)
@@ -104,6 +108,10 @@ function checkKeyUp(event)
     {
         gamerInput[INPUT_TYPES.E] = new GamerInput("E-Up");
     }
+    if(event.keyCode == 81)
+    {
+        gamerInput[INPUT_TYPES.Q] = new GamerInput("Q-Up");
+    }
 }
 
 function GamerInput(input) {
@@ -121,10 +129,12 @@ LEFT: 1,
 DOWN: 2,
 RIGHT: 3,
 SPACE: 4,
-E: 5
+E: 5,
+Q: 6
 }); //WASD,Spacebar
 
 let gamerInput = [
+    new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
@@ -134,7 +144,7 @@ let gamerInput = [
 ];
 
 let currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
-let numberOfInputs = 5;
+let numberOfInputs = 7;
 
 //Joystick
 var dynamic = nipplejs.create(options);

@@ -37,14 +37,12 @@ function correctTextLength(clueInfoText)
     let lineOneText = "";
     let detailsTextLines = [];
 
-    console.log("Length of text" + clueInfoText.length);
     if(clueInfoText.length > maxCharsPerLine)
     {
         
         for(let i = 0; i < maxCharsPerLine; i++)
         {
             lineOneText += clueInfoText[i];
-            console.log(clueInfoText[i]);
         }
         detailsTextLines[0] = lineOneText;
         lineOneText = "";

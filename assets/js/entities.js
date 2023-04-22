@@ -85,6 +85,13 @@ class ClueInteractable
     }
 }
 
+///If clue has not been interacted with before, add it to array and mark it
+
+function checkClueInteracted()
+{
+    
+}
+
 class NPC
 {
     constructor(npcImg, ncpObject,npcDialogue,npcSrcImage)

@@ -39,6 +39,14 @@ class NoteRoomScreen{
             let shiftedClueXPos = this.cluesArray[interactableClueIndex].clueObject.x - interactButtonWidth / 1.5;
             let shiftedClueYPos = this.cluesArray[interactableClueIndex].clueObject.y - interactButtonHeight / 1.5;
             
+            if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+            {
+                interactButtonImage.src = "assets/img/Keyboard & Mouse/Dark/E_Key_Dark.png"
+            }
+            else if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+            {
+                interactButtonImage.src = "assets/img/Xbox One/XboxOne_X.png"
+            }
             context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
         }
         else{

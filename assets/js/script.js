@@ -54,6 +54,8 @@ class GamePlayScreen
 {
     update()
     {
+        player.animatePlayer();
+
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
         {
 
@@ -76,20 +78,48 @@ class GamePlayScreen
             }
             if (gamerInput[INPUT_TYPES.UP].action === "Up") {
                 player.playerPreviousPosition.y = playerObject.y;
+                playerMovingRight = false;
+                playerMovingLeft = false;
+                playerIdle = false;
+                playerMovingDown = false;
+                playerMovingUp = true;
                 playerObject.y -= 5; // Move Player Up      
             } 
             if (gamerInput[INPUT_TYPES.DOWN].action === "Down") {
+                playerMovingRight = false;
+                playerMovingLeft = false;
+                playerIdle = false;
+                playerMovingDown = true;
+                playerMovingUp = false;
                 player.playerPreviousPosition.y = playerObject.y;
                 playerObject.y += 5; // Move Player Down
             } 
              if (gamerInput[INPUT_TYPES.LEFT].action === "Left") {
+                playerMovingRight = false;
+                playerMovingLeft = true;
+                playerIdle = false;
+                playerMovingDown = false;
+                playerMovingUp = false;
                 player.playerPreviousPosition.x = playerObject.x;
                 playerObject.x -= 5; // Move Player Left
             } 
              if (gamerInput[INPUT_TYPES.RIGHT].action === "Right") {
+                playerMovingRight = true;
+                playerMovingLeft = false;
+                playerIdle = false;
+                playerMovingDown = false;
+                playerMovingUp = false;
                 player.playerPreviousPosition.x = playerObject.x;
                 playerObject.x += 5; // Move Player Right
             }
+            if(gamerInput[INPUT_TYPES.RIGHT].action === "None" && gamerInput[INPUT_TYPES.LEFT].action === "None" 
+            && gamerInput[INPUT_TYPES.UP].action === "None" && gamerInput[INPUT_TYPES.DOWN].action === "None")
+            {
+                playerIdle = true;
+                playerMovingLeft = false;
+                playerMovingRight = false;
+            }
+            
             if (gamerInput[INPUT_TYPES.E].action === "E-Up") {
                 if(interactableClueAvailable)
                 {
@@ -110,10 +140,45 @@ class GamePlayScreen
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
+            if (gamerInput[INPUT_TYPES.A_BUTTON].action === "A-Button-Up")
+            {
+                if(atAreaExit)
+                {
+                    collisionManger.changeGrid(areaExitCell);
+                    console.log("x:" + areaEnterancePos.x);
+                    console.log("y" + areaEnterancePos.y);
+                    player.playerPreviousPosition.x = areaEnterancePos.x;
+                    player.playerPreviousPosition.y = areaEnterancePos.y;
+                    playerObject.x = areaEnterancePos.x;
+                    playerObject.y = areaEnterancePos.y;
+                    console.log("Player x:" + player.playerPreviousPosition.x);
+                    console.log("Player y" + player.playerPreviousPosition.y);
+                }
+                gamerInput[INPUT_TYPES.A_BUTTON] = new GamerInput("None"); 
+
+            }
+            if (gamerInput[INPUT_TYPES.X_BUTTON].action === "X-Button-Up") {
+                if(interactableClueAvailable)
+                {
+                    console.log("swapped to CLUE");
+                    currentScreenState = screenStates.ClueInspectState;
+                }
+                if(interactableNPCAvailable)
+                {
+                    currentScreenState = screenStates.DialogueState;
+                }
+                gamerInput[INPUT_TYPES.X_BUTTON] = new GamerInput("None");
+            }
+            if (gamerInput[INPUT_TYPES.Y_BUTTON].action === "Y-Button-Up") {
+                currentScreenState = screenStates.NotesInspection;
+                console.log("NoteScreen")
+                gamerInput[INPUT_TYPES.Y_BUTTON] = new GamerInput("None");
+            }
+
             player.playerPreviousPosition.x = playerObject.x;
             player.playerPreviousPosition.y = playerObject.y;
-            playerObject.x += playerMoveVector.x;
-            playerObject.y -= playerMoveVector.y;
+            playerObject.x += playerMoveVector.x * playerSpeed;
+            playerObject.y -= playerMoveVector.y * playerSpeed;
         }
         if(collisionManger.checkAreaCollision())
         {
@@ -160,6 +225,10 @@ class GamePlayScreen
         {
             let imagePos = new Vector();
             imagePos = collisionManger.getCellPos(areaExitId);
+            if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+            enterAreaButtonImage.src = "assets/img/Xbox One/XboxOne_A.png";
+            else if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+            enterAreaButtonImage.src = "assets/img/Keyboard & Mouse/Dark/Space_Key_Dark.png";
             context.drawImage(enterAreaButtonImage,imagePos.x,imagePos.y,enterAreaButtonImageWidth,enterAreaButtonImageHeight);
         }
         
@@ -203,7 +272,13 @@ class ClueInspectScreen
             console.log("swapped to game");
             currentScreenState = screenStates.GamePlayState;
         }
+        if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
+        {
+            console.log("swapped to game");
+            currentScreenState = screenStates.GamePlayState;
+        }
         gamerInput[INPUT_TYPES.E] = new GamerInput("None");
+        gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
     }
     draw()
     {
@@ -307,7 +382,13 @@ class DialogueScreen
             console.log("swapped to game");
             currentScreenState = screenStates.GamePlayState;
         }
+        if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
+        {
+            console.log("swapped to game");
+            currentScreenState = screenStates.GamePlayState;
+        }
         gamerInput[INPUT_TYPES.E] = new GamerInput("None");
+        gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
     }
     draw()
     {

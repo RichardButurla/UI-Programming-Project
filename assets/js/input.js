@@ -8,9 +8,30 @@ class Vector
     }   
 }
 
-function clickableDpadReleased() {
+function clickableDpadBlueReleased() {
     currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
+    gamerInput[INPUT_TYPES.X_BUTTON] = new GamerInput("X-Button-Up");
+    console.log("release blue pad");
 }
+
+function clickableDpadGreenReleased() {
+    currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
+    gamerInput[INPUT_TYPES.A_BUTTON] = new GamerInput("A-Button-Up");
+    console.log("release green pad");
+}
+
+function clickableDpadYellowReleased() {
+    currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
+    gamerInput[INPUT_TYPES.Y_BUTTON] = new GamerInput("Y-Button-Up");
+    console.log("release yellow pad");
+}
+
+function clickableDpadRedReleased() {
+    currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
+    gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("B-Button-Up");
+    console.log("release red pad");
+}
+
 function clickDpadYellow(){
     currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
 
@@ -19,7 +40,8 @@ function clickDpadBlue(){
     currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
 }
 function clickDpadRed(){
-    ccurrentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
+    currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
+    console.log("d pad red");
 }
 function clickDpadGreen(){
     currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
@@ -31,6 +53,7 @@ function input(event) {
             checkKeyDown(event);
         }
         if (event.type === "keyup") {
+            currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
             checkKeyUp(event);
         }
 }
@@ -130,10 +153,18 @@ DOWN: 2,
 RIGHT: 3,
 SPACE: 4,
 E: 5,
-Q: 6
+Q: 6,
+X_BUTTON: 7,
+Y_BUTTON: 8,
+B_BUTTON: 9,
+A_BUTTON: 10,
 }); //WASD,Spacebar
 
 let gamerInput = [
+    new GamerInput("None"),
+    new GamerInput("None"),
+    new GamerInput("None"),
+    new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
@@ -144,7 +175,7 @@ let gamerInput = [
 ];
 
 let currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
-let numberOfInputs = 7;
+let numberOfInputs = 11;
 
 //Joystick
 var options = {
@@ -166,12 +197,29 @@ dynamic.on('start', function (evt, nipple) {
         currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
         playerMoveVector.x = data.vector.x;
         playerMoveVector.y = data.vector.y;
+
+        if(playerMoveVector.x > 0)
+        {
+            playerMovingRight = true;
+            playerMovingLeft = false;
+            playerIdle = false;
+        }
+        if(playerMoveVector.x < 0)
+        {
+            playerMovingRight = false;
+            playerMovingLeft = true;
+            playerIdle = false;
+        }
+
      });
 
      nipple.on('end', function (evt, data) {
 
         playerMoveVector.x = 0;
         playerMoveVector.y = 0;
+        playerIdle = true;
+        playerMovingLeft = false;
+        playerMovingRight = false;
      });
 });
 

@@ -35,29 +35,37 @@ class Player{
     }
     animatePlayer()
     {
-        playerFrameTimer+= 1;
-        if(playerFrameTimer > frameTimeLimit)
+        this.playerFrameTimer+= 1;
+        if(this.playerFrameTimer > frameTimeLimit)
         {
-            playerFrameTimer = 0;
-            playerXFrame += 1;
-            if(playerXFrame > 4)
+            this.playerFrameTimer = 0;
+            this.playerXFrame += 1;
+            if(this.playerXFrame > 2)
             {
-                playerXFrame = 0;
+                this.playerXFrame = 0;
             }
         }
 
         if(playerMovingRight)
         {
-            playerYFrame = 0;
+            this.playerYFrame = 2;
         }
         if(playerMovingLeft)
         {
-            playerYFrame = 1;
+            this.playerYFrame = 1;
+        }
+        if(playerMovingUp)
+        {
+            this.playerYFrame = 3;
+        }
+        if(playerMovingDown)
+        {
+            this.playerYFrame = 0;
         }
         if(playerIdle)
         {
-            playerYFrame = 0;
-            playerXFrame = 1;
+            this.playerYFrame = 0;
+            this.playerXFrame = 1;
         }
     }
     checkPlayerBounds()
@@ -89,7 +97,7 @@ class ClueInteractable
 
 function checkClueInteracted()
 {
-    
+
 }
 
 class NPC
@@ -113,6 +121,13 @@ playerImg.src = "assets/img/detective.png";
 let playerObject = new GameObject(playerImg, 120, 500, 100, 150);
 let player = new Player(playerImg,playerObject);
 let playerMoveVector = new Vector(0,0);
+let playerSpeed = 3;
+let playerMovingRight = false;
+let playerMovingLeft = false;
+let playerMovingDown = false;
+let playerMovingUp = false;
+let playerIdle = false;
+
 
 let clueImg = new Image();
 clueImg.src = "assets/img/shine.png"

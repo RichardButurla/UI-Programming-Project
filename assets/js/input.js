@@ -147,6 +147,15 @@ let currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
 let numberOfInputs = 7;
 
 //Joystick
+var options = {
+    mode: 'static',
+    color: 'grey',
+    maxNumberOfNipples: 0,
+    zone: document.getElementById('joystick-area'),
+    position: {left: '87.5%', top: '47.5%'},
+};
+
+
 var dynamic = nipplejs.create(options);
 
 dynamic.on('start', function (evt, nipple) {
@@ -166,13 +175,6 @@ dynamic.on('start', function (evt, nipple) {
      });
 });
 
-var options = {
-    mode: 'static',
-    color: 'grey',
-    maxNumberOfNipples: 0,
-    zone: document.getElementById('joystick-area'),
-    position: {left: '87.5%', top: '47.5%'},
-};
 
 //HTML/CSS Buttons
 let yellowButton = document.getElementsByClassName("yellow")[0];

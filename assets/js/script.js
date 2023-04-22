@@ -21,7 +21,12 @@ class NotesScreen
             currentScreenState = screenStates.GamePlayState;
             gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
         }
-
+        if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
+        {
+            console.log("swapped to game");
+            currentScreenState = screenStates.GamePlayState;
+            gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
+        }
         console.log("updating noteScreen");
     }
     draw()

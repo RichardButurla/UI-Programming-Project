@@ -116,8 +116,12 @@ class SuspectInspectScreen
                     gamerInput[INPUT_TYPES.DOWN] = new GamerInput("None");
                 }
                 if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
-                    confirmPopUp = true;
-                    console.log("selected suspect");
+                    if(talkedToSuspect[selectedSuspect])
+                    {
+                        confirmPopUp = true;
+                        console.log("selected suspect");
+                        
+                    }
                     gamerInput[INPUT_TYPES.SPACE] = new GamerInput("None");
                 }
 
@@ -153,8 +157,11 @@ class SuspectInspectScreen
                 }
                 if (gamerInput[INPUT_TYPES.A_BUTTON].action === "A-Button-Up") 
                 {
-                    confirmPopUp = true;
-                    console.log("selected suspect");
+                    if(talkedToSuspect[selectedSuspect])
+                    {
+                        confirmPopUp = true;
+                        console.log("selected suspect");   
+                    }
                     gamerInput[INPUT_TYPES.A_BUTTON] = new GamerInput("None");
                 }
                 if(joystickInteractVector.x < -0.5)

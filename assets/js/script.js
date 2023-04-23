@@ -54,7 +54,7 @@ class SuspectInspectScreen
         this.joystickInstructionTextArray = [
             "Press A to accuse,",
             "Scroll between suspects with Stick-Up/Down,",
-            "Press 'A' for Note Screen "
+            "Left-Stick-Scroll: Note Screen"
         ];
         this.keyboardConfirmTextArray = [
             "Are you sure you want to accuse this suspect ",
@@ -132,33 +132,56 @@ class SuspectInspectScreen
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
-            if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
+            if(!confirmPopUp)
             {
-                console.log("swapped to game");
-                selectedSuspect = 0;
-                currentScreenState = screenStates.GamePlayState;
-                gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
-            }
-            if(joystickInteractVector.x > 0.8 && joystickInteractVector.y < 0.05 && joystickInteractVector.y > -0.005)
-            {
-                selectedSuspect = 0;
-                currentScreenState = screenStates.NotesInspection;
-            }
-            if(joystickUpwardSelect == true)
-            {
-                if(selectedSuspect > 0)
-                    {
-                        selectedSuspect--;
-                    }
-                joystickUpwardSelect = false;
-            }
-            if(joystickDownwardSelect == true)
-            {
-                if(selectedSuspect < 2)
+                if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
                 {
-                    selectedSuspect++;
+                    console.log("swapped to game");
+                    selectedSuspect = 0;
+                    currentScreenState = screenStates.GamePlayState;
+                    gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
                 }
-                joystickDownwardSelect = false;
+                if (gamerInput[INPUT_TYPES.A_BUTTON].action === "A-Button-Up") 
+                {
+                    confirmPopUp = true;
+                    console.log("selected suspect");
+                    gamerInput[INPUT_TYPES.A_BUTTON] = new GamerInput("None");
+                }
+                if(joystickInteractVector.x < -0.5)
+                {
+                    selectedSuspect = 0;
+                    currentScreenState = screenStates.NotesInspection;
+                }
+                if(joystickUpwardSelect == true)
+                {
+                    if(selectedSuspect > 0)
+                        {
+                            selectedSuspect--;
+                        }
+                    joystickUpwardSelect = false;
+                }
+                if(joystickDownwardSelect == true)
+                {
+                    if(selectedSuspect < 2)
+                    {
+                        selectedSuspect++;
+                    }
+                    joystickDownwardSelect = false;
+                }
+            }
+            if(confirmPopUp)
+            {
+                if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
+                {
+                    confirmPopUp = false;
+                    gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
+                }
+                if (gamerInput[INPUT_TYPES.A_BUTTON].action === "A-Button-Up") 
+                {
+                    console.log("accused suspect" + selectedSuspect);
+                    currentScreenState = screenStates.EndScreen;
+                    gamerInput[INPUT_TYPES.A_BUTTON] = new GamerInput("None");
+                }
             }
         }
     }

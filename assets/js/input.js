@@ -201,12 +201,32 @@ var dynamic = nipplejs.create(options);
 
 dynamic.on('start', function (evt, nipple) {
     //nipple.on('start move end dir plain', function (evt) {
+        joystickRefresh = true;
         console.log(options.maxNumberOfNipples);
     //move mario not just vertically and horizontally
      nipple.on('move', function (evt, data) {
         currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
+
         playerMoveVector.x = data.vector.x;
         playerMoveVector.y = data.vector.y;
+
+        joystickInteractVector.x = data.vector.x;
+        joystickInteractVector.y = data.vector.y;
+
+        if(joystickRefresh == true)
+        {
+            if(joystickInteractVector.y > 0.9)
+            {
+                joystickUpwardSelect = true;
+                joystickRefresh = false;           
+            }
+            if(joystickInteractVector.y < -0.9)
+            {
+                joystickDownwardSelect = true;
+                joystickRefresh = false;
+            }
+        }
+        
 
         if(playerMoveVector.x > 0)
         {
@@ -224,7 +244,11 @@ dynamic.on('start', function (evt, nipple) {
      });
 
      nipple.on('end', function (evt, data) {
+        //So we only interact once using joystick and not constantly
 
+
+        joystickInteractVector.x = 0;
+        joystickInteractVector.y = 0;
         playerMoveVector.x = 0;
         playerMoveVector.y = 0;
         playerIdle = true;
@@ -233,6 +257,10 @@ dynamic.on('start', function (evt, nipple) {
      });
 });
 
+let joystickInteractVector = new Vector(0,0);
+let joystickDownwardSelect = false;
+let joystickUpwardSelect = false;
+let joystickRefresh = false;
 
 //HTML/CSS Buttons
 let yellowButton = document.getElementsByClassName("yellow")[0];

@@ -14,24 +14,59 @@ const screenStates = Object.freeze({
 
 let notesTextArray = [];
 
+let gulitySuspect = 3;
 let selectedSuspect = 0; //used to index thorugh y pos array for positioning;
 let confirmPopUp = false;
 
 class EndScreen
 {
+    constructor()
+    {
+        this.endText = "";
+    }
     update()
     {
-        console.log("updating end Screen");
+        if(selectedSuspect == 2)
+        {
+            this.endText = "Suspect was Guilty!";
+        }
+        else{
+            this.endText = "Suspect was Innocent!";
+        }
     }
     draw()
     {
-        
-        context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
+        context.font = "30px serif";
+        //context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
+        context.fillText(this.endText,context.canvas.width - (context.canvas.width / 1.75), context.canvas.height - (context.canvas.height / 2));
     }
 }
 
 class SuspectInspectScreen
 {
+    constructor()
+    {
+        this.keyboardInstructionTextArray = [
+            "Press Space to accuse,",
+            "Scroll between suspects with W/S keys,",
+            "Press 'A' key for Note Screen "
+        ];
+        this.joystickInstructionTextArray = [
+            "Press A to accuse,",
+            "Scroll between suspects with Stick-Up/Down,",
+            "Press 'A' for Note Screen "
+        ];
+        this.keyboardConfirmTextArray = [
+            "Are you sure you want to accuse this suspect ",
+             "Space - Yes",
+             "Esc - No"
+        ];
+        this.joystickConfirmTextArray = [
+            "Are you sure you want to accuse this suspect ",
+             "A - Yes",
+             "B - No"
+        ]
+    }
     update()
     {
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
@@ -39,40 +74,42 @@ class SuspectInspectScreen
             if(!confirmPopUp)
             {
                 //Swapping bewtten Note/this screen
-            if (gamerInput[INPUT_TYPES.LEFT].action === "Left") 
-            {
-                console.log("swapped to game");
-                currentScreenState = screenStates.NotesInspection;
-                gamerInput[INPUT_TYPES.LEFT] = new GamerInput("None");
-            }
-            if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") 
-            {
-                console.log("swapped to game");
-                currentScreenState = screenStates.GamePlayState;
-                gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
-            }
+                if (gamerInput[INPUT_TYPES.LEFT].action === "Left") 
+                {
+                    console.log("swapped to game");
+                    selectedSuspect = 0
+                    currentScreenState = screenStates.NotesInspection;
+                    gamerInput[INPUT_TYPES.LEFT] = new GamerInput("None");
+                }
+                if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") 
+                {
+                    console.log("swapped to game");
+                    currentScreenState = screenStates.GamePlayState;
+                    selectedSuspect = 0;
+                    gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
+                }
 
             //Suspect select
-            if (gamerInput[INPUT_TYPES.UP].action === "Up") {
-                if(selectedSuspect > 0)
-                {
-                    selectedSuspect--;
+                if (gamerInput[INPUT_TYPES.UP].action === "Up") {
+                    if(selectedSuspect > 0)
+                    {
+                        selectedSuspect--;
+                    }
+                    
+                    gamerInput[INPUT_TYPES.UP] = new GamerInput("None");
                 }
-                
-                gamerInput[INPUT_TYPES.UP] = new GamerInput("None");
-            }
-            if (gamerInput[INPUT_TYPES.DOWN].action === "Down") {
-                if(selectedSuspect < 2)
-                {
-                    selectedSuspect++;
+                if (gamerInput[INPUT_TYPES.DOWN].action === "Down") {
+                    if(selectedSuspect < 2)
+                    {
+                        selectedSuspect++;
+                    }
+                    gamerInput[INPUT_TYPES.DOWN] = new GamerInput("None");
                 }
-                gamerInput[INPUT_TYPES.DOWN] = new GamerInput("None");
-            }
-            if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
-                confirmPopUp = true;
-                console.log("selected suspect");
-                gamerInput[INPUT_TYPES.SPACE] = new GamerInput("None");
-            }
+                if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
+                    confirmPopUp = true;
+                    console.log("selected suspect");
+                    gamerInput[INPUT_TYPES.SPACE] = new GamerInput("None");
+                }
 
             }
             
@@ -83,13 +120,14 @@ class SuspectInspectScreen
             {
                 if(gamerInput[INPUT_TYPES.ESCAPE].action === ("Esc-Up")){
                     confirmPopUp = false;
+                    
                 }
                 if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
                     console.log("accused suspect" + selectedSuspect);
                     currentScreenState = screenStates.EndScreen;
                 }
             }
-
+            gamerInput[INPUT_TYPES.ESCAPE] = new GamerInput("None");
 
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
@@ -97,34 +135,84 @@ class SuspectInspectScreen
             if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
             {
                 console.log("swapped to game");
+                selectedSuspect = 0;
                 currentScreenState = screenStates.GamePlayState;
                 gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
             }
-            if(playerMoveVector.x < 0)
+            if(joystickInteractVector.x > 0.8 && joystickInteractVector.y < 0.05 && joystickInteractVector.y > -0.005)
             {
+                selectedSuspect = 0;
                 currentScreenState = screenStates.NotesInspection;
+            }
+            if(joystickUpwardSelect == true)
+            {
+                if(selectedSuspect > 0)
+                    {
+                        selectedSuspect--;
+                    }
+                joystickUpwardSelect = false;
+            }
+            if(joystickDownwardSelect == true)
+            {
+                if(selectedSuspect < 2)
+                {
+                    selectedSuspect++;
+                }
+                joystickDownwardSelect = false;
             }
         }
     }
     draw()
     {
-        let selectInstructions = "Press A to accuse, Scroll between suspects with W/S, Note Screen: 'A' ";
-        let confirmInstructions = "Are you sure you want to accuse suspect " + selectedSuspect + " ? \n Space - Yes \n Esc - No" ;
         let suspectImgXPos = 590;
         let susepctImgYPositions = [95,248,407];
-        context.font = "30px serif";
+        let maxCharsPerLine = 43;
+        
         context.drawImage(suspectListBackground,0,0,context.canvas.width,context.canvas.height);
         //Scarf guy
-        context.fillText("Suspect List",context.canvas.width - context.canvas.width / 1.75, 50) ;
-        context.fillText(selectInstructions,context.canvas.width - context.canvas.width / 1.65, 640) ;
+        context.font = "35px serif";
+        context.fillText("Suspect List",context.canvas.width - context.canvas.width / 1.73, 50) ;
+        context.font = "26px serif";
+
+        if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+        {
+            for(let i = 0; i < this.keyboardInstructionTextArray.length; i++)
+            {
+                context.fillText(this.keyboardInstructionTextArray[i],context.canvas.width - context.canvas.width / 1.25, 640 + (30 * i));
+            }
+        }
+        if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+        {
+            for(let i = 0; i < this.joystickInstructionTextArray.length; i++)
+            {
+                context.fillText(this.joystickInstructionTextArray[i],context.canvas.width - context.canvas.width / 1.25, 640 + (30 * i));
+            }
+        }
+
         context.drawImage(suspectImg1,suspectImgXPos ,susepctImgYPositions[0], 100,135);
         context.drawImage(suspectImg2,suspectImgXPos ,susepctImgYPositions[1] + 5, 100,135);
         context.drawImage(redBorder,suspectImgXPos - 1 ,susepctImgYPositions[selectedSuspect], 105,140);
 
         if(confirmPopUp)
         {
-            context.drawImage(dialogueBoxImage,context.canvas.width - context.canvas.width / 1.35,context.canvas.height - context.canvas.height / 1.35 ,500,300);
-            context.fillText(confirmInstructions,context.canvas.width - context.canvas.width / 1.35, context.canvas.height - context.canvas.height / 1.55) ;
+            context.font = "35px serif";
+            context.drawImage(dialogueBoxImage,context.canvas.width - context.canvas.width / 1.05,context.canvas.height - context.canvas.height / 1.35 ,900,300);
+
+            if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+            {
+                for(let i = 0; i < this.keyboardConfirmTextArray.length; i++)
+                {
+                    context.fillText(this.keyboardConfirmTextArray[i],context.canvas.width - context.canvas.width / 1.2, 300 + (50 * i));
+                }
+            }
+            if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+            {
+                for(let i = 0; i < this.joystickConfirmTextArray.length; i++)
+                {
+                    context.fillText(this.joystickConfirmTextArray[i],context.canvas.width - context.canvas.width / 1.2, 300 + (50 * i));
+                }
+            }
+            
         }
 
     }
@@ -156,7 +244,7 @@ class NotesScreen
                 currentScreenState = screenStates.GamePlayState;
                 gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
             }
-            if(playerMoveVector.x > 0)
+            if(joystickInteractVector.x > 0)
             {
                 currentScreenState = screenStates.SuspectInspection;
             }
@@ -432,12 +520,13 @@ class ClueInspectScreen
         let clueInfoText = "";
         let clueImageSrc = "";
         let textLines = [];
+        let maxCharsPerLine = 40;
         switch(currentGameArea.area)
         {
             case AREA_TYPES.NOTE_ROOM:
                 clueInfoText = noteRoomScreen.cluesArray[interactableClueIndex].clueDetail;
                 clueImageSrc = noteRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
-                textLines = correctTextLength(clueInfoText); 
+                textLines = correctTextLength(clueInfoText,maxCharsPerLine); 
                 
                 if(interactableClueIndex != markedClueValues[0][interactableClueIndex])
                 {
@@ -454,7 +543,7 @@ class ClueInspectScreen
             case AREA_TYPES.SINK_ROOM:
                 clueInfoText = sinkRoomScreen.cluesArray[interactableClueIndex].clueDetail;
                 clueImageSrc = sinkRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
-                textLines = correctTextLength(clueInfoText);
+                textLines = correctTextLength(clueInfoText,maxCharsPerLine);
 
                 if(interactableClueIndex != markedClueValues[1][interactableClueIndex])
                 {
@@ -471,7 +560,7 @@ class ClueInspectScreen
             case AREA_TYPES.TILED_ROOM:
                 clueInfoText = tileRoomScreen.cluesArray[interactableClueIndex].clueDetail;
                 clueImageSrc = tileRoomScreen.cluesArray[interactableClueIndex].clueSrcImage;
-                textLines = correctTextLength(clueInfoText);
+                textLines = correctTextLength(clueInfoText,maxCharsPerLine);
 
                 if(interactableClueIndex != markedClueValues[2][interactableClueIndex])
                 {
@@ -488,7 +577,7 @@ class ClueInspectScreen
             case AREA_TYPES.HALL_ROOM:
                 clueInfoText = hallWayScreen.cluesArray[interactableClueIndex].clueDetail;
                 clueImageSrc = hallWayScreen.cluesArray[interactableClueIndex].clueSrcImage;
-                textLines = correctTextLength(clueInfoText);
+                textLines = correctTextLength(clueInfoText,maxCharsPerLine);
 
                 if(interactableClueIndex != markedClueValues[3][interactableClueIndex])
                 {
@@ -704,7 +793,7 @@ let notePageImage = new Image();
 notePageImage.src = "assets/img/notePage.png"
 
 let suspectListBackground = new Image();
-suspectListBackground.src = "assets/img/suspectListBackground.jpg"
+suspectListBackground.src = "assets/img/suspectListBackground.png"
 
 let suspectImg1 = new Image();
 suspectImg1.src = "assets/img/scarfFaceGuy.png"

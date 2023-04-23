@@ -31,9 +31,8 @@ const npcDialogue =
     "He used to be a rich man"
 ]
 
-function correctTextLength(clueInfoText)
+function correctTextLength(clueInfoText,maxCharsPerLine)
 {
-    let maxCharsPerLine = 40;
     let lineOneText = "";
     let detailsTextLines = [];
 

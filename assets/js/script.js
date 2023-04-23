@@ -7,26 +7,89 @@ const screenStates = Object.freeze({
     InventoryState: 2,
     ClueInspectState: 3,
     DialogueState: 4,
-    NotesInspection: 5
+    NotesInspection: 5,
+    SuspectInspection: 6
   });
 
 let notesTextArray = [];
+
+class SuspectInspectScreen
+{
+    update()
+    {
+        if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+        {
+            if (gamerInput[INPUT_TYPES.LEFT].action === "Left") 
+            {
+                console.log("swapped to game");
+                currentScreenState = screenStates.NotesInspection;
+                gamerInput[INPUT_TYPES.LEFT] = new GamerInput("None");
+            }
+            if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") 
+            {
+                console.log("swapped to game");
+                currentScreenState = screenStates.GamePlayState;
+                gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
+            }
+        }
+        if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+        {
+            if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
+            {
+                console.log("swapped to game");
+                currentScreenState = screenStates.GamePlayState;
+                gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
+            }
+            if(playerMoveVector.x < 0)
+            {
+                currentScreenState = screenStates.NotesInspection;
+            }
+        }
+       
+        console.log("udpating suspect screen");
+    }
+    draw()
+    {
+        console.log("drawing suspect screen");
+        context.drawImage(suspectListBackground,0,0,context.canvas.width,context.canvas.height);
+    }
+}
 
 class NotesScreen
 {
     
     update()
     {
-        if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") {
-            currentScreenState = screenStates.GamePlayState;
-            gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
-        }
-        if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
+        if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+        {
+            if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") {
+                currentScreenState = screenStates.GamePlayState;
+                gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
+            }
+            if (gamerInput[INPUT_TYPES.RIGHT].action === "Right") 
         {
             console.log("swapped to game");
-            currentScreenState = screenStates.GamePlayState;
-            gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
+            currentScreenState = screenStates.SuspectInspection;
+            gamerInput[INPUT_TYPES.RIGHT] = new GamerInput("None");
         }
+        }
+        if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+        {
+            if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
+            {
+                console.log("swapped to game");
+                currentScreenState = screenStates.GamePlayState;
+                gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
+            }
+            if(playerMoveVector.x > 0)
+            {
+                currentScreenState = screenStates.SuspectInspection;
+            }
+            
+        }
+        
+        
+        
         console.log("updating noteScreen");
     }
     draw()
@@ -454,6 +517,9 @@ function update() {
         case screenStates.NotesInspection:
             notesScreen.update();
             break;
+        case screenStates.SuspectInspection:
+            suspectScreen.update();
+            break;
         case screenStates.DialogueState:
             dialgueScreen.update();
             break;
@@ -479,6 +545,9 @@ function draw() {
             break;
         case screenStates.NotesInspection:
             notesScreen.draw();
+            break;
+        case screenStates.SuspectInspection:
+            suspectScreen.draw();
             break;
         case screenStates.GamePlayState:
             gameplayScreen.draw();
@@ -516,6 +585,7 @@ const inventoryScreen = new InventoryScreen();
 const clueDetailScreen = new ClueInspectScreen();
 const dialgueScreen = new DialogueScreen();
 const notesScreen = new NotesScreen();
+const suspectScreen = new SuspectInspectScreen();
 console.log(hallGridArea.grid[0]);
 console.log(hallGridArea.numOfTiles);
 npcImg.src = npcImageFiles[0];
@@ -550,6 +620,11 @@ let clueDetailImg = new Image();
 
 let notePageImage = new Image();
 notePageImage.src = "assets/img/notePage.png"
+
+let suspectListBackground = new Image();
+suspectListBackground.src = "assets/img/suspectListBackground.jpg"
+
+
 
 let markedClueValues = [
     [-1,-1,-1],

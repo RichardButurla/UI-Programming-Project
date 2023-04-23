@@ -13,6 +13,8 @@ const screenStates = Object.freeze({
 
 let notesTextArray = [];
 
+let selectedSuspect = 0; //used to index thorugh y pos array for positioning;
+
 class SuspectInspectScreen
 {
     update()
@@ -30,6 +32,22 @@ class SuspectInspectScreen
                 console.log("swapped to game");
                 currentScreenState = screenStates.GamePlayState;
                 gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
+            }
+
+            if (gamerInput[INPUT_TYPES.UP].action === "Up") {
+                if(selectedSuspect > 0)
+                {
+                    selectedSuspect--;
+                }
+                
+                gamerInput[INPUT_TYPES.UP] = new GamerInput("None");
+            }
+            if (gamerInput[INPUT_TYPES.DOWN].action === "Down") {
+                if(selectedSuspect < 2)
+                {
+                    selectedSuspect++;
+                }
+                gamerInput[INPUT_TYPES.DOWN] = new GamerInput("None");
             }
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
@@ -50,8 +68,19 @@ class SuspectInspectScreen
     }
     draw()
     {
+        let selectInstructions = "Press A to accuse, Scroll between suspects with W/S, Note Screen: 'A' ";
+        let suspectImgXPos = 590;
+        let susepctImgYPositions = [95,248,407];
         console.log("drawing suspect screen");
+        context.font = "30px serif";
         context.drawImage(suspectListBackground,0,0,context.canvas.width,context.canvas.height);
+        //Scarf guy
+        context.fillText("Suspect List",context.canvas.width - context.canvas.width / 1.75, 50) ;
+        context.fillText(selectInstructions,context.canvas.width - context.canvas.width / 1.65, 640) ;
+        context.drawImage(suspectImg1,suspectImgXPos ,susepctImgYPositions[0], 100,135);
+        context.drawImage(suspectImg2,suspectImgXPos ,susepctImgYPositions[1] + 5, 100,135);
+        context.drawImage(redBorder,suspectImgXPos - 1 ,susepctImgYPositions[selectedSuspect], 105,140);
+
     }
 }
 
@@ -623,6 +652,14 @@ notePageImage.src = "assets/img/notePage.png"
 
 let suspectListBackground = new Image();
 suspectListBackground.src = "assets/img/suspectListBackground.jpg"
+
+let suspectImg1 = new Image();
+suspectImg1.src = "assets/img/scarfFaceGuy.png"
+let suspectImg2 = new Image();
+suspectImg2.src = "assets/img/weirdGuyFace.png"
+
+let redBorder = new Image();
+redBorder.src = "assets/img/redBorder.png"
 
 
 

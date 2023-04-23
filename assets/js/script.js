@@ -13,6 +13,7 @@ const screenStates = Object.freeze({
   });
 
 let notesTextArray = [];
+let textArray = [];
 
 let gulitySuspect = 3;
 let selectedSuspect = 0; //used to index thorugh y pos array for positioning;
@@ -66,6 +67,15 @@ class SuspectInspectScreen
              "A - Yes",
              "B - No"
         ]
+        this.suspectInfo1 = ["Relation: ", "Alibi: ", "Possible Motive: " ];
+        this.suspectInfo2 = ["Relation: ", "Alibi: ", "Possible Motive: "];
+        this.suspectInfo3 = ["Relation: ", "Alibi: ", "Possible Motive: "];
+        this.suspectInfos = [3];
+
+        this.suspectInfos[0] = this.suspectInfo1;
+        this.suspectInfos[1] = this.suspectInfo2;
+        this.suspectInfos[2] = this.suspectInfo3;   
+        
     }
     update()
     {
@@ -191,6 +201,7 @@ class SuspectInspectScreen
         let susepctImgYPositions = [95,248,407];
         let maxCharsPerLine = 43;
         
+        
         context.drawImage(suspectListBackground,0,0,context.canvas.width,context.canvas.height);
         //Scarf guy
         context.font = "35px serif";
@@ -212,8 +223,47 @@ class SuspectInspectScreen
             }
         }
 
-        context.drawImage(suspectImg1,suspectImgXPos ,susepctImgYPositions[0], 100,135);
-        context.drawImage(suspectImg2,suspectImgXPos ,susepctImgYPositions[1] + 5, 100,135);
+        context.font = "20px serif";
+
+        if(talkedToSuspect[0])
+        {
+            context.drawImage(suspectImg1,suspectImgXPos ,susepctImgYPositions[0], 100,135);
+
+            for(let i = 0; i < this.suspectInfos[0].length; i++)
+            {
+                context.fillText(this.suspectInfos[0][i],350, 150 + (30 * i));
+            }
+        }
+        else{
+            context.drawImage(suspectUnknownImage,suspectImgXPos ,susepctImgYPositions[0], 100,135);      
+        }
+        if(talkedToSuspect[1])
+        {
+            context.drawImage(suspectImg2,suspectImgXPos ,susepctImgYPositions[1] + 5, 100,135);
+
+            for(let i = 0; i < this.suspectInfos[1].length; i++)
+            {
+                context.fillText(this.suspectInfos[1][i],350, 300 + (30 * i));
+            }  
+            
+        }
+        else{
+            context.drawImage(suspectUnknownImage,suspectImgXPos ,susepctImgYPositions[1], 100,135);      
+        }
+        if(talkedToSuspect[2])
+        {
+            context.drawImage(suspectImg3,suspectImgXPos ,susepctImgYPositions[2] + 5, 100,135);      
+
+            for(let i = 0; i < this.suspectInfos[2].length; i++)
+            {
+                context.fillText(this.suspectInfos[2][i],350, 450 + (30 * i));
+            }     
+        }
+        else{
+            context.drawImage(suspectUnknownImage,suspectImgXPos ,susepctImgYPositions[2], 100,135);      
+        }
+        
+        
         context.drawImage(redBorder,suspectImgXPos - 1 ,susepctImgYPositions[selectedSuspect], 105,140);
 
         if(confirmPopUp)
@@ -292,11 +342,15 @@ class NotesScreen
     }
     draw()
     {
-        context.font = "26px serif";
+        context.font = "35px serif";
         context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
         context.drawImage(notePageImage,40,0,context.canvas.width - 100,context.canvas.height - 100);
         context.drawImage(dialogueBoxImage,context.canvas.width - context.canvas.width / 1.15,context.canvas.height - context.canvas.height / 4,750,175);
-       
+
+        context.drawImage(dialogueBoxImage,context.canvas.width - context.canvas.width / 1.55,10,290,60);
+
+        context.fillText("Notes Screen",423, 52);
+        context.font = "26px serif";
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
         {
             for(let i = 0; i < this.keyboardNotesInstructions.length; i++)
@@ -684,16 +738,20 @@ class DialogueScreen
             case AREA_TYPES.NOTE_ROOM:
                 npcInfoText = noteRoomScreen.npc.npcDialogue;
                 npcImageSrc = noteRoomScreen.npc.npcObject.spritesheet;
+                talkedToSuspect[0] = true;
                 break;
             case AREA_TYPES.SINK_ROOM:
 
                 break;
             case AREA_TYPES.TILED_ROOM:
-
+                npcInfoText = tileRoomScreen.npc.npcDialogue;
+                npcImageSrc = tileRoomScreen.npc.npcObject.spritesheet;
+                talkedToSuspect[2] = true;
                 break;
             case AREA_TYPES.HALL_ROOM:
                 npcInfoText = hallWayScreen.npc.npcDialogue;
                 npcImageSrc = hallWayScreen.npc.npcObject.spritesheet;
+                talkedToSuspect[1] = true;
                 break;
         }
         context.font = "30px serif";
@@ -810,12 +868,16 @@ const endScreen = new EndScreen();
 
 
 npcImg.src = npcImageFiles[0];
+
+let npcImg3 = new Image();
+npcImg3.src = npcImageFiles[2];
+
 const noteRoomScreen = new NoteRoomScreen(setUpClueLocations(noteGridArea),setUpNPCLocations(noteGridArea,npcImg));
 const sinkRoomScreen = new SinkRoomScreen(setUpClueLocations(sinkGridArea));
-const tileRoomScreen = new TileRoomScreen(setUpClueLocations(tileGridArea));
+const tileRoomScreen = new TileRoomScreen(setUpClueLocations(tileGridArea),setUpNPCLocations(tileGridArea,npcImg3));
 let npcImg2 = new Image();
 npcImg2.src = npcImageFiles[1];
-const hallWayScreen = new HallWayScreen(hallGridArea,setUpNPCLocations(noteGridArea,npcImg2));
+const hallWayScreen = new HallWayScreen(hallGridArea,setUpNPCLocations(hallGridArea,npcImg2));
 
 setUpClueDetails(noteRoomScreen.cluesArray);
 setUpClueDetails(sinkRoomScreen.cluesArray);
@@ -823,6 +885,7 @@ setUpClueDetails(tileRoomScreen.cluesArray);
 
 setUpNpcDetails(noteRoomScreen.npc);
 setUpNpcDetails(hallWayScreen.npc);
+setUpNpcDetails(tileRoomScreen.npc);
 
 let currentScreenState = screenStates.GamePlayState;
 
@@ -845,15 +908,24 @@ notePageImage.src = "assets/img/notePage.png"
 let suspectListBackground = new Image();
 suspectListBackground.src = "assets/img/suspectListBackground.png"
 
+let suspectUnknownImage = new Image();
+suspectUnknownImage.src = "assets/img/questionMark.png"
+
 let suspectImg1 = new Image();
 suspectImg1.src = "assets/img/scarfFaceGuy.png"
 let suspectImg2 = new Image();
 suspectImg2.src = "assets/img/weirdGuyFace.png"
+let suspectImg3 = new Image();
+suspectImg3.src = "assets/img/poshFrogFace.png"
 
 let redBorder = new Image();
 redBorder.src = "assets/img/redBorder.png"
 
-
+let talkedToSuspect = [
+    false,
+    false,
+    false
+];
 
 let markedClueValues = [
     [-1,-1,-1],

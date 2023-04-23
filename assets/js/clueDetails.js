@@ -22,13 +22,15 @@ const clueImageFiles =
 const npcImageFiles = 
 [
     "assets/img/scarfGuy.png",
-    "assets/img/weirdGuy.png"
+    "assets/img/weirdGuy.png",
+    "assets/img/poshFrog.png"
 ]
 
 const npcDialogue = 
 [
     "Never knew the guy.",
-    "He used to be a rich man"
+    "He used to be a rich man",
+    "I used to trade for artifacts with him."
 ]
 
 function correctTextLength(clueInfoText,maxCharsPerLine)

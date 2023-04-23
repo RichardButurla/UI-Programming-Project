@@ -89,7 +89,7 @@ class SinkRoomScreen{
     }
     update()
     {
-
+        
     };
     draw()
     {
@@ -122,9 +122,11 @@ class SinkRoomScreen{
     };
 }
 class TileRoomScreen{
-    constructor(cluesArray)
+    constructor(cluesArray,npc)
     {
         this.cluesArray = cluesArray;
+        this.npc = npc;
+        this.npc.npcObject.spritesheet.src = npcImageFiles[2];
     }
     update()
     {      
@@ -155,10 +157,31 @@ class TileRoomScreen{
             interactableClueAvailable = false;
         }
 
+        if(checkNPCInteractAvailable(this.npc))
+        {
+            interactableNPCAvailable = true;
+
+            let shiftedClueXPos = this.npc.npcObject.x - interactButtonWidth / 1.5;
+            let shiftedClueYPos = this.npc.npcObject.y - interactButtonHeight / 1.5;
+            if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+            {
+                interactButtonImage.src = "assets/img/Keyboard & Mouse/Dark/E_Key_Dark.png"
+            }
+            else if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+            {
+                interactButtonImage.src = "assets/img/Xbox One/XboxOne_X.png"
+            }
+            context.drawImage(interactButtonImage,shiftedClueXPos,shiftedClueYPos,interactButtonWidth,interactButtonHeight);
+        }
+        else{
+            interactableNPCAvailable = false;
+        }
+
         for(let i = 0; i < this.cluesArray.length; i++)
         {
             this.cluesArray[i].drawClue();
         }
+        this.npc.drawNPC();
     };
     
 }
@@ -295,6 +318,8 @@ function checkNPCInteractAvailable(npc)
   
         let tileXPos = tileCol * gridArea.tileWidth;
         let tileYPos = tileRow * gridArea.tileHeight;
+
+        console.log("pos x: " + tileXPos+ " yPos: " + tileYPos);
   
         let npcObject = new GameObject(npcImage, tileXPos, tileYPos, 200, 200);
         npc = new NPC(npcImage, npcObject);

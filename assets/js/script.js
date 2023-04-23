@@ -8,13 +8,27 @@ const screenStates = Object.freeze({
     ClueInspectState: 3,
     DialogueState: 4,
     NotesInspection: 5,
-    SuspectInspection: 6
+    SuspectInspection: 6,
+    EndScreen: 7
   });
 
 let notesTextArray = [];
 
 let selectedSuspect = 0; //used to index thorugh y pos array for positioning;
 let confirmPopUp = false;
+
+class EndScreen
+{
+    update()
+    {
+        console.log("updating end Screen");
+    }
+    draw()
+    {
+        
+        context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
+    }
+}
 
 class SuspectInspectScreen
 {
@@ -72,6 +86,7 @@ class SuspectInspectScreen
                 }
                 if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
                     console.log("accused suspect" + selectedSuspect);
+                    currentScreenState = screenStates.EndScreen;
                 }
             }
 
@@ -586,6 +601,9 @@ function update() {
         case screenStates.InventoryState:
             inventoryScreen.update();
             break;
+        case screenStates.EndScreen:
+            endScreen.update();
+            break;
     }        
 }
 
@@ -608,6 +626,9 @@ function draw() {
             break;
         case screenStates.SuspectInspection:
             suspectScreen.draw();
+            break;
+        case screenStates.EndScreen:
+            endScreen.draw();
             break;
         case screenStates.GamePlayState:
             gameplayScreen.draw();
@@ -646,8 +667,9 @@ const clueDetailScreen = new ClueInspectScreen();
 const dialgueScreen = new DialogueScreen();
 const notesScreen = new NotesScreen();
 const suspectScreen = new SuspectInspectScreen();
-console.log(hallGridArea.grid[0]);
-console.log(hallGridArea.numOfTiles);
+const endScreen = new EndScreen();
+
+
 npcImg.src = npcImageFiles[0];
 const noteRoomScreen = new NoteRoomScreen(setUpClueLocations(noteGridArea),setUpNPCLocations(noteGridArea,npcImg));
 const sinkRoomScreen = new SinkRoomScreen(setUpClueLocations(sinkGridArea));

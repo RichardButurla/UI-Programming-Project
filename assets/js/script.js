@@ -243,7 +243,19 @@ class SuspectInspectScreen
 
 class NotesScreen
 {
-    
+    constructor()
+    {
+        this.keyboardNotesInstructions = [
+            "Collection of information on clues.",
+            "D Key: Suspect screen",
+            "Q Key: Exit"
+        ]
+        this.joystickNotesInstructions = [
+            "Collection of information on clues.",
+            "Right-Stick-Scroll: Suspect Screen",
+            "B-Button: Exit"
+        ]
+    }
     update()
     {
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
@@ -267,7 +279,7 @@ class NotesScreen
                 currentScreenState = screenStates.GamePlayState;
                 gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
             }
-            if(joystickInteractVector.x > 0)
+            if(joystickInteractVector.x > 0.8)
             {
                 currentScreenState = screenStates.SuspectInspection;
             }
@@ -280,13 +292,28 @@ class NotesScreen
     }
     draw()
     {
-        context.font = "30px serif";
+        context.font = "26px serif";
         context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
-        context.drawImage(notePageImage,0,0,context.canvas.width,context.canvas.height);
-        console.log(notesTextArray.length);
+        context.drawImage(notePageImage,40,0,context.canvas.width - 100,context.canvas.height - 100);
+        context.drawImage(dialogueBoxImage,context.canvas.width - context.canvas.width / 1.15,context.canvas.height - context.canvas.height / 4,750,175);
+       
+        if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+        {
+            for(let i = 0; i < this.keyboardNotesInstructions.length; i++)
+            {
+                context.fillText(this.keyboardNotesInstructions[i],203, 642  + (30 * i));
+            }
+        }
+        if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+        {
+            for(let i = 0; i < this.joystickNotesInstructions.length; i++)
+            {
+                context.fillText(this.joystickNotesInstructions[i],203, 642  + (30 * i));
+            }
+        }
         for(let i = 0; i < notesTextArray.length; i++)
         {
-            context.fillText(notesTextArray[i],230, 110  + (46 * i));
+            context.fillText(notesTextArray[i],230, 95  + (40 * i));
         }
     }
 }

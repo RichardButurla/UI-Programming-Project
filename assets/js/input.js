@@ -92,6 +92,10 @@ function checkKeyDown(event)
     {
         gamerInput[INPUT_TYPES.Q] = new GamerInput("Q-Down");
     }
+    if(event.keyCode == 27)
+    {
+        gamerInput[INPUT_TYPES.ESCAPE] = new GamerInput("Esc-Down");
+    }
 }
 
 function checkKeyUp(event)
@@ -135,6 +139,10 @@ function checkKeyUp(event)
     {
         gamerInput[INPUT_TYPES.Q] = new GamerInput("Q-Up");
     }
+    if(event.keyCode == 27)
+    {
+        gamerInput[INPUT_TYPES.ESCAPE] = new GamerInput("Esc-Up");
+    }
 }
 
 function GamerInput(input) {
@@ -158,9 +166,11 @@ X_BUTTON: 7,
 Y_BUTTON: 8,
 B_BUTTON: 9,
 A_BUTTON: 10,
+ESCAPE: 11
 }); //WASD,Spacebar
 
 let gamerInput = [
+    new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
     new GamerInput("None"),
@@ -175,7 +185,7 @@ let gamerInput = [
 ];
 
 let currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
-let numberOfInputs = 11;
+let numberOfInputs = 12;
 
 //Joystick
 var options = {

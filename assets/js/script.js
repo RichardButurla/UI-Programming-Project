@@ -14,6 +14,7 @@ const screenStates = Object.freeze({
 let notesTextArray = [];
 
 let selectedSuspect = 0; //used to index thorugh y pos array for positioning;
+let confirmPopUp = false;
 
 class SuspectInspectScreen
 {
@@ -21,6 +22,9 @@ class SuspectInspectScreen
     {
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
         {
+            if(!confirmPopUp)
+            {
+                //Swapping bewtten Note/this screen
             if (gamerInput[INPUT_TYPES.LEFT].action === "Left") 
             {
                 console.log("swapped to game");
@@ -34,6 +38,7 @@ class SuspectInspectScreen
                 gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
             }
 
+            //Suspect select
             if (gamerInput[INPUT_TYPES.UP].action === "Up") {
                 if(selectedSuspect > 0)
                 {
@@ -49,6 +54,28 @@ class SuspectInspectScreen
                 }
                 gamerInput[INPUT_TYPES.DOWN] = new GamerInput("None");
             }
+            if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
+                confirmPopUp = true;
+                console.log("selected suspect");
+                gamerInput[INPUT_TYPES.SPACE] = new GamerInput("None");
+            }
+
+            }
+            
+            
+            console.log(confirmPopUp);
+            //Confirm PopUp
+            if(confirmPopUp)
+            {
+                if(gamerInput[INPUT_TYPES.ESCAPE].action === ("Esc-Up")){
+                    confirmPopUp = false;
+                }
+                if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
+                    console.log("accused suspect" + selectedSuspect);
+                }
+            }
+
+
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
@@ -63,15 +90,13 @@ class SuspectInspectScreen
                 currentScreenState = screenStates.NotesInspection;
             }
         }
-       
-        console.log("udpating suspect screen");
     }
     draw()
     {
         let selectInstructions = "Press A to accuse, Scroll between suspects with W/S, Note Screen: 'A' ";
+        let confirmInstructions = "Are you sure you want to accuse suspect " + selectedSuspect + " ? \n Space - Yes \n Esc - No" ;
         let suspectImgXPos = 590;
         let susepctImgYPositions = [95,248,407];
-        console.log("drawing suspect screen");
         context.font = "30px serif";
         context.drawImage(suspectListBackground,0,0,context.canvas.width,context.canvas.height);
         //Scarf guy
@@ -80,6 +105,12 @@ class SuspectInspectScreen
         context.drawImage(suspectImg1,suspectImgXPos ,susepctImgYPositions[0], 100,135);
         context.drawImage(suspectImg2,suspectImgXPos ,susepctImgYPositions[1] + 5, 100,135);
         context.drawImage(redBorder,suspectImgXPos - 1 ,susepctImgYPositions[selectedSuspect], 105,140);
+
+        if(confirmPopUp)
+        {
+            context.drawImage(dialogueBoxImage,context.canvas.width - context.canvas.width / 1.35,context.canvas.height - context.canvas.height / 1.35 ,500,300);
+            context.fillText(confirmInstructions,context.canvas.width - context.canvas.width / 1.35, context.canvas.height - context.canvas.height / 1.55) ;
+        }
 
     }
 }

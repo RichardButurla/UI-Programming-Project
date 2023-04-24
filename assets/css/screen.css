@@ -99,9 +99,10 @@ div#modal{
 
 div#joystick-area
 {
+    position: absolute;
     width: 150px;
     height: 150px;
-    margin-left: 70%;
+    margin-left: 65%;
     margin-top: -22%;
-    border: 2px solid rgb(15, 107, 245)
+    border: 2px solid rgb(15, 107, 245) 
 }

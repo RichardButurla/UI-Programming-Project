@@ -3,7 +3,7 @@
   "short_name": "UI-Prog_Project",
   "lang": "en-GB",
   "display": "standalone",
-  "orientation": "landscape-primary",
+  "orientation": "landscape",
   "background_color": "white",
   "theme_color": "white",
   "start_url": "/final-project-richard-buturla/index.html",

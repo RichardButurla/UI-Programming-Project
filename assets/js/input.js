@@ -193,7 +193,7 @@ var options = {
     color: 'grey',
     maxNumberOfNipples: 0,
     zone: document.getElementById('joystick-area'),
-    position: {left: '87.5%', top: '47.5%'},
+    position: {left: '50%', top: '47.5%'},
 };
 
 

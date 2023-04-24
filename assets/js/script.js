@@ -400,6 +400,7 @@ class GamePlayScreen
 {
     update()
     {
+        
         player.animatePlayer();
 
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
@@ -429,7 +430,8 @@ class GamePlayScreen
                 playerIdle = false;
                 playerMovingDown = false;
                 playerMovingUp = true;
-                playerObject.y -= 5; // Move Player Up      
+                playerObject.y -= 5; // Move Player Up    
+                moved = true;  
             } 
             if (gamerInput[INPUT_TYPES.DOWN].action === "Down") {
                 playerMovingRight = false;
@@ -439,6 +441,7 @@ class GamePlayScreen
                 playerMovingUp = false;
                 player.playerPreviousPosition.y = playerObject.y;
                 playerObject.y += 5; // Move Player Down
+                moved = true;
             } 
              if (gamerInput[INPUT_TYPES.LEFT].action === "Left") {
                 playerMovingRight = false;
@@ -448,6 +451,7 @@ class GamePlayScreen
                 playerMovingUp = false;
                 player.playerPreviousPosition.x = playerObject.x;
                 playerObject.x -= 5; // Move Player Left
+                moved = true;
             } 
              if (gamerInput[INPUT_TYPES.RIGHT].action === "Right") {
                 playerMovingRight = true;
@@ -457,6 +461,7 @@ class GamePlayScreen
                 playerMovingUp = false;
                 player.playerPreviousPosition.x = playerObject.x;
                 playerObject.x += 5; // Move Player Right
+                moved = true;
             }
             if(gamerInput[INPUT_TYPES.RIGHT].action === "None" && gamerInput[INPUT_TYPES.LEFT].action === "None" 
             && gamerInput[INPUT_TYPES.UP].action === "None" && gamerInput[INPUT_TYPES.DOWN].action === "None")
@@ -464,6 +469,7 @@ class GamePlayScreen
                 playerIdle = true;
                 playerMovingLeft = false;
                 playerMovingRight = false;
+                moved = false;
             }
             
             if (gamerInput[INPUT_TYPES.E].action === "E-Up") {
@@ -560,7 +566,13 @@ class GamePlayScreen
                 break;
         }
         
-        
+        if(moved)
+        {
+            playerXPos = playerObject.x;
+            playerYPos = playerObject.y;
+            localStorage.setItem("player.x", playerXPos);
+            localStorage.setItem("player.y", playerYPos);
+        }
         
     };
     draw()

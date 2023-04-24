@@ -186,6 +186,7 @@ let gamerInput = [
 
 let currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
 let numberOfInputs = 12;
+let moved = false;
 
 //Joystick
 var options = {
@@ -206,7 +207,7 @@ dynamic.on('start', function (evt, nipple) {
     //move mario not just vertically and horizontally
      nipple.on('move', function (evt, data) {
         currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
-
+        moved = true;
         playerMoveVector.x = data.vector.x;
         playerMoveVector.y = data.vector.y;
 
@@ -246,7 +247,7 @@ dynamic.on('start', function (evt, nipple) {
      nipple.on('end', function (evt, data) {
         //So we only interact once using joystick and not constantly
 
-
+        moved = false;
         joystickInteractVector.x = 0;
         joystickInteractVector.y = 0;
         playerMoveVector.x = 0;

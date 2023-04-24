@@ -116,9 +116,27 @@ class NPC
 }
 
 //Player
+var playerXPos = localStorage.getItem('player.x');
+var playerYPos = localStorage.getItem('player.y');
+
+if(playerXPos == null)
+{
+    playerXPos = 0;
+}
+else{
+    playerXPos = parseInt(localStorage.getItem('player.x')); //parse this
+}
+if(playerYPos == null)
+{
+    playerYPos = 0;
+}
+else{
+    playerYPos = parseInt(localStorage.getItem('player.y')); //parse this
+}
+
 let playerImg = new Image();
 playerImg.src = "assets/img/detective.png";
-let playerObject = new GameObject(playerImg, 120, 500, 100, 150);
+let playerObject = new GameObject(playerImg, playerXPos, playerYPos, 100, 150);
 let player = new Player(playerImg,playerObject);
 let playerMoveVector = new Vector(0,0);
 let playerSpeed = 3;

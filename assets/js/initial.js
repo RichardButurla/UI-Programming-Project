@@ -4,40 +4,39 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
   } else {
     // Code to execute if the website is being accessed from a desktop device
     console.log("desktop");
-    const dPad = document.getElementById("dPad");
+    const dPad = document.getElementById("dPad");  
     const joyStickArea = document.getElementById("joystick-area");
     joyStickArea.style.display = "none";
     dPad.style.display = "none";
   }
 
-
 if(typeof(Storage) !== "undefined") {
    
     // console.log("Local storage is supported.");
     // Local storage is available on your browser
+    
     const username = localStorage.getItem('username');
-    const score = localStorage.getItem('score');
+    const playerX = localStorage.getItem('player.x');
+    const playerY = localStorage.getItem('player.y');
     const canvas = document.getElementById("the_canvas");
     let form = document.forms["helloForm"];
     let header = document.getElementById("main-header");
-    if(username)
-    {   
+
+    if (username){
+        
         canvas.classList.add("showed");
-        form.style.display = "none";
         header.innerHTML = "Player: " + username;
-    }
-    if (username && score){
-        
-        
         form.style.display = "none";
         let modal = document.getElementById("modal");
+        console.log(playerX);
         let modalContent = modal.children[0].children[2];
-        if(score > 0)
+        if(playerX != 50 && playerY != 450)
         {
+            console.log(playerX);
             canvas.classList.remove("showed");
             header.innerHTML = "";
             modal.style.display = "block";
-            modalContent.innerHTML = "username: " + username + "<br>" + "score: " + score;
+            modalContent.innerHTML = "username: " + username + "<br>";
         }
         
 
@@ -50,12 +49,13 @@ if(typeof(Storage) !== "undefined") {
         dismissButton.onclick = function(){
             modal.style.display = "none";
             form.style.display = "block";
-            localStorage.setItem("score", 0)
-            console.log("dismiss called");
-            localStorage.setItem('score',0);
-            canvas.classList.add("showed");
+            canvas.classList.remove("showed");
             //the following is not necessary in this case, but I'll leave it here in case you need it later
-            // localStorage.clear();
+            localStorage.clear();
+            localStorage.setItem("player.x", 50);
+            localStorage.setItem("player.y", 450);
+            moved = false;
+            console.log("startFresh");
         }
     }
     else{

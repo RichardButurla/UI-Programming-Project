@@ -103,6 +103,7 @@ class AreaManager
                 currentGameArea.area = AREA_TYPES.HALL_ROOM;
                 break;
         }
+        localStorage.setItem("area", currentGameArea.area);
         backgroundImg.src = "assets/img/" + currentGameArea.area + ".png";
         this.getNewAreaSpawnPos();
     }
@@ -161,6 +162,28 @@ function GamePlayArea(area)
     this.area = area; //held as string
 }
 
+function getStartGrid()
+{
+    console.log(currentGameArea.area);
+    let startGrid;
+    switch(currentGameArea.area)
+        {
+            case AREA_TYPES.NOTE_ROOM:
+                startGrid = noteGridArea;
+                break;
+            case AREA_TYPES.SINK_ROOM:
+                startGrid = sinkGridArea;
+                break;
+            case AREA_TYPES.TILED_ROOM:
+                startGrid = tileGridArea;
+                break;
+            case AREA_TYPES.HALL_ROOM:
+                startGrid = hallGridArea;
+                break;
+        }
+        return startGrid;
+}
+
 const AREA_TYPES = Object.freeze({ 
     SINK_ROOM: "sinkRoom",
     NOTE_ROOM: "noteRoom",
@@ -168,7 +191,10 @@ const AREA_TYPES = Object.freeze({
     HALL_ROOM: "verticalHall"
   }); //different game areas
   
-let currentGameArea = new GamePlayArea(AREA_TYPES.NOTE_ROOM,3);
+const startArea = localStorage.getItem('area');
+let currentGameArea = new GamePlayArea(startArea);
+
+
 
 
 let tileGridArea = new Grid();
@@ -183,8 +209,7 @@ noteGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,noteRoomGr
 let hallGridArea = new Grid();
 hallGridArea.setUpGrid(context.canvas.width,context.canvas.height,8,6,verticalHallGrid);
 
-let currentGridArea = noteGridArea;
-
+let currentGridArea = getStartGrid();
 let areaEnterancePos = new Vector(120,500);
 let atAreaExit = false;
 let areaExitCell = -1;

@@ -54,6 +54,7 @@ if(typeof(Storage) !== "undefined") {
             localStorage.clear();
             localStorage.setItem("player.x", 50);
             localStorage.setItem("player.y", 450);
+            localStorage.setItem("area", "noteRoom");
             moved = false;
             console.log("startFresh");
         }

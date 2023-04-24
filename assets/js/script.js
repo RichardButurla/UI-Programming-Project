@@ -77,9 +77,9 @@ class SuspectInspectScreen
              "A - Yes",
              "B - No"
         ]
-        this.suspectInfo1 = ["Relation: ", "Alibi: ", "Possible Motive: " ];
-        this.suspectInfo2 = ["Relation: ", "Alibi: ", "Possible Motive: "];
-        this.suspectInfo3 = ["Relation: ", "Alibi: ", "Possible Motive: "];
+        this.suspectInfo1 = ["Relation: Relative", "Alibi: Visiting ", "Possible Motive: Family Issues?" ];
+        this.suspectInfo2 = ["Relation: None ", "Alibi: Passerby", "Possible Motive: Unknown"];
+        this.suspectInfo3 = ["Relation: Business Partner", "Alibi: Meetings", "Possible Motive: Profits?"];
         this.suspectInfos = [3];
 
         this.suspectInfos[0] = this.suspectInfo1;
@@ -240,7 +240,7 @@ class SuspectInspectScreen
             }
         }
 
-        context.font = "20px serif";
+        context.font = "17px serif";
 
         if(talkedToSuspect[0])
         {
@@ -653,7 +653,7 @@ class ClueInspectScreen
         let clueInfoText = "";
         let clueImageSrc = "";
         let textLines = [];
-        let maxCharsPerLine = 40;
+        let maxCharsPerLine = 48;
         switch(currentGameArea.area)
         {
             case AREA_TYPES.NOTE_ROOM:
@@ -728,7 +728,7 @@ class ClueInspectScreen
         context.font = "30px serif";
         for(let i = 0; i < textLines.length; i++)
         {
-            context.fillText(textLines[i],270, context.canvas.height - 100 - (30 * (textLines.length - 1)) + (50 * i));
+            context.fillText(textLines[i],230, context.canvas.height - 100 - (30 * (textLines.length - 1)) + (40 * i));
         }
 
         //Clue image
@@ -759,6 +759,8 @@ class DialogueScreen
     {
         let npcInfoText = "";
         let npcImageSrc = "";
+        let npcInfoArray = [];
+        let maxCharsPerLine = 60;
 
         context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
         
@@ -783,12 +785,16 @@ class DialogueScreen
                 talkedToSuspect[1] = true;
                 break;
         }
-        
+        npcInfoArray = correctTextLength(npcInfoText,maxCharsPerLine);
         localStorage.setItem('npcsInteracted',JSON.stringify(talkedToSuspect));
         context.font = "30px serif";
         context.drawImage(npcImageSrc,75 ,100, context.canvas.width - 150,600);
         context.drawImage(dialogueBoxImage,75 ,context.canvas.height / 1.5, context.canvas.width - 150,192);
-        context.fillText(npcInfoText,270, context.canvas.height - 150);
+        for(let i = 0; i < npcInfoArray.length; i++)
+        {
+            context.fillText(npcInfoArray[i],150, context.canvas.height - 200 + (30 * i));
+        }
+        
 
     }
 }

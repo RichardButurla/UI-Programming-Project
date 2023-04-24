@@ -2,11 +2,11 @@
 
 const clueDetails = 
 [
-    "There seems to be a room down here..",
-    "Victim didnt finish preparing food..",
-    "Theres is an axe missing here. Mabye it was the murder weapon?",
-    "Someone searched this chest in a hurry. Perhaps they wanted some valuebles",
-    "Damage to tiles on the ground, someone was struggling to run away while being attacked.",
+    "You notice a decently-sized hole in the wooden floorboards.",
+    "There are vegetables on the cutting board, in the middle of being chopped. A knife lies beside them.",
+    "You see that one of the axes is missing from the wall.",
+    "There are two chests in the storage room. One of them is open and empty.",
+    "You notice that the tiles on the ground in the storage room are damaged, revealing the old concrete beneath.",
     
 
 ]
@@ -28,35 +28,25 @@ const npcImageFiles =
 
 const npcDialogue = 
 [
-    "Never knew the guy.",
-    "He used to be a rich man",
-    "I used to trade for artifacts with him."
+    "I was in the storage room earlier today, but I didn't see anything out of the ordinary. I swear!",
+    "I was passing through the area and saw nothing of interest. Now leave me alone.",
+    "I've been in meetings all day. I couldn't have had anything to do with this."
 ]
 
-function correctTextLength(clueInfoText,maxCharsPerLine)
-{
-    let lineOneText = "";
+function correctTextLength(clueInfoText, maxCharsPerLine) {
     let detailsTextLines = [];
-
-    if(clueInfoText.length > maxCharsPerLine)
-    {
-        
-        for(let i = 0; i < maxCharsPerLine; i++)
-        {
-            lineOneText += clueInfoText[i];
-        }
-        detailsTextLines[0] = lineOneText;
-        lineOneText = "";
-        for(let i = maxCharsPerLine; i < clueInfoText.length; i++)
-        {
-            lineOneText += clueInfoText[i];
-        }    
-        detailsTextLines[1] = lineOneText;  
+    
+    if (clueInfoText.length <= maxCharsPerLine) {
+      // If the input string is shorter than or equal to maxCharsPerLine,
+      // simply return it as the only element in the array
+      detailsTextLines.push(clueInfoText);
+    } else {
+      // If the input string is longer than maxCharsPerLine, split it into
+      // an array of substrings of length maxCharsPerLine
+      for (let i = 0; i < clueInfoText.length; i += maxCharsPerLine) {
+        detailsTextLines.push(clueInfoText.substr(i, maxCharsPerLine));
+      }
     }
-    else
-    {
-        detailsTextLines[0] = clueInfoText;
-    }
+  
     return detailsTextLines;
-        
-}
+  }

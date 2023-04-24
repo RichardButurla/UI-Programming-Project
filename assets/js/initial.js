@@ -8,8 +8,7 @@ if(typeof(Storage) !== "undefined") {
     let form = document.forms["helloForm"];
     let header = document.getElementById("main-header");
     if(username)
-    {
-        
+    {   
         canvas.classList.add("showed");
         form.style.display = "none";
         header.innerHTML = "Player: " + username;

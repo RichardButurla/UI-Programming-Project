@@ -38,8 +38,12 @@ class EndScreen
     draw()
     {
         context.font = "30px serif";
-        //context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
-        context.fillText(this.endText,context.canvas.width - (context.canvas.width / 1.75), context.canvas.height - (context.canvas.height / 2));
+        context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
+        context.drawImage(dialogueBoxImage,context.canvas.width - context.canvas.width / 1.35,context.canvas.height - context.canvas.height / 1.5,context.canvas.width - context.canvas.width / 2,300);
+        context.drawImage(dialogueBoxImage,context.canvas.width - context.canvas.width / 1.25,0,600,100);
+        context.fillText(this.endText,context.canvas.width - (context.canvas.width / 1.65), context.canvas.height - (context.canvas.height / 2.2));
+        context.font = "40px serif";
+        context.fillText("Game Over",context.canvas.width - (context.canvas.width / 1.70), 55);
     }
 }
 

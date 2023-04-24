@@ -55,6 +55,10 @@ if(typeof(Storage) !== "undefined") {
             localStorage.setItem("player.x", 50);
             localStorage.setItem("player.y", 450);
             localStorage.setItem("area", "noteRoom");
+            const noteTest = [];
+            localStorage.setItem('notes', JSON.stringify(noteTest));
+            const npcsInteracted = [false, false, false];
+            localStorage.setItem('npcsInteracted',JSON.stringify(npcsInteracted));
             moved = false;
             console.log("startFresh");
         }

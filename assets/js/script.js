@@ -12,7 +12,13 @@ const screenStates = Object.freeze({
     EndScreen: 7
   });
 
-let notesTextArray = [];
+
+const storedArrayString = localStorage.getItem('notes');
+// Parse the string back into an array
+const storedArray = JSON.parse(storedArrayString);
+
+
+let notesTextArray = storedArray;
 let textArray = [];
 
 let gulitySuspect = 3;
@@ -777,6 +783,8 @@ class DialogueScreen
                 talkedToSuspect[1] = true;
                 break;
         }
+        
+        localStorage.setItem('npcsInteracted',JSON.stringify(talkedToSuspect));
         context.font = "30px serif";
         context.drawImage(npcImageSrc,75 ,100, context.canvas.width - 150,600);
         context.drawImage(dialogueBoxImage,75 ,context.canvas.height / 1.5, context.canvas.width - 150,192);
@@ -869,6 +877,7 @@ function gameloop() {
 function addClueToNotes(string)
 {
     notesTextArray.push(string);   
+    localStorage.setItem('notes', JSON.stringify(notesTextArray));
 }
 
 window.requestAnimationFrame(gameloop);
@@ -944,11 +953,10 @@ suspectImg3.src = "assets/img/poshFrogFace.png"
 let redBorder = new Image();
 redBorder.src = "assets/img/redBorder.png"
 
-let talkedToSuspect = [
-    false,
-    false,
-    false
-];
+const npcsInteractedString = localStorage.getItem('npcsInteracted');
+const npcsInteracted = npcsInteractedString ? JSON.parse(npcsInteractedString) : [];
+
+let talkedToSuspect = npcsInteracted;
 
 let markedClueValues = [
     [-1,-1,-1],

@@ -37,10 +37,9 @@ if(typeof(Storage) !== "undefined") {
         header.style.marginLeft = "0%"
         form.style.display = "none";
     }
-    if (username && (notesAarray.length / 2) > 0){
+    if (username && notes && (notesAarray.length / 2) > 0){
         vid.pause();
         video.style.display = "none"
-        canvas.classList.add("showed");
         header.innerHTML = "Detective: " + username;
         header.style.marginLeft = "0%"
         form.style.display = "none";

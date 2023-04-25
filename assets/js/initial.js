@@ -62,7 +62,7 @@ if(typeof(Storage) !== "undefined") {
         header.style.marginLeft = "0%"
         form.style.display = "none";
         if (username && notes ){
-            
+
             if((notesAarray.length / 2) > 0)
             {
                 vid.pause();
@@ -81,6 +81,16 @@ if(typeof(Storage) !== "undefined") {
                     modalContent.style.color = "aliceblue"
                     modalContent.innerHTML = "Detective: " + username + "<br>" + "Notes Collected:" + (notesAarray.length / 2);   
             }
+        }
+        else{
+            localStorage.setItem("player.x", 50);
+        localStorage.setItem("player.y", 450);
+        localStorage.setItem("area", "noteRoom");
+        const noteTest = [];
+        localStorage.setItem('notes', JSON.stringify(noteTest));
+        const npcsInteracted = [false, false, false];
+        localStorage.setItem('npcsInteracted',JSON.stringify(npcsInteracted));
+        moved = false;
         }
     }  
     else{

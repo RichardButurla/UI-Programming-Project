@@ -12,7 +12,6 @@ dismissButton.onclick = function(){
     form.style.display = "block";
     canvas.classList.remove("showed");
     //the following is not necessary in this case, but I'll leave it here in case you need it later
-    localStorage.clear();
     localStorage.setItem("player.x", 50);
     localStorage.setItem("player.y", 450);
     localStorage.setItem("area", "noteRoom");
@@ -62,29 +61,38 @@ if(typeof(Storage) !== "undefined") {
         header.innerHTML = "Detective: " + username;
         header.style.marginLeft = "0%"
         form.style.display = "none";
-    }
-    if (username && notes ){
-        if((notesAarray.length / 2) > 0)
-        {
-            vid.pause();
-            video.style.display = "none"
-            header.innerHTML = "Detective: " + username;
-            header.style.marginLeft = "0%"
-            form.style.display = "none";
-            let modal = document.getElementById("modal");
-            console.log(playerX);
-            let modalContent = modal.children[0].children[2];
+        if (username && notes ){
+            
+            if((notesAarray.length / 2) > 0)
+            {
+                vid.pause();
+                video.style.display = "none"
+                header.innerHTML = "Detective: " + username;
+                header.style.marginLeft = "0%"
+                form.style.display = "none";
+                let modal = document.getElementById("modal");
                 console.log(playerX);
-                canvas.classList.remove("showed");
-                header.innerHTML = "";
-                modal.style.display = "block";
-                modalContent.style.fontSize = "36px";
-                modalContent.style.color = "aliceblue"
-                modalContent.innerHTML = "Detective: " + username + "<br>" + "Notes Collected:" + (notesAarray.length / 2);   
+                let modalContent = modal.children[0].children[2];
+                    console.log(playerX);
+                    canvas.classList.remove("showed");
+                    header.innerHTML = "";
+                    modal.style.display = "block";
+                    modalContent.style.fontSize = "36px";
+                    modalContent.style.color = "aliceblue"
+                    modalContent.innerHTML = "Detective: " + username + "<br>" + "Notes Collected:" + (notesAarray.length / 2);   
+            }
         }
-    }
+    }  
     else{
-        
+
+        localStorage.setItem("player.x", 50);
+        localStorage.setItem("player.y", 450);
+        localStorage.setItem("area", "noteRoom");
+        const noteTest = [];
+        localStorage.setItem('notes', JSON.stringify(noteTest));
+        const npcsInteracted = [false, false, false];
+        localStorage.setItem('npcsInteracted',JSON.stringify(npcsInteracted));
+        moved = false;
         console.log("no data in localStorage, loading new session")
     }
   } else {

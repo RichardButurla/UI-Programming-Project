@@ -184,6 +184,14 @@ let gamerInput = [
     new GamerInput("None")
 ];
 
+function clearInputs()
+{
+    for(let i = 0; i < gamerInput.length; i++)
+    {
+        gamerInput[i] = new GamerInput("None");
+    }
+}
+
 let currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
 let numberOfInputs = 12;
 let moved = false;

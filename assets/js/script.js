@@ -40,6 +40,41 @@ class MainMenu
     }
 }
 
+
+
+class ClueInspectHUD
+{
+    constructor()
+    {
+        this.boxSizeX = 150;
+        this.boxSizeY = 50;
+        this.instructions = "      :  Exit"
+        this.keyboardUiButtonSrc = "assets/img/Keyboard & Mouse/Dark/Esc_Key_Dark.png";
+        this.jostickUiButtonSrc = "assets/img/Xbox One/XboxOne_B.png";
+        this.buttonUi = new Image();
+    }
+    update()
+    {
+        if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+        {
+            this.buttonUi.src = this.keyboardUiButtonSrc;
+        }
+        if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+        {
+            this.buttonUi.src = this.jostickUiButtonSrc;
+        }
+
+    }
+    draw()
+    {
+        context.font = "20px serif";
+
+        context.drawImage(dialogueBoxImage,context.canvas.width - this.boxSizeX,0 + this.boxSizeY / 2,this.boxSizeX,this.boxSizeY);   
+        context.fillText(this.instructions,context.canvas.width - this.boxSizeX + 40,0 + this.boxSizeY + 5);
+        context.drawImage(this.buttonUi,context.canvas.width - (this.boxSizeX /1.10),0 + this.boxSizeY / 2, 50 , 50 );
+    }
+}
+
 class UiHUD
 {
     constructor()
@@ -47,37 +82,29 @@ class UiHUD
         this.boxSizeX = 400;
         this.boxSizeY = 50;
         this.instructions = " Notes/Suspects          /             Interact"
-        this.keyboardUiButtonsSrcs = ["assets/img/Keyboard & Mouse/Dark/Q_Key_Dark.png" , "assets/img/Keyboard & Mouse/Dark/E_Key_Dark.png", "assets/img/Keyboard & Mouse/Dark/Space_Key_Dark.png"];
-        this.jostickUiButtonsSrc = ["assets/img/Xbox One/XboxOne_Y.png" , "assets/img/Xbox One/XboxOne_X.png", "assets/img/Xbox One/XboxOne_A.png "]
-        this.buttonUis = [interactButtonImage ,enterAreaButtonImage,otherInteractKeyImg];
+        this.buttonUis = [otherInteractKeyImg ,interactButtonImage,enterAreaButtonImage];
     }
     update()
     {
-
+        if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+        {
+            otherInteractKeyImg.src = "assets/img/Keyboard & Mouse/Dark/Q_Key_Dark.png";
+        }
+        if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+        {
+            otherInteractKeyImg.src = "assets/img/Xbox One/XboxOne_Y.png";
+            interactButtonImage.src = "assets/img/Xbox One/XboxOne_X.png"
+        }
     }
     draw()
     {
         context.font = "20px serif";
 
-        if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
-        {
-            for(let i = 0; i < this.buttonUis.length; i++)
-            {
-                this.buttonUis[i].src = this.keyboardUiButtonsSrcs[i];
-            }
-        }
-        if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
-        {
-            for(let i = 0; i < this.buttonUis.length; i++)
-            {
-                this.buttonUis[i].src = this.jostickUiButtonsSrc[i];
-            }
-        }
         context.drawImage(dialogueBoxImage,context.canvas.width - this.boxSizeX,0 + this.boxSizeY / 2,this.boxSizeX,this.boxSizeY);   
         context.fillText(this.instructions,context.canvas.width - this.boxSizeX + 65,0 + this.boxSizeY + 5);
         context.drawImage(this.buttonUis[0],context.canvas.width - (this.boxSizeX /1.05),0 + this.boxSizeY / 2, 50 , 50 );
-        context.drawImage(this.buttonUis[1],context.canvas.width - (this.boxSizeX /1.1) + 155   ,0 + this.boxSizeY / 2, 50 , 50 );
-        context.drawImage(this.buttonUis[2],context.canvas.width - (this.boxSizeX /1.1) + 215   ,0 + this.boxSizeY / 2, 50 , 50 );
+        context.drawImage(interactButtonImage,context.canvas.width - (this.boxSizeX /1.1) + 155   ,0 + this.boxSizeY / 2, 50 , 50 );
+        context.drawImage(enterAreaButtonImage,context.canvas.width - (this.boxSizeX /1.1) + 215   ,0 + this.boxSizeY / 2, 50 , 50 );
 
     }
 }
@@ -117,7 +144,8 @@ class SuspectInspectScreen
         this.keyboardInstructionTextArray = [
             "Press Space to accuse,",
             "Scroll between suspects with W    /   S   keys,",
-            "Press  'A'  key for Note Screen "
+            "Press  'A'  key for Note Screen,",
+            "Press   E   key to exit."
         ];
         this.joystickInstructionTextArray = [
             "Press A     to accuse,",
@@ -125,14 +153,14 @@ class SuspectInspectScreen
             "        :Note Screen"
         ];
         this.keyboardConfirmTextArray = [
-            "Are you sure you want to accuse this suspect ",
-             "Space - Yes",
-             "Esc - No"
+            "Are you sure you want to accuse this suspect? ",
+             "Space   : Yes",
+             "        : No"
         ];
         this.joystickConfirmTextArray = [
-            "Are you sure you want to accuse this suspect ",
-             "A - Yes",
-             "B - No"
+            "Are you sure you want to accuse this suspect? ",
+             "        Yes",
+             "        No"
         ]
         this.suspectInfo1 = ["Relation: Relative", "Alibi: Visiting ", "Possible Motive: Family Issues?" ];
         this.suspectInfo2 = ["Relation: None ", "Alibi: Passerby", "Possible Motive: Unknown"];
@@ -145,7 +173,7 @@ class SuspectInspectScreen
 
 
         this.uiButtonImages = []
-        for(let i = 0; i < 4; i++)
+        for(let i = 0; i < 5; i++)
         {
             this.uiButtonImages[i] = new Image();
         }
@@ -153,13 +181,17 @@ class SuspectInspectScreen
             "assets/img/Keyboard & Mouse/Dark/Space_Key_Dark.png " ,
              "assets/img/Keyboard & Mouse/Dark/W_Key_Dark.png",
               "assets/img/Keyboard & Mouse/Dark/S_Key_Dark.png",
-              "assets/img/Keyboard & Mouse/Dark/A_Key_Dark.png"
+              "assets/img/Keyboard & Mouse/Dark/A_Key_Dark.png",
+              "assets/img/Keyboard & Mouse/Dark/Esc_Key_Dark.png"
             ];
 
         this.jostickUiButtonsSrc = [
             "assets/img/Xbox One/XboxOne_A.png" ,
              "assets/img/XboxOne_Right_Stick_Vertical.png", 
-             "assets/img/XboxOne_Right_Stick_Left.png"]
+             "assets/img/XboxOne_Right_Stick_Left.png",
+             "assets/img/Xbox One/XboxOne_B.png" 
+            ]
+
     }
     update()
     {
@@ -178,14 +210,12 @@ class SuspectInspectScreen
                     console.log("swapped to game");
                     selectedSuspect = 0
                     currentScreenState = screenStates.NotesInspection;
-                    gamerInput[INPUT_TYPES.LEFT] = new GamerInput("None");
                 }
-                if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") 
+                if (gamerInput[INPUT_TYPES.ESCAPE].action === "Esc-Up") 
                 {
                     console.log("swapped to game");
                     currentScreenState = screenStates.GamePlayState;
                     selectedSuspect = 0;
-                    gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
                 }
 
             //Suspect select
@@ -194,15 +224,12 @@ class SuspectInspectScreen
                     {
                         selectedSuspect--;
                     }
-                    
-                    gamerInput[INPUT_TYPES.UP] = new GamerInput("None");
                 }
                 if (gamerInput[INPUT_TYPES.DOWN].action === "Down") {
                     if(selectedSuspect < 2)
                     {
                         selectedSuspect++;
                     }
-                    gamerInput[INPUT_TYPES.DOWN] = new GamerInput("None");
                 }
                 if (gamerInput[INPUT_TYPES.SPACE].action === "SpaceUp") {
                     if(talkedToSuspect[selectedSuspect])
@@ -211,7 +238,6 @@ class SuspectInspectScreen
                         console.log("selected suspect");
                         
                     }
-                    gamerInput[INPUT_TYPES.SPACE] = new GamerInput("None");
                 }
 
             }
@@ -230,7 +256,6 @@ class SuspectInspectScreen
                     currentScreenState = screenStates.EndScreen;
                 }
             }
-            gamerInput[INPUT_TYPES.ESCAPE] = new GamerInput("None");
 
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
@@ -247,7 +272,6 @@ class SuspectInspectScreen
                     console.log("swapped to game");
                     selectedSuspect = 0;
                     currentScreenState = screenStates.GamePlayState;
-                    gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
                 }
                 if (gamerInput[INPUT_TYPES.A_BUTTON].action === "A-Button-Up") 
                 {
@@ -256,7 +280,6 @@ class SuspectInspectScreen
                         confirmPopUp = true;
                         console.log("selected suspect");   
                     }
-                    gamerInput[INPUT_TYPES.A_BUTTON] = new GamerInput("None");
                 }
                 if(joystickInteractVector.x < -0.5)
                 {
@@ -285,16 +308,15 @@ class SuspectInspectScreen
                 if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
                 {
                     confirmPopUp = false;
-                    gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
                 }
                 if (gamerInput[INPUT_TYPES.A_BUTTON].action === "A-Button-Up") 
                 {
                     console.log("accused suspect" + selectedSuspect);
                     currentScreenState = screenStates.EndScreen;
-                    gamerInput[INPUT_TYPES.A_BUTTON] = new GamerInput("None");
                 }
             }
         }
+        clearInputs();
     }
     draw()
     {
@@ -314,13 +336,14 @@ class SuspectInspectScreen
         {
             for(let i = 0; i < this.keyboardInstructionTextArray.length; i++)
             {
-                context.fillText(this.keyboardInstructionTextArray[i],context.canvas.width - context.canvas.width / 1.25, 640 + (30 * i));
+                context.fillText(this.keyboardInstructionTextArray[i],context.canvas.width - context.canvas.width / 1.25, 618 + (35 * i));
                 
             }
-            context.drawImage(this.uiButtonImages[0],265 ,602, 65,65);
-            context.drawImage(this.uiButtonImages[1],505 ,635, 55,55);
-            context.drawImage(this.uiButtonImages[2],570 ,635, 55,55);
-            context.drawImage(this.uiButtonImages[3],257 ,670, 55,55);
+            context.drawImage(this.uiButtonImages[0],265 ,580, 65,65);
+            context.drawImage(this.uiButtonImages[1],505 ,615, 55,55);
+            context.drawImage(this.uiButtonImages[2],570 ,615, 55,55);
+            context.drawImage(this.uiButtonImages[3],257 ,650, 55,55);
+            context.drawImage(this.uiButtonImages[4],257 ,690, 55,55);
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
@@ -385,15 +408,19 @@ class SuspectInspectScreen
             {
                 for(let i = 0; i < this.keyboardConfirmTextArray.length; i++)
                 {
-                    context.fillText(this.keyboardConfirmTextArray[i],context.canvas.width - context.canvas.width / 1.2, 300 + (50 * i));
+                    context.fillText(this.keyboardConfirmTextArray[i],context.canvas.width - context.canvas.width / 1.2, 300 + (60 * i));
                 }
+                context.drawImage(this.uiButtonImages[0],170 ,300, 100,100);
+                context.drawImage(this.uiButtonImages[4],170 ,375, 70,70);
             }
             if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
             {
                 for(let i = 0; i < this.joystickConfirmTextArray.length; i++)
                 {
-                    context.fillText(this.joystickConfirmTextArray[i],context.canvas.width - context.canvas.width / 1.2, 300 + (50 * i));
+                    context.fillText(this.joystickConfirmTextArray[i],context.canvas.width - context.canvas.width / 1.2, 300 + (65 * i));
                 }
+                context.drawImage(this.uiButtonImages[0],160 ,315, 70,70);
+                context.drawImage(this.uiButtonImages[3],160 ,380, 70,70);
             }
             
         }
@@ -408,7 +435,7 @@ class NotesScreen
         this.keyboardNotesInstructions = [
             "Collection of information on clues.",
             "D Key: Suspect screen",
-            "Q Key: Exit"
+            "E Key: Exit"
         ]
         this.joystickNotesInstructions = [
             "Collection of information on clues.",
@@ -423,7 +450,7 @@ class NotesScreen
         }
         this.keyboardUiButtonsSrcs = [
             "assets/img/Keyboard & Mouse/Dark/D_Key_Dark.png " ,
-             "assets/img/Keyboard & Mouse/Dark/Q_Key_Dark.png"
+             "assets/img/Keyboard & Mouse/Dark/Esc_Key_Dark.png"
             ];
 
         this.jostickUiButtonsSrc = [
@@ -432,6 +459,8 @@ class NotesScreen
     }
     update()
     {
+
+        
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
         {
             for(let i = 0; i < this.keyboardUiButtonsSrcs.length;i++)
@@ -440,15 +469,15 @@ class NotesScreen
             }
 
 
-            if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") {
+            if (gamerInput[INPUT_TYPES.ESCAPE].action === "Esc-Up") {
                 currentScreenState = screenStates.GamePlayState;
-                gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
+                
             }
             if (gamerInput[INPUT_TYPES.RIGHT].action === "Right") 
         {
             console.log("swapped to game");
             currentScreenState = screenStates.SuspectInspection;
-            gamerInput[INPUT_TYPES.RIGHT] = new GamerInput("None");
+            
         }
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
@@ -463,7 +492,7 @@ class NotesScreen
             {
                 console.log("swapped to game");
                 currentScreenState = screenStates.GamePlayState;
-                gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
+                
             }
             if(joystickInteractVector.x > 0.8)
             {
@@ -472,7 +501,7 @@ class NotesScreen
             
         }
         
-        
+        clearInputs();
         
         console.log("updating noteScreen");
     }
@@ -492,7 +521,7 @@ class NotesScreen
         {
             for(let i = 0; i < this.keyboardNotesInstructions.length; i++)
             {
-                context.fillText(this.keyboardNotesInstructions[i],208, 635  + (40 * i));
+                context.fillText(this.keyboardNotesInstructions[i],208, 630  + (45 * i));
             }
             context.drawImage(this.uiButtonImages[0],180 ,638, 55,55);
             context.drawImage(this.uiButtonImages[1],180 ,683, 55,55);
@@ -599,13 +628,15 @@ class GamePlayScreen
                 {
                     currentScreenState = screenStates.DialogueState;
                 }
-                gamerInput[INPUT_TYPES.E] = new GamerInput("None");
+                
             }
             if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") {
                 currentScreenState = screenStates.NotesInspection;
                 console.log("NoteScreen")
-                gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
+                
             }
+            gamerInput[INPUT_TYPES.E] = new GamerInput("None");
+            gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
@@ -743,9 +774,14 @@ class GamePlayScreen
 
 class ClueInspectScreen
 {
+    constructor()
+    {
+        this.hud = new ClueInspectHUD();
+    }
     update()
     {
-        if (gamerInput[INPUT_TYPES.E].action === "E-Up") 
+        this.hud.update();
+        if (gamerInput[INPUT_TYPES.ESCAPE].action === "Esc-Up") 
         {
             console.log("swapped to game");
             currentScreenState = screenStates.GamePlayState;
@@ -755,8 +791,7 @@ class ClueInspectScreen
             console.log("swapped to game");
             currentScreenState = screenStates.GamePlayState;
         }
-        gamerInput[INPUT_TYPES.E] = new GamerInput("None");
-        gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
+        clearInputs();
     }
     draw()
     {
@@ -842,12 +877,14 @@ class ClueInspectScreen
         context.font = "30px serif";
         for(let i = 0; i < textLines.length; i++)
         {
-            context.fillText(textLines[i],230, context.canvas.height - 100 - (30 * (textLines.length - 1)) + (40 * i));
+            context.fillText(textLines[i],230, context.canvas.height - 90 - (30 * (textLines.length - 1)) + (40 * i));
         }
 
         //Clue image
         clueDetailImg.src = clueImageSrc;
         context.drawImage(clueDetailImg,context.canvas.width - context.canvas.width / 1.66 ,context.canvas.height / 6.1, 210 ,192);
+
+        this.hud.draw();
         
     }
 }
@@ -1005,7 +1042,6 @@ window.requestAnimationFrame(gameloop);
 window.addEventListener('keydown', input);
 // disable the second event listener if you want continuous movement
 window.addEventListener('keyup', input);
-
 
 
 //Instances

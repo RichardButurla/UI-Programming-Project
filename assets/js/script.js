@@ -42,7 +42,7 @@ class MainMenu
 
 
 
-class ClueInspectHUD
+class InspectHud
 {
     constructor()
     {
@@ -100,11 +100,11 @@ class UiHUD
     {
         context.font = "20px serif";
 
-        context.drawImage(dialogueBoxImage,context.canvas.width - this.boxSizeX,0 + this.boxSizeY / 2,this.boxSizeX,this.boxSizeY);   
-        context.fillText(this.instructions,context.canvas.width - this.boxSizeX + 65,0 + this.boxSizeY + 5);
-        context.drawImage(this.buttonUis[0],context.canvas.width - (this.boxSizeX /1.05),0 + this.boxSizeY / 2, 50 , 50 );
-        context.drawImage(interactButtonImage,context.canvas.width - (this.boxSizeX /1.1) + 155   ,0 + this.boxSizeY / 2, 50 , 50 );
-        context.drawImage(enterAreaButtonImage,context.canvas.width - (this.boxSizeX /1.1) + 215   ,0 + this.boxSizeY / 2, 50 , 50 );
+        context.drawImage(dialogueBoxImage,context.canvas.width / 1.45 - this.boxSizeX,0 + this.boxSizeY / 2,this.boxSizeX,this.boxSizeY);   
+        context.fillText(this.instructions,context.canvas.width / 1.45 - this.boxSizeX + 65,0 + this.boxSizeY + 5);
+        context.drawImage(this.buttonUis[0],context.canvas.width / 1.45 - (this.boxSizeX /1.05),0 + this.boxSizeY / 2, 50 , 50 );
+        context.drawImage(interactButtonImage,context.canvas.width / 1.45 - (this.boxSizeX /1.1) + 155   ,0 + this.boxSizeY / 2, 50 , 50 );
+        context.drawImage(enterAreaButtonImage,context.canvas.width / 1.45 - (this.boxSizeX /1.1) + 215   ,0 + this.boxSizeY / 2, 50 , 50 );
 
     }
 }
@@ -236,7 +236,7 @@ class SuspectInspectScreen
                     {
                         confirmPopUp = true;
                         console.log("selected suspect");
-                        
+                        gamerInput[INPUT_TYPES.SPACE] = new GamerInput("None");
                     }
                 }
 
@@ -776,7 +776,7 @@ class ClueInspectScreen
 {
     constructor()
     {
-        this.hud = new ClueInspectHUD();
+        this.hud = new InspectHud();
     }
     update()
     {
@@ -891,9 +891,14 @@ class ClueInspectScreen
 
 class DialogueScreen
 {
+    constructor()
+    {
+        this.hud = new InspectHud;
+    }
     update()
     {
-        if (gamerInput[INPUT_TYPES.E].action === "E-Up") 
+        this.hud.update();
+        if (gamerInput[INPUT_TYPES.ESCAPE].action === "Esc-Up") 
         {
             console.log("swapped to game");
             currentScreenState = screenStates.GamePlayState;
@@ -903,11 +908,11 @@ class DialogueScreen
             console.log("swapped to game");
             currentScreenState = screenStates.GamePlayState;
         }
-        gamerInput[INPUT_TYPES.E] = new GamerInput("None");
-        gamerInput[INPUT_TYPES.B_BUTTON] = new GamerInput("None");
+        clearInputs();
     }
     draw()
     {
+
         let npcInfoText = "";
         let npcImageSrc = "";
         let npcInfoArray = [];
@@ -945,7 +950,7 @@ class DialogueScreen
         {
             context.fillText(npcInfoArray[i],150, context.canvas.height - 200 + (30 * i));
         }
-        
+        this.hud.draw();
 
     }
 }

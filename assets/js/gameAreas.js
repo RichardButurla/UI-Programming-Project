@@ -5,14 +5,14 @@ let interactableNPCAvailable = false;
 
 function withinRange(object1,object2)
 {
-    let range = 100;
-    let xOrigin1 = object1.x + object1.width;
-    let xOrigin2 = object2.x + object2.height;
-    let yOrigin1 = object1.y + object1.width;
-    let yOrigin2 = object2.y + object2.height;
+    let range = 120;
+    let xOrigin1 = object1.x + object1.width / 2;
+    let xOrigin2 = object2.x + object2.width / 2;
+    let yOrigin1 = object1.y + object1.height / 2;
+    let yOrigin2 = object2.y + object2.height / 2;
 
-    let xDistance = (xOrigin1 - xOrigin2 ) *  (xOrigin1 - xOrigin2 );
-    let yDistance = (yOrigin1 - yOrigin2) * (yOrigin1 - yOrigin2);
+    let xDistance = (xOrigin2 - xOrigin1 ) *  (xOrigin2 - xOrigin1 );
+    let yDistance = (yOrigin2 - yOrigin1) * (yOrigin2 - yOrigin1);
      if(Math.sqrt( xDistance  + yDistance) < range)
      {
          return true;

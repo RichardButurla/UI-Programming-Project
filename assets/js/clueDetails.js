@@ -2,7 +2,7 @@
 
 const clueDetails = 
 [
-    "You notice a decently-sized hole in the wooden floorboards.",
+    "You notice a decently-sized hole in the wooden floorboards and documents looted.",
     "There are vegetables on the cutting board, in the middle of being chopped. A knife lies beside them.",
     "You see that one of the axes is missing from the wall.",
     "There are two chests in the storage room. One of them is open and empty.",

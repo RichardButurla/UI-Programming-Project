@@ -29,28 +29,28 @@ dismissButton.onclick = function(){
     vid.style.display = "block";
 }
 
-// if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-//     console.log("mobile");
-//     // Code to execute if the website is being accessed from a mobile device
-//   } else {
-//     // Code to execute if the website is being accessed from a desktop device
-//     console.log("desktop");
-//     const dPad = document.getElementById("dPad");  
-//     const joyStickArea = document.getElementById("joystick-area");
-//     joyStickArea.style.display = "none";
-//     dPad.style.display = "none";
-//   }
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    console.log("mobile");
+    currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
+    // Code to execute if the website is being accessed from a mobile device
+  } else {
+    // Code to execute if the website is being accessed from a desktop device
+    currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
+    console.log("desktop");
+    const dPad = document.getElementById("dPad");  
+    const joyStickArea = document.getElementById("joystick-area");
+    joyStickArea.style.display = "none";
+    dPad.style.display = "none";
+  }
 
 if(typeof(Storage) !== "undefined") {
    
     // console.log("Local storage is supported.");
     // Local storage is available on your browser
-    
-
-   
         
     if(username)
     {
+        
         vid.pause();
         video.style.display = "none"
         canvas.classList.add("showed");

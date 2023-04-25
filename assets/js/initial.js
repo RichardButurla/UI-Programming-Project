@@ -1,3 +1,5 @@
+var vid = document.getElementById("menuVideo");
+
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     console.log("mobile");
     // Code to execute if the website is being accessed from a mobile device
@@ -16,28 +18,42 @@ if(typeof(Storage) !== "undefined") {
     // Local storage is available on your browser
     
     const username = localStorage.getItem('username');
+    const notes = localStorage.getItem('notes');
+    const notesAarray = JSON.parse(notes);
     const playerX = localStorage.getItem('player.x');
     const playerY = localStorage.getItem('player.y');
     const canvas = document.getElementById("the_canvas");
     let form = document.forms["helloForm"];
     let header = document.getElementById("main-header");
-
-    if (username){
+    var video = document.getElementById("menuVideo");
+   
         
+    if(username)
+    {
+        vid.pause();
+        video.style.display = "none"
         canvas.classList.add("showed");
-        header.innerHTML = "Player: " + username;
+        header.innerHTML = "Detective: " + username;
+        header.style.marginLeft = "0%"
+        form.style.display = "none";
+    }
+    if (username && (notesAarray.length / 2) > 0){
+        vid.pause();
+        video.style.display = "none"
+        canvas.classList.add("showed");
+        header.innerHTML = "Detective: " + username;
+        header.style.marginLeft = "0%"
         form.style.display = "none";
         let modal = document.getElementById("modal");
         console.log(playerX);
         let modalContent = modal.children[0].children[2];
-        if(playerX != 50 && playerY != 450)
-        {
             console.log(playerX);
             canvas.classList.remove("showed");
             header.innerHTML = "";
             modal.style.display = "block";
-            modalContent.innerHTML = "username: " + username + "<br>";
-        }
+            modalContent.style.fontSize = "36px";
+            modalContent.style.color = "aliceblue"
+            modalContent.innerHTML = "Detective: " + username + "<br>" + "Notes Collected:" + (notesAarray.length / 2);
         
 
         let validateButton = document.getElementsByClassName("saved-data-accept")[0];
@@ -45,6 +61,7 @@ if(typeof(Storage) !== "undefined") {
         validateButton.onclick = function(){
             modal.style.display = "none";
             canvas.classList.add("showed");
+            vid.pause();
         }
         dismissButton.onclick = function(){
             modal.style.display = "none";
@@ -61,9 +78,12 @@ if(typeof(Storage) !== "undefined") {
             localStorage.setItem('npcsInteracted',JSON.stringify(npcsInteracted));
             moved = false;
             console.log("startFresh");
+            vid.play();
+            vid.style.display = "block";
         }
     }
     else{
+        
         console.log("no data in localStorage, loading new session")
     }
   } else {

@@ -19,11 +19,16 @@
 </head>
 <body>
 
-    <h1 id="main-header">Hello</h1>
+      <video autoplay loop unmuted  id="menuVideo">
+        <source src="assets/vids/intro.mp4" type="video/mp4">
+      </video>
 
-    <form name="helloForm" method="get" onsubmit="validateForm()">
-        My Name: <input type="text" name="name">
-        <input type="submit" value="Submit">
+
+    <h1 id="main-header">Crime Solver</h1>
+
+    <form name="helloForm" method="get" onsubmit="validateForm()"><p id="name">
+        Detective Name: </p> <input id="name-Input"type="text" name="name">
+        <input id="submit-input" type="submit" value="Submit">
     </form>
   
   <section class="wrapper">
@@ -61,9 +66,9 @@
 
     <div class="modal-content">
       <span class="close">&times;</span>
-      <p>You seem to have played a session on this device before. <br>Existing local data:</p>
+      <p id="modal-text">You seem to have played a session on this device before. <br>Existing local data:</p>
       <code class="present-saved-data"></code>
-      <p>Would you like to retrieve your previous score and settings?</p>
+      <p id="modal-text">Would you like to retrieve your previous score and settings?</p>
       <button class="saved-data-accept">Yes, restore the saved game</button><button class="saved-data-refusal">No, start fresh</button>
     </div>
 

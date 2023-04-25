@@ -11,6 +11,8 @@ const canvas = document.getElementById("the_canvas");
 let form = document.forms["helloForm"];
 let header = document.getElementById("main-header");
 var video = document.getElementById("menuVideo");
+const dPad = document.getElementById("dPad");  
+const joyStickArea = document.getElementById("joystick-area");
 
 validateButton.onclick = function(){
     modal.style.display = "none";
@@ -31,14 +33,11 @@ dismissButton.onclick = function(){
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     console.log("mobile");
-    currentControls = CONTROLS_TYPE.JOYSTICK_BUTTONS;
     // Code to execute if the website is being accessed from a mobile device
   } else {
     // Code to execute if the website is being accessed from a desktop device
-    currentControls = CONTROLS_TYPE.MOUSE_KEYBOARD;
     console.log("desktop");
-    const dPad = document.getElementById("dPad");  
-    const joyStickArea = document.getElementById("joystick-area");
+    
     joyStickArea.style.display = "none";
     dPad.style.display = "none";
   }
@@ -47,10 +46,9 @@ if(typeof(Storage) !== "undefined") {
    
     // console.log("Local storage is supported.");
     // Local storage is available on your browser
-        
+
     if(username)
     {
-        
         vid.pause();
         video.style.display = "none"
         canvas.classList.add("showed");
@@ -105,7 +103,7 @@ if(typeof(Storage) !== "undefined") {
   } else {
     console.log("Local storage is not supported.");
     // The condition isn't met, meaning local storage isn't supported
-  }
+}
 
 // Stores the item data
 

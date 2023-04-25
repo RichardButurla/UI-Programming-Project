@@ -48,7 +48,7 @@ class UiHUD
         this.boxSizeY = 50;
         this.instructions = " Notes/Suspects          /             Interact"
         this.keyboardUiButtonsSrcs = ["assets/img/Keyboard & Mouse/Dark/Q_Key_Dark.png" , "assets/img/Keyboard & Mouse/Dark/E_Key_Dark.png", "assets/img/Keyboard & Mouse/Dark/Space_Key_Dark.png"];
-        this.jostickUiButtonsSrc = ["assets/img/Xbox One/XboxOne_A.png" , "assets/img/Xbox One/XboxOne_X.png", "assets/img/Xbox One/XboxOne_Y.png "]
+        this.jostickUiButtonsSrc = ["assets/img/Xbox One/XboxOne_Y.png" , "assets/img/Xbox One/XboxOne_X.png", "assets/img/Xbox One/XboxOne_A.png "]
         this.buttonUis = [interactButtonImage ,enterAreaButtonImage,otherInteractKeyImg];
     }
     update()
@@ -116,13 +116,13 @@ class SuspectInspectScreen
     {
         this.keyboardInstructionTextArray = [
             "Press Space to accuse,",
-            "Scroll between suspects with W/S keys,",
-            "Press 'A' key for Note Screen "
+            "Scroll between suspects with W    /   S   keys,",
+            "Press  'A'  key for Note Screen "
         ];
         this.joystickInstructionTextArray = [
-            "Press A to accuse,",
-            "Scroll between suspects with Stick-Up/Down,",
-            "Left-Stick-Scroll: Note Screen"
+            "Press A     to accuse,",
+            "Scroll between suspects with ",
+            "        :Note Screen"
         ];
         this.keyboardConfirmTextArray = [
             "Are you sure you want to accuse this suspect ",
@@ -142,12 +142,34 @@ class SuspectInspectScreen
         this.suspectInfos[0] = this.suspectInfo1;
         this.suspectInfos[1] = this.suspectInfo2;
         this.suspectInfos[2] = this.suspectInfo3;   
-        
+
+
+        this.uiButtonImages = []
+        for(let i = 0; i < 4; i++)
+        {
+            this.uiButtonImages[i] = new Image();
+        }
+        this.keyboardUiButtonsSrcs = [
+            "assets/img/Keyboard & Mouse/Dark/Space_Key_Dark.png " ,
+             "assets/img/Keyboard & Mouse/Dark/W_Key_Dark.png",
+              "assets/img/Keyboard & Mouse/Dark/S_Key_Dark.png",
+              "assets/img/Keyboard & Mouse/Dark/A_Key_Dark.png"
+            ];
+
+        this.jostickUiButtonsSrc = [
+            "assets/img/Xbox One/XboxOne_A.png" ,
+             "assets/img/XboxOne_Right_Stick_Vertical.png", 
+             "assets/img/XboxOne_Right_Stick_Left.png"]
     }
     update()
     {
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
         {
+            for(let i = 0; i < this.keyboardUiButtonsSrcs.length;i++)
+            {
+                this.uiButtonImages[i].src = this.keyboardUiButtonsSrcs[i];
+            }
+
             if(!confirmPopUp)
             {
                 //Swapping bewtten Note/this screen
@@ -213,6 +235,11 @@ class SuspectInspectScreen
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
+            for(let i = 0; i < this.jostickUiButtonsSrc.length;i++)
+            {
+                this.uiButtonImages[i].src = this.jostickUiButtonsSrc[i];
+            }
+
             if(!confirmPopUp)
             {
                 if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
@@ -276,6 +303,7 @@ class SuspectInspectScreen
         let maxCharsPerLine = 43;
         
         
+        
         context.drawImage(suspectListBackground,0,0,context.canvas.width,context.canvas.height);
         //Scarf guy
         context.font = "35px serif";
@@ -287,14 +315,22 @@ class SuspectInspectScreen
             for(let i = 0; i < this.keyboardInstructionTextArray.length; i++)
             {
                 context.fillText(this.keyboardInstructionTextArray[i],context.canvas.width - context.canvas.width / 1.25, 640 + (30 * i));
+                
             }
+            context.drawImage(this.uiButtonImages[0],265 ,602, 65,65);
+            context.drawImage(this.uiButtonImages[1],505 ,635, 55,55);
+            context.drawImage(this.uiButtonImages[2],570 ,635, 55,55);
+            context.drawImage(this.uiButtonImages[3],257 ,670, 55,55);
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
             for(let i = 0; i < this.joystickInstructionTextArray.length; i++)
             {
-                context.fillText(this.joystickInstructionTextArray[i],context.canvas.width - context.canvas.width / 1.25, 640 + (30 * i));
+                context.fillText(this.joystickInstructionTextArray[i],context.canvas.width - context.canvas.width / 1.25, 640 + (33 * i));
             }
+            context.drawImage(this.uiButtonImages[0],258 ,602, 55,55);
+            context.drawImage(this.uiButtonImages[1],510 ,635, 55,55);
+            context.drawImage(this.uiButtonImages[2],200 ,673, 55,55);
         }
 
         context.font = "17px serif";
@@ -975,7 +1011,7 @@ setUpNpcDetails(noteRoomScreen.npc);
 setUpNpcDetails(hallWayScreen.npc);
 setUpNpcDetails(tileRoomScreen.npc);
 
-let currentScreenState = screenStates.GamePlayState;
+let currentScreenState = screenStates.SuspectInspection;
 
 let frameTimeLimit = 14;
 

@@ -1,4 +1,30 @@
 var vid = document.getElementById("menuVideo");
+let validateButton = document.getElementsByClassName("saved-data-accept")[0];
+let dismissButton = document.getElementsByClassName("saved-data-refusal")[0];
+
+validateButton.onclick = function(){
+    modal.style.display = "none";
+    canvas.classList.add("showed");
+    vid.pause();
+}
+dismissButton.onclick = function(){
+    modal.style.display = "none";
+    form.style.display = "block";
+    canvas.classList.remove("showed");
+    //the following is not necessary in this case, but I'll leave it here in case you need it later
+    localStorage.clear();
+    localStorage.setItem("player.x", 50);
+    localStorage.setItem("player.y", 450);
+    localStorage.setItem("area", "noteRoom");
+    const noteTest = [];
+    localStorage.setItem('notes', JSON.stringify(noteTest));
+    const npcsInteracted = [false, false, false];
+    localStorage.setItem('npcsInteracted',JSON.stringify(npcsInteracted));
+    moved = false;
+    console.log("startFresh");
+    vid.play();
+    vid.style.display = "block";
+}
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     console.log("mobile");
@@ -37,48 +63,24 @@ if(typeof(Storage) !== "undefined") {
         header.style.marginLeft = "0%"
         form.style.display = "none";
     }
-    if (username && notes && (notesAarray.length / 2) > 0){
-        vid.pause();
-        video.style.display = "none"
-        header.innerHTML = "Detective: " + username;
-        header.style.marginLeft = "0%"
-        form.style.display = "none";
-        let modal = document.getElementById("modal");
-        console.log(playerX);
-        let modalContent = modal.children[0].children[2];
-            console.log(playerX);
-            canvas.classList.remove("showed");
-            header.innerHTML = "";
-            modal.style.display = "block";
-            modalContent.style.fontSize = "36px";
-            modalContent.style.color = "aliceblue"
-            modalContent.innerHTML = "Detective: " + username + "<br>" + "Notes Collected:" + (notesAarray.length / 2);
-        
-
-        let validateButton = document.getElementsByClassName("saved-data-accept")[0];
-        let dismissButton = document.getElementsByClassName("saved-data-refusal")[0];
-        validateButton.onclick = function(){
-            modal.style.display = "none";
-            canvas.classList.add("showed");
+    if (username && notes ){
+        if((notesAarray.length / 2) > 0)
+        {
             vid.pause();
-        }
-        dismissButton.onclick = function(){
-            modal.style.display = "none";
-            form.style.display = "block";
-            canvas.classList.remove("showed");
-            //the following is not necessary in this case, but I'll leave it here in case you need it later
-            localStorage.clear();
-            localStorage.setItem("player.x", 50);
-            localStorage.setItem("player.y", 450);
-            localStorage.setItem("area", "noteRoom");
-            const noteTest = [];
-            localStorage.setItem('notes', JSON.stringify(noteTest));
-            const npcsInteracted = [false, false, false];
-            localStorage.setItem('npcsInteracted',JSON.stringify(npcsInteracted));
-            moved = false;
-            console.log("startFresh");
-            vid.play();
-            vid.style.display = "block";
+            video.style.display = "none"
+            header.innerHTML = "Detective: " + username;
+            header.style.marginLeft = "0%"
+            form.style.display = "none";
+            let modal = document.getElementById("modal");
+            console.log(playerX);
+            let modalContent = modal.children[0].children[2];
+                console.log(playerX);
+                canvas.classList.remove("showed");
+                header.innerHTML = "";
+                modal.style.display = "block";
+                modalContent.style.fontSize = "36px";
+                modalContent.style.color = "aliceblue"
+                modalContent.innerHTML = "Detective: " + username + "<br>" + "Notes Collected:" + (notesAarray.length / 2);   
         }
     }
     else{

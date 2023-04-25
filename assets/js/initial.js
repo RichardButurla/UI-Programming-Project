@@ -1,4 +1,5 @@
 var vid = document.getElementById("menuVideo");
+vid.play();
 let validateButton = document.getElementsByClassName("saved-data-accept")[0];
 let dismissButton = document.getElementsByClassName("saved-data-refusal")[0];
 

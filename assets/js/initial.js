@@ -101,6 +101,7 @@ if(typeof(Storage) !== "undefined") {
         localStorage.setItem('npcsInteracted',JSON.stringify(npcsInteracted));
         moved = false;
         console.log("no data in localStorage, loading new session")
+        vid.play();
     }
   } else {
     console.log("Local storage is not supported.");

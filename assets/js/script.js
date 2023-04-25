@@ -412,14 +412,34 @@ class NotesScreen
         ]
         this.joystickNotesInstructions = [
             "Collection of information on clues.",
-            "Right-Stick-Scroll: Suspect Screen",
-            "B-Button: Exit"
+            "      : Suspect Screen",
+            "      : Exit"
         ]
+
+        this.uiButtonImages = []
+        for(let i = 0; i < 4; i++)
+        {
+            this.uiButtonImages[i] = new Image();
+        }
+        this.keyboardUiButtonsSrcs = [
+            "assets/img/Keyboard & Mouse/Dark/D_Key_Dark.png " ,
+             "assets/img/Keyboard & Mouse/Dark/Q_Key_Dark.png"
+            ];
+
+        this.jostickUiButtonsSrc = [
+            "assets/img/Xbox One/XboxOne_B.png" , 
+             "assets/img/XboxOne_Right_Stick_Right.png"]
     }
     update()
     {
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
         {
+            for(let i = 0; i < this.keyboardUiButtonsSrcs.length;i++)
+            {
+                this.uiButtonImages[i].src = this.keyboardUiButtonsSrcs[i];
+            }
+
+
             if (gamerInput[INPUT_TYPES.Q].action === "Q-Up") {
                 currentScreenState = screenStates.GamePlayState;
                 gamerInput[INPUT_TYPES.Q] = new GamerInput("None");
@@ -433,6 +453,12 @@ class NotesScreen
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
+            for(let i = 0; i < this.jostickUiButtonsSrc.length;i++)
+            {
+                this.uiButtonImages[i].src = this.jostickUiButtonsSrc[i];
+            }
+
+
             if (gamerInput[INPUT_TYPES.B_BUTTON].action === "B-Button-Up") 
             {
                 console.log("swapped to game");
@@ -461,18 +487,23 @@ class NotesScreen
 
         context.fillText("Notes Screen",423, 52);
         context.font = "26px serif";
+
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
         {
             for(let i = 0; i < this.keyboardNotesInstructions.length; i++)
             {
-                context.fillText(this.keyboardNotesInstructions[i],203, 642  + (30 * i));
+                context.fillText(this.keyboardNotesInstructions[i],208, 635  + (40 * i));
             }
+            context.drawImage(this.uiButtonImages[0],180 ,638, 55,55);
+            context.drawImage(this.uiButtonImages[1],180 ,683, 55,55);
         }
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
             for(let i = 0; i < this.joystickNotesInstructions.length; i++)
             {
-                context.fillText(this.joystickNotesInstructions[i],203, 642  + (30 * i));
+                context.fillText(this.joystickNotesInstructions[i],203, 624  + (45 * i));
+                context.drawImage(this.uiButtonImages[1],180 ,634, 55,55);
+            context.drawImage(this.uiButtonImages[0],180 ,683, 55,55);
             }
         }
         for(let i = 0; i < notesTextArray.length; i++)
@@ -1011,7 +1042,7 @@ setUpNpcDetails(noteRoomScreen.npc);
 setUpNpcDetails(hallWayScreen.npc);
 setUpNpcDetails(tileRoomScreen.npc);
 
-let currentScreenState = screenStates.SuspectInspection;
+let currentScreenState = screenStates.GamePlayState;
 
 let frameTimeLimit = 14;
 

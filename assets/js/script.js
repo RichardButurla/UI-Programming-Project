@@ -92,7 +92,8 @@ class UiHUD
         if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
         {
             otherInteractKeyImg.src = "assets/img/Xbox One/XboxOne_Y.png";
-            interactButtonImage.src = "assets/img/Xbox One/XboxOne_X.png"
+            interactButtonImage.src = "assets/img/Xbox One/XboxOne_X.png";
+            enterAreaButtonImage.src = "assets/img/Xbox One/XboxOne_A.png";
         }
     }
     draw()

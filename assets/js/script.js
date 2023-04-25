@@ -21,9 +21,66 @@ const storedArray = JSON.parse(storedArrayString);
 let notesTextArray = storedArray;
 let textArray = [];
 
+let otherInteractKeyImg = new Image();
+
 let gulitySuspect = 3;
 let selectedSuspect = 0; //used to index thorugh y pos array for positioning;
 let confirmPopUp = false;
+
+class MainMenu
+{
+    update()
+    {
+        console.log("updating menu");
+    }
+    draw()
+    {
+        context.drawImage(blackBackground,0,0,context.canvas.width,context.canvas.height);
+
+    }
+}
+
+class UiHUD
+{
+    constructor()
+    {
+        this.boxSizeX = 400;
+        this.boxSizeY = 50;
+        this.instructions = " Notes/Suspects          /             Interact"
+        this.keyboardUiButtonsSrcs = ["assets/img/Keyboard & Mouse/Dark/Q_Key_Dark.png" , "assets/img/Keyboard & Mouse/Dark/E_Key_Dark.png", "assets/img/Keyboard & Mouse/Dark/Space_Key_Dark.png"];
+        this.jostickUiButtonsSrc = ["assets/img/Xbox One/XboxOne_A.png" , "assets/img/Xbox One/XboxOne_X.png", "assets/img/Xbox One/XboxOne_Y.png "]
+        this.buttonUis = [interactButtonImage ,enterAreaButtonImage,otherInteractKeyImg];
+    }
+    update()
+    {
+
+    }
+    draw()
+    {
+        context.font = "20px serif";
+
+        if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
+        {
+            for(let i = 0; i < this.buttonUis.length; i++)
+            {
+                this.buttonUis[i].src = this.keyboardUiButtonsSrcs[i];
+            }
+        }
+        if(currentControls == CONTROLS_TYPE.JOYSTICK_BUTTONS)
+        {
+            for(let i = 0; i < this.buttonUis.length; i++)
+            {
+                this.buttonUis[i].src = this.jostickUiButtonsSrc[i];
+            }
+        }
+        context.drawImage(dialogueBoxImage,context.canvas.width - this.boxSizeX,0 + this.boxSizeY / 2,this.boxSizeX,this.boxSizeY);   
+        context.fillText(this.instructions,context.canvas.width - this.boxSizeX + 65,0 + this.boxSizeY + 5);
+        context.drawImage(this.buttonUis[0],context.canvas.width - (this.boxSizeX /1.05),0 + this.boxSizeY / 2, 50 , 50 );
+        context.drawImage(this.buttonUis[1],context.canvas.width - (this.boxSizeX /1.1) + 155   ,0 + this.boxSizeY / 2, 50 , 50 );
+        context.drawImage(this.buttonUis[2],context.canvas.width - (this.boxSizeX /1.1) + 215   ,0 + this.boxSizeY / 2, 50 , 50 );
+
+    }
+}
 
 class EndScreen
 {
@@ -389,24 +446,11 @@ class NotesScreen
     }
 }
 
-class MenuScreen
-{
-    update()
-    {
-        //console.log("Update from Menu");
-    };
-    draw()
-    {
-        context.font = "80px serif";
-        context.fillText("MenuScreen",context.canvas.width - (context.canvas.width / 2), context.canvas.height - (context.canvas.height / 2));
-    };
-}
-
 class GamePlayScreen
 {
     update()
     {
-        
+        hud.update();
         player.animatePlayer();
 
         if(currentControls == CONTROLS_TYPE.MOUSE_KEYBOARD)
@@ -624,6 +668,9 @@ class GamePlayScreen
                 hallWayScreen.draw();
                 break;
         }
+
+
+        hud.draw();
     };
 }
 
@@ -815,7 +862,7 @@ function update() {
     switch(currentScreenState)
     {
         case screenStates.MenuState:
-            menuScreen.update();
+            mainMenuScreen.update();
             break;    
         case screenStates.GamePlayState:
             gameplayScreen.update();
@@ -847,7 +894,7 @@ function draw() {
     switch(currentScreenState)
     {
         case screenStates.MenuState:
-            menuScreen.draw();
+            mainMenuScreen.draw();
             break; 
         case screenStates.ClueInspectState:
             clueDetailScreen.draw();
@@ -895,7 +942,7 @@ window.addEventListener('keyup', input);
 
 
 //Instances
-const menuScreen = new MenuScreen();
+const mainMenuScreen = new MainMenu();
 const gameplayScreen = new GamePlayScreen();
 const inventoryScreen = new InventoryScreen();
 const clueDetailScreen = new ClueInspectScreen();
@@ -903,6 +950,9 @@ const dialgueScreen = new DialogueScreen();
 const notesScreen = new NotesScreen();
 const suspectScreen = new SuspectInspectScreen();
 const endScreen = new EndScreen();
+
+//Ui GameplayScreen
+const hud = new UiHUD();
 
 
 npcImg.src = npcImageFiles[0];
@@ -931,6 +981,8 @@ let frameTimeLimit = 14;
 
 let clueInspectBackgroundImg = new Image();
 clueInspectBackgroundImg.src = "assets/img/clueInspect.png"
+
+
 
 let blackBackground = new Image();
 blackBackground.src = "assets/img/blackScreen.png";

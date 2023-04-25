@@ -2,6 +2,16 @@ var vid = document.getElementById("menuVideo");
 let validateButton = document.getElementsByClassName("saved-data-accept")[0];
 let dismissButton = document.getElementsByClassName("saved-data-refusal")[0];
 
+const username = localStorage.getItem('username');
+const notes = localStorage.getItem('notes');
+const notesAarray = JSON.parse(notes);
+const playerX = localStorage.getItem('player.x');
+const playerY = localStorage.getItem('player.y');
+const canvas = document.getElementById("the_canvas");
+let form = document.forms["helloForm"];
+let header = document.getElementById("main-header");
+var video = document.getElementById("menuVideo");
+
 validateButton.onclick = function(){
     modal.style.display = "none";
     canvas.classList.add("showed");
@@ -12,13 +22,7 @@ dismissButton.onclick = function(){
     form.style.display = "block";
     canvas.classList.remove("showed");
     //the following is not necessary in this case, but I'll leave it here in case you need it later
-    localStorage.setItem("player.x", 50);
-    localStorage.setItem("player.y", 450);
-    localStorage.setItem("area", "noteRoom");
-    const noteTest = [];
-    localStorage.setItem('notes', JSON.stringify(noteTest));
-    const npcsInteracted = [false, false, false];
-    localStorage.setItem('npcsInteracted',JSON.stringify(npcsInteracted));
+    localStorage.clear();
     moved = false;
     console.log("startFresh");
     vid.play();
@@ -42,15 +46,7 @@ if(typeof(Storage) !== "undefined") {
     // console.log("Local storage is supported.");
     // Local storage is available on your browser
     
-    const username = localStorage.getItem('username');
-    const notes = localStorage.getItem('notes');
-    const notesAarray = JSON.parse(notes);
-    const playerX = localStorage.getItem('player.x');
-    const playerY = localStorage.getItem('player.y');
-    const canvas = document.getElementById("the_canvas");
-    let form = document.forms["helloForm"];
-    let header = document.getElementById("main-header");
-    var video = document.getElementById("menuVideo");
+
    
         
     if(username)

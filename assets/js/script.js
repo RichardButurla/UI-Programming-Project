@@ -1,4 +1,3 @@
-const canvas = document.getElementById("the_canvas");
 const context = canvas.getContext("2d");
 
 const screenStates = Object.freeze({ 

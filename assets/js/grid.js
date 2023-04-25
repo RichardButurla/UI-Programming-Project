@@ -1,4 +1,3 @@
-canvas = document.getElementById("the_canvas");
 context = canvas.getContext("2d");
 
 

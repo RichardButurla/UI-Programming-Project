@@ -1,6 +1,7 @@
 canvas = document.getElementById("the_canvas");
 context = canvas.getContext("2d");
 
+
 class Grid
 {
     constructor()
@@ -23,7 +24,7 @@ class Grid
         console.log("Rows: " + this.rows + "Cols: " + this.collums);
       }
 }
-
+let currentGridArea = new Grid();
 var collisionTile;
 
 class AreaManager
@@ -209,7 +210,8 @@ noteGridArea.setUpGrid(context.canvas.width,context.canvas.height,7,6,noteRoomGr
 let hallGridArea = new Grid();
 hallGridArea.setUpGrid(context.canvas.width,context.canvas.height,8,6,verticalHallGrid);
 
-let currentGridArea = getStartGrid();
+currentGridArea = getStartGrid();
+
 let areaEnterancePos = new Vector(120,500);
 let atAreaExit = false;
 let areaExitCell = -1;

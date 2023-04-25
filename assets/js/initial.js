@@ -17,6 +17,7 @@ const joyStickArea = document.getElementById("joystick-area");
 validateButton.onclick = function(){
     modal.style.display = "none";
     canvas.classList.add("showed");
+    header.innerHTML = "";
     vid.pause();
 }
 dismissButton.onclick = function(){
@@ -29,6 +30,7 @@ dismissButton.onclick = function(){
     console.log("startFresh");
     vid.play();
     vid.style.display = "block";
+    
 }
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -46,13 +48,13 @@ if(typeof(Storage) !== "undefined") {
    
     // console.log("Local storage is supported.");
     // Local storage is available on your browser
-
+    header.innerHTML = "";
     if(username)
     {
         vid.pause();
         video.style.display = "none"
         canvas.classList.add("showed");
-        header.innerHTML = "Detective: " + username;
+        header.innerHTML = " ";
         header.style.marginLeft = "0%"
         form.style.display = "none";
         if (username && notes ){
@@ -61,7 +63,7 @@ if(typeof(Storage) !== "undefined") {
             {
                 vid.pause();
                 video.style.display = "none"
-                header.innerHTML = "Detective: " + username;
+                header.innerHTML = " ";
                 header.style.marginLeft = "0%"
                 form.style.display = "none";
                 let modal = document.getElementById("modal");
@@ -69,7 +71,7 @@ if(typeof(Storage) !== "undefined") {
                 let modalContent = modal.children[0].children[2];
                     console.log(playerX);
                     canvas.classList.remove("showed");
-                    header.innerHTML = "";
+                    header.innerHTML = " ";
                     modal.style.display = "block";
                     modalContent.style.fontSize = "36px";
                     modalContent.style.color = "aliceblue"
@@ -122,4 +124,5 @@ function validateForm(){
         //more advanced pt2: make a system that changes the webpage based on the inputted name 
     }
     localStorage.setItem("username", x);
+    header.innerHTML = "";
 }

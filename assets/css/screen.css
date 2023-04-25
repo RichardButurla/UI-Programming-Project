@@ -73,8 +73,30 @@ text-align: center;
 font-size: 16px;
 }
 
+div#modal{
+    display: none;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    margin-left: 20%;
+}
+
+div#joystick-area
+{
+    position: fixed;
+    width: 150px;
+    height: 150px;
+    margin-left: 65%;
+    margin-top: -22%;
+    border: 2px solid rgb(15, 107, 245) 
+}
+
 table{
-    position: absolute;
+    position: fixed;
     margin-left:  0%;
     margin-top: -22%;
 }
@@ -90,6 +112,24 @@ table{
         position: relative;
         margin-right: 0;
         margin-top: 0;
+    }
+  }
+
+  @media screen and (max-width: 440px)  {
+    table {
+        position: absolute;
+        margin-left: 0;
+        margin-top: 47%;
+      }
+
+    div#modal{
+        margin-left: 5%;
+    }
+    div#joystick-area
+    {
+        position: absolute;
+        margin-top: 50%;
+        margin-left: 50%;
     }
   }
 
@@ -132,17 +172,7 @@ color: #FFFF00;
 border-radius: 50%;
 }
 
-div#modal{
-    display: none;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    margin-left: 30%;
-}
+
 
 #modal-text
 {
@@ -151,12 +181,3 @@ div#modal{
     color: aliceblue;
 }
 
-div#joystick-area
-{
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    margin-left: 65%;
-    margin-top: -22%;
-    border: 2px solid rgb(15, 107, 245) 
-}
